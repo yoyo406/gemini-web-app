@@ -5,8 +5,7 @@ Déployé en statique (GitHub Pages), sans backend, respectueux de la vie privé
 
 > ✨ Entièrement côté client • 🔑 Votre clé API reste sur votre appareil • 🌓 Thème clair/sombre
 
-![PulsarAI Screenshot](https://placehold.co/800x400/0f0f0f/151515?text=PulsarAI+%7C+Chat+IA+Minimaliste)  
-*(Remplace ce lien par une vraie capture d’écran après déploiement !)*
+![PulsarAI Screenshot]
 
 ---
 
