@@ -3,39 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PulsarAI - Chat avec Gemini</title>
+    <title>PulsarAI - Space Chat</title>
     <link rel="stylesheet" href="style.css">
     <script type="module" src="https://cdn.jsdelivr.net/npm/@google/genai@0.2.1/dist/index.min.js"></script>
 </head>
 <body>
+    <div class="space-background">
+        <div class="planet"></div>
+        <div class="star star-1"></div>
+        <div class="star star-2"></div>
+        <div class="star star-3"></div>
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+        <div class="circle circle-4"></div>
+        <div class="dot dot-1"></div>
+        <div class="dot dot-2"></div>
+        <div class="dot dot-3"></div>
+    </div>
 
     <div class="container">
-        <header>
-            <h1>PulsarAI</h1>
-            <p>Propulsé par Gemini</p>
-        </header>
-
         <main id="main-content">
             <div class="api-key-setup">
-                <input type="password" id="api-key-input" placeholder="Entrez votre clé API Gemini (ne sera pas enregistrée)..." required>
-                <button id="set-api-key-btn">Initialiser le Chat</button>
+                <input type="password" id="api-key-input" placeholder="Entrez votre clé API Gemini..." required>
+                <button id="set-api-key-btn">Commencer</button>
             </div>
 
             <div id="chat-messages" class="chat-messages">
                 <div class="message ai welcome">
-                    <p>Bienvenue sur PulsarAI. Veuillez entrer et initialiser votre clé API Gemini ci-dessus pour commencer la conversation.</p>
+                    <p>Initialisez votre clé API pour discuter avec PulsarAI dans l'espace.</p>
                 </div>
             </div>
 
-            <div class="input-area">
-                <input type="text" id="user-input" placeholder="Écrivez votre message..." disabled>
-                <button id="send-btn" disabled>Envoyer</button>
+            <div class="input-area-container">
+                <div class="input-area">
+                    <input type="text" id="user-input" placeholder="Ask me anything..." disabled>
+                    <button id="send-btn" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
             <div id="loading-indicator" class="loading-indicator" style="display: none;">
-                ... PulsarAI réfléchit ...
+                ... Transmission en cours ...
             </div>
         </main>
-        
     </div>
 
     <script type="module" src="script.js"></script>
