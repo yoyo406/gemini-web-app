@@ -1,6 +1,6 @@
 # PulsarAI
 
-💬 **Un chat IA minimaliste inspiré de l’interface de Claude**, fonctionnant avec l’**API gratuite de Google Gemini**.  
+💬 **Un chat IA minimaliste**, fonctionnant avec l’**API gratuite de Google Gemini**.  
 Déployé en statique (GitHub Pages), sans backend, respectueux de la vie privée.
 
 > ✨ Entièrement côté client • 🔑 Votre clé API reste sur votre appareil • 🌓 Thème clair/sombre
@@ -11,7 +11,7 @@ Déployé en statique (GitHub Pages), sans backend, respectueux de la vie privé
 
 ## 🚀 Fonctionnalités
 
-- ✅ Interface **ultra-épurée** inspirée de **Claude.ai** (noir profond, typographie Inter, bulles asymétriques)
+- ✅ Interface **ultra-épurée** inspirée de **l'espace** (noir profond, typographie Inter, bulles asymétriques)
 - 🌐 **100 % frontend** : fonctionne sur **GitHub Pages**, **Netlify**, **Vercel**, etc.
 - 🔐 **Sécurité** : votre clé API Gemini est stockée **uniquement dans votre navigateur** (`localStorage`)
 - 💬 **Chat interactif** avec :
@@ -30,12 +30,3 @@ Déployé en statique (GitHub Pages), sans backend, respectueux de la vie privé
 3. **Collez votre clé** → commencez à discuter avec PulsarAI !
 
 > ℹ️ **Aucune donnée n’est envoyée à un serveur tiers.** Tout reste dans votre navigateur.
-
----
-
-## 🛠️ Déployer votre propre version
-
-1. **Fork ce dépôt** ou clonez-le :
-   ```bash
-   git clone https://github.com/votre-pseudo/pulsar-ai.git
-   cd pulsar-ai
