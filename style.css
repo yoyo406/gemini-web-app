@@ -1,0 +1,100 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #007bff;
+    margin-bottom: 30px;
+}
+
+/* --- Style du Dé --- */
+.dice-container {
+    perspective: 1000px; /* Ajoute une perspective pour l'effet 3D */
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.die-face {
+    width: 100px;
+    height: 100px;
+    background: #e9ecef;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: grid;
+    padding: 10px;
+    position: relative;
+    /* Transition pour l'effet de rotation et de lancer */
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+    /* Ajout d'une légère transformation pour l'effet 3D initial */
+    transform: rotateX(20deg) rotateY(20deg); 
+}
+
+/* Style des points du dé */
+.dot {
+    width: 20px;
+    height: 20px;
+    background: #dc3545; /* Couleur rouge */
+    border-radius: 50%;
+    align-self: center;
+    justify-self: center;
+}
+
+/* Mise en page des points pour chaque face (en utilisant le grid) */
+.die-1 { grid-template-areas: ". center ."; }
+.die-2 { grid-template-areas: "top-left . ." ". . ." ". . bottom-right"; }
+.die-3 { grid-template-areas: "top-left . ." ". center ." ". . bottom-right"; }
+.die-4 { grid-template-areas: "top-left . top-right" ". . ." "bottom-left . bottom-right"; }
+.die-5 { grid-template-areas: "top-left . top-right" ". center ." "bottom-left . bottom-right"; }
+.die-6 { grid-template-areas: "top-left . top-right" "center-left . center-right" "bottom-left . bottom-right"; }
+
+.die-face .dot:nth-child(1) { grid-area: top-left; }
+.die-face .dot:nth-child(2) { grid-area: center-left; }
+.die-face .dot:nth-child(3) { grid-area: bottom-left; }
+.die-face .dot:nth-child(4) { grid-area: top-right; }
+.die-face .dot:nth-child(5) { grid-area: center-right; }
+.die-face .dot:nth-child(6) { grid-area: bottom-right; }
+.die-face .dot:only-child,
+.die-face .dot:nth-child(2):only-of-type { /* Pour les faces 1, 3, 5 */
+    grid-area: center;
+}
+
+
+/* --- Bouton et Texte --- */
+#roll-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+#roll-button:hover {
+    background-color: #218838;
+}
+
+#result-text {
+    margin-top: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #007bff;
+}
