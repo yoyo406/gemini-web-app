@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Dé Réaliste</title>
+    <title>Jeu de Dé Réaliste 3D</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>🎲 Simulateur de Lancer de Dé</h1>
+        <h1>🎲 Lancer de Dé 3D</h1>
         
-        <div class="dice-container">
-            <div id="die" class="die-face die-1">
-                <span class="dot"></span>
+        <div class="dice-scene">
+            <div id="die-cube" class="die-cube show-1">
+                <div class="face face-1"></div>
+                <div class="face face-6"></div>
+                <div class="face face-2"></div>
+                <div class="face face-5"></div>
+                <div class="face face-3"></div>
+                <div class="face face-4"></div>
             </div>
         </div>
 
-        <div id="result-text">Cliquez sur le bouton pour lancer le dé !</div>
+        <div id="result-text">Appuyez pour lancer un dé 3D !</div>
         
         <button id="roll-button">Lancer le Dé</button>
     </div>
