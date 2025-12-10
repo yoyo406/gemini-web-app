@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "https://cdn.jsdelivr.net/npm/@google/genai@0.2.1/dist/index.min.js";
 
-// Éléments du DOM
+// --- Sélection des éléments du DOM ---
 const apiKeyInput = document.getElementById('api-key-input');
 const setApiKeyBtn = document.getElementById('set-api-key-btn');
 const chatContainer = document.getElementById('chat-messages');
@@ -8,108 +8,116 @@ const userInput = document.getElementById('user-input');
 const sendButton = document.getElementById('send-btn');
 const loadingIndicator = document.getElementById('loading-indicator');
 
-// Variables d'état de l'API
+// --- Variables d'état ---
 let ai = null;
 let chat = null;
-const model = "gemini-2.5-flash"; // Modèle rapide et stable
+const model = "gemini-2.5-flash"; // Modèle rapide et efficace
 
-// --- Fonctions d'aide ---
+// --- Fonctions Utilitaires ---
 
+// Fonction pour ajouter un message à l'écran
 function appendMessage(sender, text) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', sender);
-    // Remplacer les sauts de ligne par des balises <br> pour l'affichage HTML
+    
+    // Conversion des sauts de ligne (\n) en balises HTML <br>
     const formattedText = text.replace(/\n/g, '<br>');
     messageDiv.innerHTML = `<p>${formattedText}</p>`;
+    
     chatContainer.appendChild(messageDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight; // Défilement vers le bas
+    
+    // Défilement automatique vers le bas pour voir le dernier message
+    chatContainer.scrollTop = chatContainer.scrollHeight; 
 }
 
+// Fonction pour activer/désactiver l'interface de chat
 function toggleChat(enable) {
     userInput.disabled = !enable;
     sendButton.disabled = !enable;
-    apiKeyInput.disabled = enable;
-    setApiKeyBtn.disabled = enable;
+    
+    // On désactive la configuration de la clé une fois validée pour éviter les changements en cours de route
     if (enable) {
+        apiKeyInput.disabled = true;
+        setApiKeyBtn.disabled = true;
+        setApiKeyBtn.textContent = "Connecté";
+        setApiKeyBtn.style.backgroundColor = "#4CAF50"; // Vert pour indiquer le succès
         userInput.focus();
-        appendMessage('ai', "Clé API validée. Le chat est maintenant actif !");
     }
 }
 
-// --- Logique d'initialisation de la clé API ---
+// --- Événements et Logique ---
 
+// 1. Initialisation de la clé API
 setApiKeyBtn.addEventListener('click', () => {
     const key = apiKeyInput.value.trim();
     if (key === '') {
-        alert("Veuillez entrer une clé API valide.");
+        alert("Veuillez entrer une clé API Gemini valide.");
         return;
     }
 
     try {
-        // Initialiser le SDK avec la clé de l'utilisateur
+        // Initialisation du SDK Google GenAI
         ai = new GoogleGenAI({ apiKey: key });
         
-        // Créer une nouvelle session de chat pour conserver l'historique
+        // Création de la session de chat
         chat = ai.chats.create({ model });
 
-        // Tenter un simple appel pour vérifier si la clé fonctionne (ou simplement l'activer)
-        // Pour des raisons de rapidité et d'éviter un appel inutile : nous l'activons directement.
-        // Les erreurs d'API seront gérées dans sendMessage.
+        // Si aucune erreur immédiate, on active le chat
         toggleChat(true);
+        
+        // Petit message système discret pour confirmer
+        appendMessage('ai', "Système initialisé. Je suis prêt à discuter.");
 
     } catch (error) {
-        console.error("Erreur d'initialisation de l'API:", error);
-        alert("Erreur lors de l'initialisation de l'API. Assurez-vous que la clé est correcte.");
-        // Réinitialiser les variables en cas d'échec
-        ai = null;
-        chat = null;
-        toggleChat(false);
+        console.error("Erreur d'initialisation:", error);
+        alert("Impossible d'initialiser l'IA avec cette clé. Vérifiez la console (F12) pour plus de détails.");
     }
 });
 
-// --- Logique d'envoi de message ---
-
-sendButton.addEventListener('click', sendMessage);
-userInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !userInput.disabled) {
-        sendMessage();
-    }
-});
-
+// 2. Envoi du message
 async function sendMessage() {
     const prompt = userInput.value.trim();
+    
+    // Vérifications de base
     if (prompt === '') return;
     if (!chat) {
-        alert("Veuillez d'abord initialiser le chat avec votre clé API.");
+        alert("Veuillez d'abord valider votre clé API.");
         return;
     }
 
-    // Afficher le message de l'utilisateur
+    // Affichage immédiat du message utilisateur
     appendMessage('user', prompt);
-    userInput.value = '';
+    userInput.value = ''; // Vider le champ
     
-    // Désactiver le chat pendant le traitement et afficher l'indicateur
-    toggleChat(false);
+    // État de chargement
+    userInput.disabled = true;
+    sendButton.disabled = true;
     loadingIndicator.style.display = 'block';
 
     try {
-        // Envoyer le message en utilisant la session de chat
+        // Appel à l'API Gemini
         const response = await chat.sendMessage({ message: prompt });
-        
-        // Récupérer le texte de la réponse
         const responseText = response.text;
 
+        // Affichage de la réponse
         appendMessage('ai', responseText);
         
     } catch (error) {
         console.error("Erreur Gemini API:", error);
-        // Afficher un message d'erreur clair pour l'utilisateur
-        appendMessage('ai', `Désolé, une erreur est survenue lors de la communication avec l'API Gemini. (Vérifiez la console pour les détails de l'erreur, la clé est peut-être invalide ou expirée.)`);
-        
+        appendMessage('ai', "⚠️ Erreur de transmission. Vérifiez votre connexion ou votre clé API.");
     } finally {
-        // Réactiver le chat et masquer l'indicateur
-        toggleChat(true);
+        // Restauration de l'état normal
+        userInput.disabled = false;
+        sendButton.disabled = false;
         loadingIndicator.style.display = 'none';
-        userInput.focus(); // Renvoyer le focus à l'entrée
+        userInput.focus();
     }
 }
+
+// Écouteurs d'événements pour l'envoi
+sendButton.addEventListener('click', sendMessage);
+userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
