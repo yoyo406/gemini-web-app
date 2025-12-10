@@ -26,7 +26,7 @@ Déployé en statique (GitHub Pages), sans backend, respectueux de la vie privé
 ## 🔑 Comment l’utiliser ?
 
 1. **Obtenez une clé API gratuite** sur [Google AI Studio](https://aistudio.google.com/app/apikey)
-2. **Visitez le site** : [https://yoyo406.github.io/PulsarAI-with-Gemini-API-](https://#) *(à remplacer après déploiement)*
+2. **Visitez le site** : [https://yoyo406.github.io/PulsarAI-with-Gemini-API-/](https://#) *(à remplacer après déploiement)*
 3. **Collez votre clé** → commencez à discuter avec PulsarAI !
 
 > ℹ️ **Aucune donnée n’est envoyée à un serveur tiers.** Tout reste dans votre navigateur.
