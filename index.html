@@ -13,21 +13,23 @@
     <div class="app-container">
         <header>
             <h1 class="brand">NOTHING<span class="dot-accent">.</span></h1>
-            <button id="settingsBtn" class="settings-icon">:::</button>
             
-            <div class="settings-menu" id="settingsMenu">
-                <div class="setting-group">
-                    <label>THEME</label>
-                    <div class="toggle-row">
-                        <button class="toggle-btn active" data-setting="theme" data-value="dark">DARK</button>
-                        <button class="toggle-btn" data-setting="theme" data-value="light">LIGHT</button>
+            <div class="settings-wrapper">
+                <button id="settingsBtn" class="settings-icon">:::</button>
+                <div class="settings-menu" id="settingsMenu">
+                    <div class="setting-group">
+                        <label>THEME</label>
+                        <div class="toggle-row">
+                            <button class="toggle-btn active" data-setting="theme" data-value="dark">DARK</button>
+                            <button class="toggle-btn" data-setting="theme" data-value="light">LIGHT</button>
+                        </div>
                     </div>
-                </div>
-                <div class="setting-group">
-                    <label>ACCENT</label>
-                    <div class="toggle-row">
-                        <button class="toggle-btn active" data-setting="accent" data-value="red">RED</button>
-                        <button class="toggle-btn" data-setting="accent" data-value="grey">GREY</button>
+                    <div class="setting-group">
+                        <label>ACCENT</label>
+                        <div class="toggle-row">
+                            <button class="toggle-btn active" data-setting="accent" data-value="red">RED</button>
+                            <button class="toggle-btn" data-setting="accent" data-value="grey">GREY</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -59,12 +61,10 @@
                 </section>
 
                 <div class="filter-bar">
-                    <ul id="tagFilterList">
-                        </ul>
+                    <ul id="tagFilterList"></ul>
                 </div>
 
-                <div class="memory-grid" id="memoryList">
-                    </div>
+                <div class="memory-grid" id="memoryList"></div>
             </main>
         </div>
 
@@ -78,53 +78,57 @@
                 </div>
                 
                 <div class="modal-body">
-                    <div class="type-selector-wrapper">
-                        <select id="noteType">
-                            <option value="[NOTE]">Text Note</option>
-                            <option value="[PHOTO]">Photo</option>
-                            <option value="[VOICE]">Voice Memo</option>
-                            <option value="[EVENT]">Event</option>
-                        </select>
+                    <div class="type-tabs">
+                        <button class="type-tab active" data-type="[NOTE]">TXT</button>
+                        <button class="type-tab" data-type="[PHOTO]">IMG</button>
+                        <button class="type-tab" data-type="[VOICE]">REC</button>
+                        <button class="type-tab" data-type="[EVENT]">CAL</button>
                     </div>
+
+                    <input type="hidden" id="noteType" value="[NOTE]">
 
                     <textarea id="noteContent" placeholder="Write something..."></textarea>
 
-                    <div id="imageUploadGroup" class="form-group" style="display: none;">
-                        <label class="file-upload-btn">
-                            <span>Select Image</span>
+                    <div id="imageUploadGroup" class="dynamic-section" style="display: none;">
+                        <label class="file-upload-box">
+                            <span class="upload-icon">+</span>
+                            <span>ADD IMAGE</span>
                             <input type="file" id="noteImage" accept="image/*">
                         </label>
                         <div id="imagePreviewContainer" class="hidden">
                             <img id="imagePreview" src="" alt="Preview">
+                            <div id="aiStatus" class="ai-status"></div>
                         </div>
-                        <div id="aiStatus" class="ai-status"></div>
                     </div>
 
-                    <div id="voiceRecorder" class="form-group" style="display: none;">
-                        <div class="recorder-interface">
-                            <div class="recorder-timer">00:00</div>
-                            <div class="recorder-status">READY</div>
-                            <div class="recorder-controls">
-                                <button id="recordBtn" class="rec-btn">●</button>
-                                <button id="stopBtn" class="stop-btn" disabled>■</button>
+                    <div id="voiceRecorder" class="dynamic-section" style="display: none;">
+                        <div class="recorder-ui">
+                            <div class="recorder-viz">
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="bar"></div><div class="bar"></div>
                             </div>
-                            <div class="playback-controls">
-                                <button id="playPreviewBtn" class="control-btn" disabled>PLAY</button>
-                                <button id="deleteRecordingBtn" class="control-btn danger" disabled>DEL</button>
+                            <div class="recorder-timer">00:00</div>
+                            <div class="recorder-controls">
+                                <button id="recordBtn" class="rec-btn"></button> <button id="stopBtn" class="stop-btn" disabled></button> </div>
+                            <div class="playback-actions">
+                                <button id="playPreviewBtn" disabled>PLAY</button>
+                                <button id="deleteRecordingBtn" disabled class="danger">DEL</button>
                             </div>
                             <div id="transcriptionPreview" class="transcription-preview"></div>
                         </div>
                     </div>
 
-                    <div id="eventFields" class="form-group" style="display: none;">
-                        <label class="input-label">Date & Time</label>
-                        <input type="datetime-local" id="eventDate">
+                    <div id="eventFields" class="dynamic-section" style="display: none;">
+                        <div class="date-input-wrapper">
+                            <label>TARGET DATE</label>
+                            <input type="datetime-local" id="eventDate">
+                        </div>
                     </div>
 
                     <div class="tags-section">
                         <div class="tag-input-wrapper">
-                            <input type="text" id="addTagInput" placeholder="#add_tag">
-                            <button id="micBtn" class="mic-icon">🎤</button>
+                            <span class="hash">#</span>
+                            <input type="text" id="addTagInput" placeholder="tag">
                         </div>
                         <div id="addTagsList" class="tags-list"></div>
                     </div>
@@ -145,9 +149,12 @@
                 <div class="modal-body">
                     <div id="viewImageContainer" class="view-image-wrapper"></div>
                     
-                    <div id="viewAudioContainer" class="audio-player-custom" style="display: none;">
-                        <button id="viewAudioPlayBtn" class="audio-play-btn">▶</button>
-                        <div class="audio-wave"></div>
+                    <div id="viewAudioContainer" class="audio-player-ui" style="display: none;">
+                        <button id="viewAudioPlayBtn" class="player-btn">▶</button>
+                        <div class="player-track">
+                            <div class="player-progress"></div>
+                        </div>
+                        <span class="player-time">VOICE MEMO</span>
                         <audio id="viewAudioElement"></audio>
                     </div>
 
