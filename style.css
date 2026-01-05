@@ -323,10 +323,9 @@ header {
 
 /* Settings Menu */
 .settings-menu {
-    position: absolute;
-    bottom: 100%;
-    right: 0;
-    margin-bottom: 15px;
+    position: fixed;
+    bottom: 140px;
+    right: 20px;
     background-color: var(--widget-bg);
     border: 1px solid var(--border-color);
     border-radius: 12px;
@@ -336,6 +335,7 @@ header {
     flex-direction: column;
     gap: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    z-index: 99;
 }
 
 .settings-menu.active {
@@ -984,10 +984,10 @@ input[type="file"] {
     }
 
     .settings-menu {
-        right: 0;
-        left: auto;
-        transform: none;
-        width: 85vw;
+        position: fixed;
+        right: 20px;
+        bottom: 140px;
+        width: calc(100vw - 40px);
         max-width: 280px;
     }
 
