@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MÉMOIRE // NOTHING OS</title>
+<title>MÉMOIRE // LOCAL_SYSTEM</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
 <style>
@@ -14,438 +14,227 @@
   --nt-white: #FFFFFF;
   --nt-grey-900: #121212;
   --nt-grey-800: #1C1C1C;
-  --nt-grey-700: #2C2C2C;
   --nt-grey-400: #888888;
   --nt-red: #EB0000;
   --nt-border: 1px solid #2C2C2C;
-  --nt-radius-lg: 28px;
-  --nt-radius-sm: 12px;
-  --font-dot: 'IBM Plex Mono', monospace; /* Simulation Dot Matrix */
+  --font-dot: 'IBM Plex Mono', monospace;
   --font-main: 'Inter', sans-serif;
 }
 
-* { 
-  box-sizing: border-box; 
-  margin: 0; padding: 0; 
-  -webkit-tap-highlight-color: transparent; 
-}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 body {
   font-family: var(--font-main);
   background: var(--nt-black);
   color: var(--nt-white);
-  min-height: 100vh;
-  letter-spacing: -0.01em;
+  line-height: 1.5;
 }
 
-/* ── LOADING ── */
-#loading-screen {
-  position: fixed; inset: 0;
-  background: var(--nt-black);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  z-index: 9999;
-}
-.loading-logo {
-  font-family: var(--font-dot);
-  font-size: 24px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-}
-.loading-dots { display: flex; gap: 8px; margin-top: 20px; }
-.dot { width: 4px; height: 4px; background: var(--nt-white); border-radius: 50%; animation: dotPulse 1.5s infinite; }
-.dot:nth-child(2) { animation-delay: 0.2s; }
-.dot:nth-child(3) { animation-delay: 0.4s; }
-@keyframes dotPulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
-
-/* ── AUTH ── */
-#auth-screen {
-  min-height: 100vh; display: none;
-  align-items: center; justify-content: center;
-  padding: 24px; background: var(--nt-black);
-}
-.auth-card {
-  width: 100%; max-width: 400px;
-}
-.auth-header { text-align: center; margin-bottom: 40px; }
-.auth-title { font-family: var(--font-dot); font-size: 32px; text-transform: uppercase; margin-bottom: 8px; }
-.auth-subtitle { color: var(--nt-grey-400); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
-
-.auth-tabs {
-  display: flex; border: var(--nt-border);
-  border-radius: 40px; padding: 4px; margin-bottom: 30px;
-}
-.auth-tab {
-  flex: 1; padding: 12px; border-radius: 40px; border: none;
-  background: transparent; color: var(--nt-grey-400);
-  font-family: var(--font-dot); font-size: 13px; cursor: pointer;
-}
-.auth-tab.active { background: var(--nt-white); color: var(--nt-black); }
-
-/* ── INPUTS & BUTTONS ── */
-.m3-field { margin-bottom: 20px; }
-.m3-field label { display: block; font-size: 11px; text-transform: uppercase; color: var(--nt-grey-400); margin-left: 16px; margin-bottom: 8px; }
-.m3-field input, .m3-field textarea {
-  width: 100%; padding: 16px 20px;
-  background: var(--nt-grey-900); border: var(--nt-border);
-  border-radius: var(--nt-radius-sm); color: var(--nt-white);
-  font-family: var(--font-main); font-size: 15px; outline: none;
-}
-.m3-field input:focus { border-color: var(--nt-white); }
-
-.btn-filled {
-  width: 100%; padding: 18px; border-radius: 40px; border: none;
-  background: var(--nt-white); color: var(--nt-black);
-  font-family: var(--font-dot); font-size: 14px; font-weight: 700;
-  text-transform: uppercase; cursor: pointer; transition: 0.2s;
-}
-.btn-filled:active { transform: scale(0.98); background: var(--nt-grey-400); }
-
-/* ── APP HEADER ── */
+/* HEADER */
 .app-header {
   padding: 40px 24px 20px;
-  position: sticky; top: 0; background: rgba(0,0,0,0.8);
+  position: sticky; top: 0; 
+  background: rgba(0,0,0,0.8);
   backdrop-filter: blur(20px); z-index: 100;
+  border-bottom: var(--nt-border);
 }
 .header-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
-.app-title { font-family: var(--font-dot); font-size: 28px; text-transform: uppercase; }
-.app-title-count { color: var(--nt-red); font-size: 16px; margin-left: 4px; }
+.app-title { font-family: var(--font-dot); font-size: 24px; letter-spacing: 1px; }
+.app-title span { color: var(--nt-red); font-size: 14px; margin-left: 5px; }
 
 .search-bar {
   display: flex; align-items: center;
-  background: var(--nt-grey-900); border-radius: 100px; padding: 12px 20px;
+  background: var(--nt-grey-900); border-radius: 100px; padding: 10px 18px;
   border: var(--nt-border);
 }
-.search-bar input { background: transparent; border: none; color: white; margin-left: 10px; flex: 1; outline: none; }
+.search-bar input { 
+  background: transparent; border: none; color: white; 
+  margin-left: 10px; flex: 1; outline: none; font-size: 14px;
+}
 
-/* ── GRID & CARDS ── */
-.main-content { padding: 20px 24px 120px; }
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+/* GRID & CARDS */
+.main-content { padding: 24px; padding-bottom: 120px; }
+.cards-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+  gap: 16px; 
+}
 
 .card {
   background: var(--nt-grey-900); border: var(--nt-border);
-  border-radius: var(--nt-radius-lg); padding: 24px;
-  transition: 0.3s cubic-bezier(0.2, 1, 0.3, 1);
-  position: relative; overflow: hidden;
+  border-radius: 28px; padding: 24px;
+  position: relative; transition: 0.2s;
 }
-.card:hover { border-color: var(--nt-white); }
-.card-type-chip { font-family: var(--font-dot); font-size: 10px; text-transform: uppercase; color: var(--nt-grey-400); margin-bottom: 12px; display: block; }
-.card-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
-.card-content { font-size: 14px; color: var(--nt-grey-400); line-height: 1.5; margin-bottom: 16px; }
-.card-image { width: 100%; border-radius: 16px; margin-bottom: 12px; border: var(--nt-border); }
-
-.card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-.card-tag { font-size: 11px; color: var(--nt-white); background: var(--nt-grey-700); padding: 4px 10px; border-radius: 20px; margin-right: 4px; }
+.card:active { transform: scale(0.98); border-color: var(--nt-white); }
+.card-type { font-family: var(--font-dot); font-size: 10px; color: var(--nt-grey-400); margin-bottom: 8px; text-transform: uppercase; }
+.card-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+.card-text { font-size: 14px; color: var(--nt-grey-400); margin-bottom: 16px; white-space: pre-wrap; }
+.card-img { width: 100%; border-radius: 16px; margin-bottom: 12px; border: var(--nt-border); }
 .card-date { font-family: var(--font-dot); font-size: 10px; color: var(--nt-grey-400); }
 
-/* ── FAB ── */
-.fab-container { position: fixed; bottom: 30px; right: 30px; z-index: 200; }
-.fab-extended {
+.delete-btn {
+  position: absolute; top: 20px; right: 20px;
+  background: none; border: none; color: var(--nt-grey-400); cursor: pointer;
+}
+
+/* FAB */
+.fab {
+  position: fixed; bottom: 30px; right: 30px;
   width: 64px; height: 64px; border-radius: 50%;
   background: var(--nt-red); color: white; border: none;
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; box-shadow: 0 8px 24px rgba(235, 0, 0, 0.3);
+  box-shadow: 0 10px 20px rgba(235, 0, 0, 0.2); cursor: pointer; z-index: 200;
 }
 
-/* ── MODAL ── */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+/* MODAL */
+.modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.95);
   display: none; align-items: center; justify-content: center; padding: 20px; z-index: 1000;
 }
-.modal-overlay.open { display: flex; }
-.modal-sheet {
+.modal.active { display: flex; }
+.modal-content {
   background: var(--nt-grey-900); border: var(--nt-border);
-  border-radius: var(--nt-radius-lg); width: 100%; max-width: 500px;
-  padding: 30px; position: relative;
+  border-radius: 32px; width: 100%; max-width: 450px; padding: 32px;
 }
-.sheet-title { font-family: var(--font-dot); font-size: 20px; text-transform: uppercase; margin-bottom: 24px; }
-
-.type-selector { display: flex; gap: 10px; margin-bottom: 24px; }
-.type-btn {
-  flex: 1; padding: 12px; border-radius: 12px; border: var(--nt-border);
-  background: transparent; color: var(--nt-grey-400); font-family: var(--font-dot);
-  cursor: pointer; font-size: 11px;
+.field { margin-bottom: 20px; }
+.field label { display: block; font-family: var(--font-dot); font-size: 11px; color: var(--nt-grey-400); margin-bottom: 8px; margin-left: 4px; }
+.field input, .field textarea {
+  width: 100%; padding: 14px; background: var(--nt-black); border: var(--nt-border);
+  border-radius: 12px; color: white; font-family: var(--font-main); outline: none;
 }
-.type-btn.active { background: var(--nt-white); color: var(--nt-black); border-color: var(--nt-white); }
+.field input:focus { border-color: var(--nt-white); }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-thumb { background: var(--nt-grey-700); border-radius: 10px; }
-
-@media (max-width: 600px) {
-  .app-title { font-size: 22px; }
-  .cards-grid { grid-template-columns: 1fr; }
+.btn-group { display: flex; gap: 12px; margin-top: 24px; }
+.btn {
+  flex: 1; padding: 16px; border-radius: 100px; border: none;
+  font-family: var(--font-dot); font-weight: 700; cursor: pointer; text-transform: uppercase;
 }
+.btn-main { background: var(--nt-white); color: var(--nt-black); }
+.btn-sec { background: transparent; color: var(--nt-white); border: var(--nt-border); }
 
-/* Erreur/Succès Nothing Style */
-.error-msg { color: var(--nt-red); font-family: var(--font-dot); font-size: 12px; text-align: center; margin-top: 10px; }
+#empty-state {
+  text-align: center; margin-top: 100px; color: var(--nt-grey-400);
+  font-family: var(--font-dot); font-size: 14px;
+}
 </style>
 </head>
 <body>
 
-<div id="loading-screen">
-  <div class="loading-logo">MÉMOIRE</div>
-  <div class="loading-dots">
-    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+<header class="app-header">
+  <div class="header-top">
+    <div class="app-title">MÉMOIRE<span id="count">(0)</span></div>
+    <div class="material-icons-round" style="opacity:0.5">sensors</div>
   </div>
-</div>
+  <div class="search-bar">
+    <span class="material-icons-round">search</span>
+    <input type="text" id="search" placeholder="RECHERCHER_DATA..." oninput="render()">
+  </div>
+</header>
 
-<div id="auth-screen">
-  <div class="auth-card">
-    <div class="auth-header">
-      <div class="auth-title">MÉMOIRE</div>
-      <div class="auth-subtitle">Système de Pensée (01)</div>
+<main class="main-content">
+  <div id="empty-state">AUCUNE_DONNÉE_DÉTECTÉE</div>
+  <div class="cards-grid" id="grid"></div>
+</main>
+
+<button class="fab" onclick="toggleModal(true)">
+  <span class="material-icons-round">add</span>
+</button>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="field">
+      <label>TITRE_UNITÉ</label>
+      <input type="text" id="title" placeholder="...">
     </div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchAuthTab('login')">LOGIN</button>
-      <button class="auth-tab" onclick="switchAuthTab('register')">JOIN</button>
+    <div class="field">
+      <label>CONTENU_DATA</label>
+      <textarea id="content" rows="4" placeholder="..."></textarea>
     </div>
-    <div class="auth-body">
-      <div id="login-form">
-        <div class="m3-field">
-          <label>EMAIL_ADDR</label>
-          <input type="email" id="login-email" placeholder="USER@NOTHING.IO" />
-        </div>
-        <div class="m3-field">
-          <label>PASS_KEY</label>
-          <input type="password" id="login-password" placeholder="••••••••" />
-        </div>
-        <button class="btn-filled" onclick="login()">ACCÉDER // LOGIN</button>
-        <div id="login-msg"></div>
-      </div>
-      <div id="register-form" style="display:none">
-        <div class="m3-field">
-          <label>NEW_EMAIL</label>
-          <input type="email" id="reg-email" placeholder="USER@NOTHING.IO" />
-        </div>
-        <div class="m3-field">
-          <label>NEW_PASS_KEY</label>
-          <input type="password" id="reg-password" placeholder="••••••••" />
-        </div>
-        <button class="btn-filled" onclick="register()">CRÉER // SYSTÈME</button>
-        <div id="reg-msg"></div>
-      </div>
+    <div class="field">
+      <label>IMAGE_URL (OPTIONNEL)</label>
+      <input type="text" id="img-url" placeholder="https://...">
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-sec" onclick="toggleModal(false)">ANNULER</button>
+      <button class="btn btn-main" onclick="save()">ENREGISTRER</button>
     </div>
   </div>
 </div>
 
-<div id="app-screen">
-  <header class="app-header">
-    <div class="header-top">
-      <div class="app-title">MÉMOIRE<span class="app-title-count" id="header-count">0</span></div>
-      <div style="cursor: pointer;" onclick="logout()">
-        <span class="material-icons-round">power_settings_new</span>
-      </div>
-    </div>
-    <div class="search-bar">
-      <span class="material-icons-round" style="color:var(--nt-grey-400)">search</span>
-      <input type="text" placeholder="RECHERCHER DANS LE SYSTÈME..." oninput="searchItems(this.value)" />
-    </div>
-  </header>
-
-  <main class="main-content">
-    <div class="cards-grid" id="cards-container"></div>
-  </main>
-
-  <div class="fab-container">
-    <button class="fab-extended" onclick="openModal()">
-      <span class="material-icons-round">add</span>
-    </button>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal">
-  <div class="modal-sheet">
-    <div class="sheet-title" id="modal-title">NOUVEL_ENTRÉE</div>
-    
-    <div class="type-selector">
-      <button class="type-btn active" onclick="selectType('note')" id="type-note">NOTE</button>
-      <button class="type-btn" onclick="selectType('link')" id="type-link">LINK</button>
-      <button class="type-btn" onclick="selectType('image')" id="type-image">IMG</button>
-    </div>
-
-    <div class="m3-field">
-      <label>TITRE_OBJET</label>
-      <input type="text" id="item-title" placeholder="NOMMER L'ÉLÉMENT..." />
-    </div>
-
-    <div id="note-fields">
-      <div class="m3-field">
-        <label>DATA_CONTENU</label>
-        <textarea id="item-content" placeholder="ÉCRIRE ICI..." rows="4"></textarea>
-      </div>
-    </div>
-
-    <div id="link-fields" style="display:none">
-      <div class="m3-field">
-        <label>URL_SOURCE</label>
-        <input type="url" id="item-url" placeholder="HTTPS://" />
-      </div>
-    </div>
-
-    <div id="image-fields" style="display:none">
-      <div class="m3-field" onclick="document.getElementById('image-upload').click()" style="cursor:pointer; border:1px dashed var(--nt-grey-400); padding:20px; border-radius:12px; text-align:center;">
-        <input type="file" id="image-upload" accept="image/*" style="display:none" onchange="handleImageUpload(event)" />
-        <span class="material-icons-round">upload</span>
-        <div style="font-size:10px; margin-top:8px; font-family:var(--font-dot)">SÉLECTIONNER_IMG</div>
-      </div>
-      <img id="image-preview" style="width:100%; border-radius:12px; margin-bottom:15px; display:none" />
-    </div>
-
-    <div class="m3-field">
-      <label>TAGS_SYSTÈME</label>
-      <input type="text" id="item-tags" placeholder="TAG1, TAG2..." />
-    </div>
-
-    <div style="display:flex; gap:12px; margin-top:30px;">
-      <button class="btn-filled" style="background:transparent; color:var(--nt-white); border:var(--nt-border);" onclick="closeModal()">ANNULER</button>
-      <button class="btn-filled" onclick="saveItem()">ENREGISTRER</button>
-    </div>
-  </div>
-</div>
-
-<div id="toast" style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--nt-white); color:var(--nt-black); padding:10px 20px; border-radius:40px; font-family:var(--font-dot); font-size:12px; display:none; z-index:2000;"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// Tes configurations Supabase (gardées telles quelles)
-const SUPA_URL = 'https://yunjmlmzepbsahsavibb.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1bmptbG16ZXBic2Foc2F2aWJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0ODg3MzUsImV4cCI6MjA4NzA2NDczNX0.xqooMTdVJH_ZH-Cdb4BIQgxNTIuJCA1r7yhOMGwoVvk';
-const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+let items = JSON.parse(localStorage.getItem('nothing_memo_db')) || [];
 
-let currentUser = null, allItems = [], currentFilter = 'all', searchQuery = '', editingId = null, currentType = 'note', imageData = null;
+function toggleModal(show) {
+  document.getElementById('modal').classList.toggle('active', show);
+  if(!show) { 
+    document.getElementById('title').value = ''; 
+    document.getElementById('content').value = '';
+    document.getElementById('img-url').value = '';
+  }
+}
 
-// Fonctions d'initialisation et Auth (similaires à ton code mais avec mise à jour UI)
-async function init() {
-  const { data: { session } } = await sb.auth.getSession();
-  if (session?.user) { loginUser(session.user); } else { showScreen('auth'); }
-  sb.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN') loginUser(session.user);
-    if (event === 'SIGNED_OUT') showScreen('auth');
+function save() {
+  const title = document.getElementById('title').value;
+  const content = document.getElementById('content').value;
+  const img = document.getElementById('img-url').value;
+
+  if(!title && !content) return;
+
+  const newItem = {
+    id: Date.now(),
+    title: title || 'SANS_TITRE',
+    content: content,
+    img: img,
+    date: new Date().toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit', year:'2-digit'})
+  };
+
+  items.unshift(newItem);
+  sync();
+  toggleModal(false);
+  render();
+}
+
+function deleteItem(id) {
+  items = items.filter(i => i.id !== id);
+  sync();
+  render();
+}
+
+function sync() {
+  localStorage.setItem('nothing_memo_db', JSON.stringify(items));
+}
+
+function render() {
+  const query = document.getElementById('search').value.toLowerCase();
+  const filtered = items.filter(i => i.title.toLowerCase().includes(query) || i.content.toLowerCase().includes(query));
+  
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty-state');
+  const count = document.getElementById('count');
+
+  count.innerText = `(${filtered.length})`;
+  grid.innerHTML = '';
+  empty.style.display = filtered.length ? 'none' : 'block';
+
+  filtered.forEach(item => {
+    grid.innerHTML += `
+      <div class="card">
+        <button class="delete-btn" onclick="deleteItem(${item.id})">
+          <span class="material-icons-round" style="font-size:18px">close</span>
+        </button>
+        <div class="card-type">LOG_0${item.id.toString().slice(-2)}</div>
+        <div class="card-title">${item.title}</div>
+        ${item.img ? `<img src="${item.img}" class="card-img">` : ''}
+        <div class="card-text">${item.content}</div>
+        <div class="card-date">${item.date}</div>
+      </div>
+    `;
   });
 }
 
-function showScreen(s) {
-  document.getElementById('loading-screen').style.display = 'none';
-  document.getElementById('auth-screen').style.display = s === 'auth' ? 'flex' : 'none';
-  document.getElementById('app-screen').style.display = s === 'app' ? 'block' : 'none';
-}
-
-function switchAuthTab(tab) {
-  document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.innerText.toLowerCase().includes(tab)));
-  document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
-  document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
-}
-
-async function loginUser(user) {
-  currentUser = user;
-  showScreen('app');
-  loadItems();
-}
-
-async function logout() { await sb.auth.signOut(); }
-
-async function loadItems() {
-  const { data } = await sb.from('items').select('*').order('created_at', { ascending: false });
-  allItems = data || [];
-  renderCards();
-}
-
-function renderCards() {
-  const container = document.getElementById('cards-container');
-  const filtered = allItems.filter(i => i.title.toLowerCase().includes(searchQuery.toLowerCase()));
-  document.getElementById('header-count').innerText = filtered.length;
-
-  container.innerHTML = filtered.map(item => `
-    <div class="card" onclick="openModal('${item.id}')">
-      <span class="card-type-chip">${item.type} // 0${allItems.indexOf(item) + 1}</span>
-      <div class="card-title">${item.title || 'SANS_TITRE'}</div>
-      ${item.image_data ? `<img src="${item.image_data}" class="card-image">` : ''}
-      <div class="card-content">${item.content || ''}</div>
-      <div class="card-footer">
-        <div>${(item.tags || []).map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
-        <div class="card-date">${new Date(item.created_at).toLocaleDateString('fr-FR')}</div>
-      </div>
-      <button onclick="event.stopPropagation(); deleteItem('${item.id}')" style="position:absolute; top:20px; right:20px; background:none; border:none; color:var(--nt-red); cursor:pointer">
-        <span class="material-icons-round" style="font-size:18px">close</span>
-      </button>
-    </div>
-  `).join('');
-}
-
-// Modal & Save Logic
-function openModal(id = null) {
-  editingId = id;
-  if (id) {
-    const item = allItems.find(i => i.id === id);
-    document.getElementById('item-title').value = item.title;
-    document.getElementById('item-content').value = item.content || '';
-    document.getElementById('item-tags').value = (item.tags || []).join(', ');
-    selectType(item.type);
-  } else {
-    document.getElementById('item-title').value = '';
-    document.getElementById('item-content').value = '';
-    document.getElementById('item-tags').value = '';
-  }
-  document.getElementById('modal').classList.add('open');
-}
-
-function closeModal() { document.getElementById('modal').classList.remove('open'); }
-
-function selectType(type) {
-  currentType = type;
-  document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('active', b.id.includes(type)));
-  document.getElementById('note-fields').style.display = type === 'note' ? 'block' : 'none';
-  document.getElementById('link-fields').style.display = type === 'link' ? 'block' : 'none';
-  document.getElementById('image-fields').style.display = type === 'image' ? 'block' : 'none';
-}
-
-function handleImageUpload(e) {
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    imageData = ev.target.result;
-    document.getElementById('image-preview').src = imageData;
-    document.getElementById('image-preview').style.display = 'block';
-  };
-  reader.readAsDataURL(e.target.files[0]);
-}
-
-async function saveItem() {
-  const payload = {
-    title: document.getElementById('item-title').value,
-    content: document.getElementById('item-content').value,
-    type: currentType,
-    tags: document.getElementById('item-tags').value.split(',').map(t => t.trim()),
-    image_data: currentType === 'image' ? imageData : null,
-    user_id: currentUser.id
-  };
-
-  if (editingId) {
-    await sb.from('items').update(payload).eq('id', editingId);
-  } else {
-    await sb.from('items').insert([payload]);
-  }
-  closeModal();
-  loadItems();
-  showToast("SYSTÈME_MIS_À_JOUR");
-}
-
-async function deleteItem(id) {
-  if(confirm("SUPPRIMER DÉFINITIVEMENT ?")) {
-    await sb.from('items').delete().eq('id', id);
-    loadItems();
-  }
-}
-
-function searchItems(q) { searchQuery = q; renderCards(); }
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.innerText = msg; t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 3000);
-}
-
-// Start
-setTimeout(init, 1500); // Petit délai pour voir l'anim de chargement
+// Initialisation
+render();
 </script>
+
 </body>
 </html>
