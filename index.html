@@ -3,34 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MÉMOIRE // SYSTEM_CONTROL</title>
+<title>MÉMOIRE // OS_ULTRA</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
 <style>
 :root {
-  /* Mode Sombre par défaut (Nothing Black) */
   --bg: #000000;
-  --surface: #121212;
-  --surface-2: #1C1C1C;
+  --surface: #0A0A0A;
+  --surface-2: #161616;
   --text: #FFFFFF;
   --text-dim: #888888;
-  --accent: #EB0000;
-  --border: 1px solid #2C2C2C;
+  --accent: #EB0000; /* Rouge Nothing */
+  --border: 1px solid #262626;
   --font-dot: 'IBM Plex Mono', monospace;
   --font-main: 'Inter', sans-serif;
-  --radius: 28px;
 }
 
-/* Thème Clair (Nothing White) */
 body.light-mode {
-  --bg: #F4F4F4;
+  --bg: #F5F5F5;
   --surface: #FFFFFF;
-  --surface-2: #EDEDED;
+  --surface-2: #F0F0F0;
   --text: #000000;
   --text-dim: #666666;
-  --border: 1px solid #DBDBDB;
+  --border: 1px solid #E0E0E0;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -39,13 +36,13 @@ body {
   font-family: var(--font-main);
   background: var(--bg);
   color: var(--text);
-  transition: background 0.3s ease, color 0.3s ease;
   min-height: 100vh;
+  transition: background 0.3s;
 }
 
 /* ── HEADER ── */
 header {
-  padding: 40px 24px 20px;
+  padding: 30px 20px;
   position: sticky; top: 0;
   background: var(--bg);
   backdrop-filter: blur(20px);
@@ -53,83 +50,102 @@ header {
   border-bottom: var(--border);
 }
 
-.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.logo { font-family: var(--font-dot); font-size: 22px; font-weight: 700; }
+.top-bar { display: flex; justify-content: space-between; align-items: center; max-width: 1000px; margin: 0 auto; }
+.logo { font-family: var(--font-dot); font-size: 20px; font-weight: 700; letter-spacing: -1px; }
 
+.controls { display: flex; gap: 10px; }
 .icon-btn {
   background: var(--surface-2); border: var(--border); color: var(--text);
-  width: 44px; height: 44px; border-radius: 50%;
+  width: 42px; height: 42px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center; cursor: pointer;
 }
 
 /* ── GRID ── */
-.main-content { padding: 20px; max-width: 1200px; margin: 0 auto; }
+.main-content { padding: 20px; max-width: 1000px; margin: 0 auto; }
 .grid { 
   display: grid; 
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); 
-  gap: 16px; 
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); 
+  gap: 15px; 
 }
-.grid.list-view { grid-template-columns: 1fr; }
 
 /* ── CARDS ── */
 .card {
   background: var(--surface); border: var(--border);
-  border-radius: var(--radius); padding: 24px;
-  position: relative;
+  border-radius: 24px; padding: 20px;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform 0.2s;
 }
-.card-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
-.card-body { color: var(--text-dim); font-size: 14px; margin-bottom: 15px; }
+.card.pinned { border-color: var(--accent); border-width: 2px; }
 
-/* ── SETTINGS DRAWER (MENU LATÉRAL) ── */
-.drawer-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-  display: none; z-index: 1000;
+.card-img {
+  width: calc(100% + 40px); margin-left: -20px; margin-top: -20px;
+  height: 180px; object-fit: cover; margin-bottom: 15px;
+  border-bottom: var(--border);
 }
+
+.card-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+.card-body { color: var(--text-dim); font-size: 14px; margin-bottom: 15px; white-space: pre-wrap; flex-grow: 1; }
+
+.card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+.card-date { font-family: var(--font-dot); font-size: 10px; color: var(--text-dim); }
+
+.pin-indicator {
+  position: absolute; top: 15px; right: 15px;
+  color: var(--accent); font-size: 18px;
+}
+
+/* ── DRAWER & MODAL ── */
+.drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 1000; }
 .drawer-overlay.active { display: block; }
 
 .drawer {
-  position: fixed; top: 0; right: 0; bottom: 0; width: 320px;
-  background: var(--surface); border-left: var(--border);
-  z-index: 1001; padding: 40px 24px;
-  transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--surface); border-top: var(--border);
+  border-radius: 30px 30px 0 0; padding: 30px 24px;
+  transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1001;
 }
-.drawer.active { transform: translateX(0); }
+.drawer.active { transform: translateY(0); }
 
-.drawer-header { font-family: var(--font-dot); font-size: 14px; margin-bottom: 30px; color: var(--accent); }
-
-.setting-section { margin-bottom: 30px; }
-.setting-label { font-size: 11px; font-family: var(--font-dot); color: var(--text-dim); text-transform: uppercase; margin-bottom: 15px; display: block; }
-
-.setting-option {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 16px; background: var(--surface-2); border-radius: 16px; margin-bottom: 10px;
-  cursor: pointer; border: var(--border);
-}
-
-.btn-full {
-  width: 100%; padding: 16px; border-radius: 50px; border: var(--border);
-  background: var(--surface-2); color: var(--text); font-family: var(--font-dot);
-  font-size: 12px; margin-bottom: 10px; cursor: pointer; text-align: left;
-  display: flex; align-items: center; gap: 10px;
-}
-.btn-full:hover { border-color: var(--text); }
-
-/* ── FAB ── */
-.fab {
-  position: fixed; bottom: 30px; right: 24px;
-  width: 60px; height: 60px; border-radius: 20px;
-  background: var(--accent); color: white; border: none;
-  display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 90;
-}
-
-/* ── MODAL ── */
 .modal {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+  position: fixed; inset: 0; background: rgba(0,0,0,0.9);
   display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
 }
 .modal.active { display: flex; }
-.modal-content { background: var(--surface); padding: 30px; border-radius: 32px; width: 100%; max-width: 450px; border: var(--border); }
-input, textarea { width: 100%; padding: 14px; background: var(--bg); border: var(--border); border-radius: 12px; color: var(--text); margin-top: 10px; outline: none; }
+.modal-content { 
+    background: var(--surface); border: var(--border); border-radius: 28px;
+    width: 100%; max-width: 450px; padding: 25px; max-height: 90vh; overflow-y: auto;
+}
+
+/* ── INPUTS ── */
+.field { margin-bottom: 15px; }
+.field label { display: block; font-family: var(--font-dot); font-size: 10px; color: var(--text-dim); margin-bottom: 5px; }
+input, textarea {
+  width: 100%; padding: 12px; background: var(--bg); border: var(--border);
+  border-radius: 12px; color: var(--text); outline: none; font-size: 15px;
+}
+
+/* Bouton d'upload */
+.upload-btn {
+    border: 1px dashed var(--text-dim); padding: 15px; border-radius: 12px;
+    text-align: center; cursor: pointer; font-size: 12px; color: var(--text-dim);
+}
+
+.btn-full {
+  width: 100%; padding: 15px; border-radius: 50px; border: var(--border);
+  background: var(--surface-2); color: var(--text); font-family: var(--font-dot);
+  font-size: 12px; margin-top: 10px; cursor: pointer;
+}
+
+.fab {
+  position: fixed; bottom: 30px; right: 20px;
+  width: 60px; height: 60px; border-radius: 18px;
+  background: var(--accent); color: white; border: none;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+
+#img-preview { width: 100%; border-radius: 10px; margin-top: 10px; display: none; }
 
 </style>
 </head>
@@ -137,14 +153,10 @@ input, textarea { width: 100%; padding: 14px; background: var(--bg); border: var
 
 <header>
   <div class="top-bar">
-    <div class="logo">MÉMOIRE</div>
-    <div style="display:flex; gap:10px;">
-        <button class="icon-btn" onclick="toggleView()" title="Changer de vue">
-            <span class="material-icons-round" id="view-icon">grid_view</span>
-        </button>
-        <button class="icon-btn" onclick="toggleDrawer(true)">
-            <span class="material-icons-round">settings</span>
-        </button>
+    <div class="logo">MÉMOIRE<span>●</span></div>
+    <div class="controls">
+        <button class="icon-btn" onclick="toggleTheme()"><span class="material-icons-round" id="t-icon">dark_mode</span></button>
+        <button class="icon-btn" onclick="toggleDrawer(true)"><span class="material-icons-round">settings</span></button>
     </div>
   </div>
 </header>
@@ -157,155 +169,169 @@ input, textarea { width: 100%; padding: 14px; background: var(--bg); border: var
   <span class="material-icons-round">add</span>
 </button>
 
-<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer(false)"></div>
-<div class="drawer" id="drawer">
-  <div class="drawer-header">SYSTÈME_CONFIG_0.1</div>
-  
-  <div class="setting-section">
-    <span class="setting-label">Apparence</span>
-    <div class="setting-option" onclick="toggleTheme()">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <span class="material-icons-round" id="theme-icon">dark_mode</span>
-        <span style="font-size:14px;">Thème Sombre</span>
-      </div>
-      <div id="theme-status" style="width:10px; height:10px; border-radius:50%; background:var(--accent);"></div>
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="field">
+        <label>TITLE_UNIT</label>
+        <input type="text" id="m-title" placeholder="...">
     </div>
-  </div>
-
-  <div class="setting-section">
-    <span class="setting-label">Données & Sauvegardes</span>
-    <button class="btn-full" onclick="exportJSON()">
-      <span class="material-icons-round">download</span> EXPORTER_JSON
-    </button>
-    <button class="btn-full" onclick="importJSON()">
-      <span class="material-icons-round">upload</span> IMPORTER_DATA
-    </button>
-    <button class="btn-full" onclick="factoryReset()" style="color:var(--accent); margin-top:20px;">
-      <span class="material-icons-round">delete_forever</span> EFFACER_TOUT
-    </button>
+    <div class="field">
+        <label>DATA_STREAM</label>
+        <textarea id="m-content" rows="4"></textarea>
+    </div>
+    <div class="field">
+        <label>ATTACH_VISUAL</label>
+        <div class="upload-btn" onclick="document.getElementById('file-input').click()">
+            <span class="material-icons-round">image</span><br>SÉLECTIONNER_IMAGE
+        </div>
+        <input type="file" id="file-input" hidden accept="image/*" onchange="previewImage(this)">
+        <img id="img-preview" src="">
+    </div>
+    <div style="display:flex; gap:10px;">
+        <button class="btn-full" onclick="closeModal()">ANNULER</button>
+        <button class="btn-full" style="background:var(--text); color:var(--bg);" onclick="save()">ENREGISTRER</button>
+    </div>
   </div>
 </div>
 
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <h3 style="font-family:var(--font-dot); font-size:14px;">NOUVELLE_ENTRÉE</h3>
-    <input type="text" id="title" placeholder="Titre...">
-    <textarea id="content" rows="5" placeholder="Contenu..."></textarea>
-    <div style="display:flex; gap:10px; margin-top:20px;">
-        <button class="btn-full" style="text-align:center; justify-content:center;" onclick="closeModal()">ANNULER</button>
-        <button class="btn-full" style="text-align:center; justify-content:center; background:var(--text); color:var(--bg);" onclick="save()">SAUVER</button>
-    </div>
-  </div>
+<div class="drawer-overlay" id="overlay" onclick="toggleDrawer(false)"></div>
+<div class="drawer" id="drawer">
+    <div style="width:40px; height:4px; background:var(--surface-2); margin:0 auto 20px; border-radius:10px;"></div>
+    <button class="btn-full" onclick="exportData()">EXPORTER_SAUVEGARDE</button>
+    <button class="btn-full" onclick="importData()">IMPORTER_SAUVEGARDE</button>
+    <button class="btn-full" style="color:var(--accent)" onclick="reset()">FACTORY_RESET</button>
 </div>
 
 <script>
-let notes = JSON.parse(localStorage.getItem('nothing_notes')) || [];
-let isDarkMode = true;
-let isListView = false;
+let notes = JSON.parse(localStorage.getItem('nothing_notes_v3')) || [];
+let currentImage = null;
 
-// INITIALISATION
-function init() {
-    const savedTheme = localStorage.getItem('theme');
-    if(savedTheme === 'light') toggleTheme();
-    render();
-}
-
-// NAVIGATION & UI
-function toggleDrawer(show) {
-    document.getElementById('drawer').classList.toggle('active', show);
-    document.getElementById('drawer-overlay').classList.toggle('active', show);
+function toggleDrawer(s) {
+    document.getElementById('drawer').classList.toggle('active', s);
+    document.getElementById('overlay').classList.toggle('active', s);
 }
 
 function toggleTheme() {
-    isDarkMode = !isDarkMode;
-    document.body.classList.toggle('light-mode', !isDarkMode);
-    document.getElementById('theme-icon').innerText = isDarkMode ? 'dark_mode' : 'light_mode';
-    document.getElementById('theme-status').style.background = isDarkMode ? 'var(--accent)' : '#ccc';
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    const isLight = document.body.classList.toggle('light-mode');
+    document.getElementById('t-icon').innerText = isLight ? 'light_mode' : 'dark_mode';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
 }
 
-function toggleView() {
-    isListView = !isListView;
-    document.getElementById('note-grid').classList.toggle('list-view', isListView);
-    document.getElementById('view-icon').innerText = isListView ? 'view_headline' : 'grid_view';
-}
-
-// CRUD
 function openModal() { document.getElementById('modal').classList.add('active'); }
-function closeModal() { document.getElementById('modal').classList.remove('active'); }
+function closeModal() { 
+    document.getElementById('modal').classList.remove('active');
+    document.getElementById('m-title').value = '';
+    document.getElementById('m-content').value = '';
+    document.getElementById('img-preview').style.display = 'none';
+    currentImage = null;
+}
+
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            currentImage = e.target.result;
+            document.getElementById('img-preview').src = currentImage;
+            document.getElementById('img-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 
 function save() {
-    const t = document.getElementById('title').value;
-    const c = document.getElementById('content').value;
-    if(!t && !c) return;
-    
-    notes.unshift({ id: Date.now(), title: t, content: c, date: new Date().toLocaleDateString() });
-    localStorage.setItem('nothing_notes', JSON.stringify(notes));
-    render();
+    const t = document.getElementById('m-title').value;
+    const c = document.getElementById('m-content').value;
+    if(!t && !c && !currentImage) return;
+
+    const note = {
+        id: Date.now(),
+        title: t || "SANS_TITRE",
+        content: c,
+        img: currentImage,
+        pinned: false,
+        date: new Date().toLocaleDateString('fr-FR')
+    };
+
+    notes.unshift(note);
+    sync();
     closeModal();
-    document.getElementById('title').value = '';
-    document.getElementById('content').value = '';
+}
+
+function togglePin(id) {
+    const idx = notes.findIndex(n => n.id === id);
+    notes[idx].pinned = !notes[idx].pinned;
+    // Trier : les épinglés en premier
+    notes.sort((a, b) => b.pinned - a.pinned || b.id - a.id);
+    sync();
 }
 
 function deleteNote(id) {
-    notes = notes.filter(n => n.id !== id);
-    localStorage.setItem('nothing_notes', JSON.stringify(notes));
+    if(confirm("SUPPRIMER ?")) {
+        notes = notes.filter(n => n.id !== id);
+        sync();
+    }
+}
+
+function sync() {
+    localStorage.setItem('nothing_notes_v3', JSON.stringify(notes));
     render();
 }
 
 function render() {
     const grid = document.getElementById('note-grid');
     grid.innerHTML = notes.map(n => `
-        <div class="card">
-            <div class="card-title">${n.title || 'SANS_TITRE'}</div>
+        <div class="card ${n.pinned ? 'pinned' : ''}">
+            ${n.pinned ? '<span class="material-icons-round pin-indicator">push_pin</span>' : ''}
+            ${n.img ? `<img src="${n.img}" class="card-img">` : ''}
+            <div class="card-title">${n.title}</div>
             <div class="card-body">${n.content}</div>
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-family:var(--font-dot); font-size:10px; color:var(--text-dim);">${n.date}</span>
-                <button onclick="deleteNote(${n.id})" style="background:none; border:none; color:var(--accent); cursor:pointer;">
-                    <span class="material-icons-round" style="font-size:18px;">close</span>
-                </button>
+            <div class="card-footer">
+                <span class="card-date">${n.date}</span>
+                <div style="display:flex; gap:5px;">
+                    <button class="icon-btn" style="width:32px; height:32px; background:none;" onclick="togglePin(${n.id})">
+                        <span class="material-icons-round" style="font-size:18px; color:${n.pinned ? 'var(--accent)' : 'var(--text-dim)'}">push_pin</span>
+                    </button>
+                    <button class="icon-btn" style="width:32px; height:32px; background:none;" onclick="deleteNote(${n.id})">
+                        <span class="material-icons-round" style="font-size:18px; color:var(--text-dim)">delete</span>
+                    </button>
+                </div>
             </div>
         </div>
     `).join('');
 }
 
-// BACKUP
-function exportJSON() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(notes));
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", "nothing_backup.json");
-    document.body.appendChild(downloadAnchorNode);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+// BACKUP UTILS
+function exportData() {
+    const blob = new Blob([JSON.stringify(notes)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `backup_nothing_${Date.now()}.json`;
+    a.click();
 }
 
-function importJSON() {
+function importData() {
     const input = document.createElement('input');
     input.type = 'file';
     input.onchange = e => {
-        const file = e.target.files[0];
         const reader = new FileReader();
-        reader.onload = event => {
-            notes = JSON.parse(event.target.result);
-            localStorage.setItem('nothing_notes', JSON.stringify(notes));
-            render();
-            toggleDrawer(false);
+        reader.onload = ev => {
+            try {
+                notes = JSON.parse(ev.target.result);
+                sync();
+            } catch(e) { alert("ERREUR_FICHIER"); }
         };
-        reader.readAsText(file);
+        reader.readAsText(e.target.files[0]);
     };
     input.click();
 }
 
-function factoryReset() {
-    if(confirm("Voulez-vous supprimer TOUTES les données ?")) {
-        notes = [];
-        localStorage.clear();
-        location.reload();
-    }
+function reset() {
+    if(confirm("TOUT EFFACER ?")) { notes = []; sync(); }
 }
 
-init();
+// Start
+if(localStorage.getItem('theme') === 'light') toggleTheme();
+render();
 </script>
 </body>
 </html>
