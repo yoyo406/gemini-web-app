@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Mémoire - Nothing Edition</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -14,120 +14,72 @@
   --text-dim: #888888;
   --accent-red: #EB4432;
   --border: #222222;
-  --dot-font: 'Space Mono', monospace; /* Simulation du style Dot Matrix */
+  --dot-font: 'Space Mono', monospace;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-body { 
-    font-family: 'Inter', sans-serif; 
-    background: var(--bg); 
-    color: var(--text-main); 
-    overflow-x: hidden;
-    padding-bottom: 100px;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); overflow-x: hidden; padding-bottom: 100px; }
 
-/* ── HEADER ── */
-.app-header {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
-  padding: 20px; border-bottom: 1px solid var(--border);
-  display: flex; justify-content: space-between; align-items: center;
-}
-.logo { font-family: var(--dot-font); font-weight: 700; font-size: 20px; letter-spacing: -1px; text-transform: uppercase; }
+/* ── HEADER & SEARCH ── */
+.app-header { position: sticky; top: 0; z-index: 100; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.logo { font-family: var(--dot-font); font-weight: 700; font-size: 20px; text-transform: uppercase; }
+.search-container { padding: 16px 20px; }
+.search-bar { background: var(--card); border: 1px solid var(--border); border-radius: 100px; padding: 12px 20px; display: flex; align-items: center; gap: 10px; }
+.search-bar input { background: none; border: none; outline: none; color: white; width: 100%; font-size: 14px; }
 
-/* ── SEARCH ── */
-.search-container {
-    padding: 16px 20px;
-}
-.search-bar {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 12px 20px;
-    display: flex; align-items: center; gap: 10px;
-}
-.search-bar input {
-    background: none; border: none; outline: none; color: white; width: 100%; font-size: 14px;
-}
-
-/* ── WIDGETS GRID ── */
-.cards-grid { 
-    display: grid; 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 12px; 
-    padding: 0 20px; 
-}
+/* ── GRID & CARDS ── */
+.cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 20px; }
 .card {
-  background: var(--card); 
-  border-radius: 28px; 
-  padding: 20px; 
-  border: 1px solid var(--border);
-  transition: transform 0.2s ease;
-  display: flex; flex-direction: column; justify-content: space-between;
-  min-height: 160px;
+  background: var(--card); border-radius: 28px; padding: 20px; border: 1px solid var(--border);
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), background 0.2s;
+  display: flex; flex-direction: column; justify-content: space-between; min-height: 160px;
+  position: relative; overflow: hidden;
 }
-/* Style spécial pour certains types pour varier le grid */
-.card:nth-child(3n) { grid-column: span 2; min-height: 120px; } 
+.card:active { transform: scale(0.96); background: #1a1a1a; }
+.card.pinned { border-color: var(--accent-red); }
+.pin-dot { position: absolute; top: 15px; right: 15px; width: 8px; height: 8px; background: var(--accent-red); border-radius: 50%; }
 
 .card-type { font-family: var(--dot-font); font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; }
 .card-title { font-weight: 600; font-size: 16px; margin-bottom: 6px; }
-.card-content { font-size: 13px; color: var(--text-dim); line-height: 1.4; }
+.card-content { font-size: 13px; color: var(--text-dim); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .card-date { font-family: var(--dot-font); font-size: 9px; color: var(--text-dim); margin-top: 15px; }
 
-/* ── POPUP CHOIX (NOTHING STYLE) ── */
-#choice-popup {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-  backdrop-filter: blur(15px); z-index: 1000;
-  display: none; align-items: center; justify-content: center;
+/* ── CONTEXT MENU (LONG PRESS) ── */
+.context-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+  z-index: 2000; display: none; align-items: center; justify-content: center;
 }
-.choice-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 90%; max-width: 360px;
+.context-menu {
+  background: #1a1a1a; border: 1px solid var(--border); border-radius: 24px;
+  width: 200px; padding: 8px; animation: pop 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.choice-item {
-  background: var(--card); border: 1px solid var(--border); border-radius: 32px;
-  aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 12px; cursor: pointer;
+@keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.menu-item {
+  padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+  color: white; font-size: 14px; font-weight: 500; cursor: pointer; border-radius: 16px;
 }
-.choice-item .material-icons-round { font-size: 32px; }
-.choice-item span { font-family: var(--dot-font); font-size: 12px; text-transform: uppercase; }
-.choice-item.close { grid-column: span 2; aspect-ratio: auto; padding: 15px; border-radius: 100px; margin-top: 10px; background: white; color: black; }
+.menu-item:active { background: #333; }
+.menu-item.delete { color: var(--accent-red); }
 
-/* ── MODAL FORM ── */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1100;
-  display: none; align-items: flex-end;
-}
-.modal-sheet {
-  background: var(--card); width: 100%; border-radius: 32px 32px 0 0;
-  padding: 30px 24px; border-top: 1px solid var(--border);
-}
-.modal-sheet input, .modal-sheet textarea {
-    width: 100%; background: #1a1a1a; border: 1px solid var(--border);
-    border-radius: 16px; padding: 16px; color: white; margin-bottom: 12px; outline: none;
-}
-.save-btn {
-    width: 100%; padding: 18px; background: white; color: black; border: none;
-    border-radius: 100px; font-weight: 700; font-family: var(--dot-font); margin-top: 10px;
-}
+/* ── MODALS & FAB ── */
+#choice-popup { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 1000; display: none; align-items: center; justify-content: center; }
+.choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 90%; max-width: 360px; }
+.choice-item { background: var(--card); border: 1px solid var(--border); border-radius: 32px; aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+.choice-item.close { grid-column: span 2; aspect-ratio: auto; padding: 15px; border-radius: 100px; margin-top: 10px; background: white; color: black; font-family: var(--dot-font); text-align: center; }
 
-/* ── FAB ── */
-.fab {
-  position: fixed; bottom: 30px; right: 24px;
-  background: white; color: black; width: 64px; height: 64px;
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.5); cursor: pointer; z-index: 200;
-}
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1100; display: none; align-items: flex-end; }
+.modal-sheet { background: var(--card); width: 100%; border-radius: 32px 32px 0 0; padding: 30px 24px; border-top: 1px solid var(--border); }
+.modal-sheet input, .modal-sheet textarea { width: 100%; background: #1a1a1a; border: 1px solid var(--border); border-radius: 16px; padding: 16px; color: white; margin-bottom: 12px; outline: none; }
+.save-btn { width: 100%; padding: 18px; background: white; color: black; border: none; border-radius: 100px; font-weight: 700; font-family: var(--dot-font); }
 
-/* Animations */
-.fade-up { animation: fadeUp 0.4s ease forwards; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.fab { position: fixed; bottom: 30px; right: 24px; background: white; color: black; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 200; }
 </style>
 </head>
 <body>
 
 <header class="app-header">
   <div class="logo">Mémoire</div>
-  <span class="material-icons-round" onclick="toggleSettings(true)">more_vert</span>
+  <span class="material-icons-round">more_vert</span>
 </header>
 
 <div class="search-container">
@@ -143,96 +95,142 @@ body {
   <span class="material-icons-round" style="font-size: 32px;">add</span>
 </div>
 
+<div class="context-overlay" id="context-overlay" onclick="closeContextMenu()">
+    <div class="context-menu" onclick="event.stopPropagation()">
+        <div class="menu-item" onclick="handleMenuAction('edit')">
+            <span class="material-icons-round">edit</span> Modifier
+        </div>
+        <div class="menu-item" onclick="handleMenuAction('pin')">
+            <span class="material-icons-round">push_pin</span> Épingler
+        </div>
+        <div class="menu-item delete" onclick="handleMenuAction('delete')">
+            <span class="material-icons-round">delete</span> Supprimer
+        </div>
+    </div>
+</div>
+
 <div id="choice-popup">
   <div class="choice-grid">
-    <div class="choice-item" onclick="openForm('écrit')">
-      <span class="material-icons-round">description</span>
-      <span>Écrit</span>
-    </div>
-    <div class="choice-item" onclick="openForm('lien')">
-      <span class="material-icons-round">link</span>
-      <span>Lien</span>
-    </div>
-    <div class="choice-item" onclick="openForm('image')">
-      <span class="material-icons-round">image</span>
-      <span>Image</span>
-    </div>
-    <div class="choice-item" onclick="openForm('vocale')">
-      <span class="material-icons-round" style="color: var(--accent-red)">mic</span>
-      <span>Vocale</span>
-    </div>
-    <div class="choice-item close" onclick="toggleChoice(false)">
-      <span>Fermer</span>
-    </div>
+    <div class="choice-item" onclick="openForm('écrit')"><span class="material-icons-round">description</span><span>Écrit</span></div>
+    <div class="choice-item" onclick="openForm('lien')"><span class="material-icons-round">link</span><span>Lien</span></div>
+    <div class="choice-item" onclick="openForm('image')"><span class="material-icons-round">image</span><span>Image</span></div>
+    <div class="choice-item" onclick="openForm('vocale')"><span class="material-icons-round" style="color: var(--accent-red)">mic</span><span>Vocale</span></div>
+    <div class="choice-item close" onclick="toggleChoice(false)">FERMER</div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal-sheet">
     <div id="form-title" style="font-family: var(--dot-font); margin-bottom: 20px; text-transform: uppercase; color: var(--text-dim)">Nouveau</div>
-    <input type="text" id="title" placeholder="Titre du widget">
-    <textarea id="content" placeholder="Contenu ou URL..." rows="4"></textarea>
-    <button class="save-btn" onclick="save()">AJOUTER</button>
-    <button onclick="closeForm()" style="width:100%; background:none; border:none; color:var(--text-dim); margin-top:15px; font-size:12px">ANNULER</button>
+    <input type="text" id="title" placeholder="Titre">
+    <textarea id="content" placeholder="Contenu..." rows="4"></textarea>
+    <button class="save-btn" onclick="save()">ENREGISTRER</button>
+    <button onclick="closeForm()" style="width:100%; background:none; border:none; color:var(--text-dim); margin-top:15px">ANNULER</button>
   </div>
 </div>
 
 <script>
-let items = JSON.parse(localStorage.getItem('nothing_notes')) || [
-    { title: "Bienvenue", content: "Ceci est ton espace minimaliste.", type: "écrit", date: "20.02.2026" },
-    { title: "Design System", content: "Inspiré par Nothing OS (1)", type: "lien", date: "20.02.2026" }
-];
+let items = JSON.parse(localStorage.getItem('nothing_notes_v2')) || [];
 let currentType = 'écrit';
+let selectedIndex = null;
+let pressTimer = null;
 
-function toggleChoice(show) {
-  const pop = document.getElementById('choice-popup');
-  pop.style.display = show ? 'flex' : 'none';
+// --- GESTION DU LONG PRESS (1 seconde) ---
+function startPress(index) {
+    pressTimer = setTimeout(() => {
+        openContextMenu(index);
+    }, 1000);
 }
 
-function openForm(type) {
-  currentType = type;
-  toggleChoice(false);
-  document.getElementById('form-title').innerText = "Ajouter " + type;
-  document.getElementById('modal-overlay').style.display = 'flex';
-  setTimeout(() => document.querySelector('.modal-sheet').style.transform = 'translateY(0)', 10);
+function cancelPress() {
+    clearTimeout(pressTimer);
 }
 
-function closeForm() {
-  document.getElementById('modal-overlay').style.display = 'none';
+function openContextMenu(index) {
+    selectedIndex = index;
+    document.getElementById('context-overlay').style.display = 'flex';
+    // Vibration légère si supportée
+    if (window.navigator.vibrate) window.navigator.vibrate(50);
 }
+
+function closeContextMenu() {
+    document.getElementById('context-overlay').style.display = 'none';
+}
+
+function handleMenuAction(action) {
+    closeContextMenu();
+    if (action === 'delete') {
+        items.splice(selectedIndex, 1);
+    } else if (action === 'pin') {
+        items[selectedIndex].pinned = !items[selectedIndex].pinned;
+        // Trier pour mettre les épinglés en haut
+        items.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+    } else if (action === 'edit') {
+        const item = items[selectedIndex];
+        openForm(item.type, true);
+        document.getElementById('title').value = item.title;
+        document.getElementById('content').value = item.content;
+        return; // On ne sauvegarde pas tout de suite
+    }
+    saveToStorage();
+    render();
+}
+
+// --- LOGIQUE CORE ---
+function toggleChoice(show) { document.getElementById('choice-popup').style.display = show ? 'flex' : 'none'; }
+
+function openForm(type, isEdit = false) {
+    currentType = type;
+    if (!isEdit) {
+        selectedIndex = null;
+        document.getElementById('title').value = '';
+        document.getElementById('content').value = '';
+    }
+    toggleChoice(false);
+    document.getElementById('form-title').innerText = isEdit ? "Modifier " + type : "Ajouter " + type;
+    document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+function closeForm() { document.getElementById('modal-overlay').style.display = 'none'; }
 
 function save() {
-  const title = document.getElementById('title').value;
-  const content = document.getElementById('content').value;
-  const now = new Date();
-  const formattedDate = `${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()}`;
-  
-  items.unshift({ title, content, type: currentType, date: formattedDate });
-  localStorage.setItem('nothing_notes', JSON.stringify(items));
-  render();
-  closeForm();
-  // Reset fields
-  document.getElementById('title').value = '';
-  document.getElementById('content').value = '';
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+    const date = new Date().toLocaleDateString('fr-FR');
+    
+    if (selectedIndex !== null) {
+        items[selectedIndex] = { ...items[selectedIndex], title, content };
+    } else {
+        items.unshift({ title, content, type: currentType, date, pinned: false });
+    }
+    
+    saveToStorage();
+    render();
+    closeForm();
 }
 
+function saveToStorage() { localStorage.setItem('nothing_notes_v2', JSON.stringify(items)); }
+
 function render(data = items) {
-  const container = document.getElementById('container');
-  container.innerHTML = data.map((item, i) => `
-    <div class="card fade-up" style="animation-delay: ${i * 0.05}s">
-      <div>
-        <div class="card-type">${item.type}</div>
-        <div class="card-title">${item.title || 'Sans titre'}</div>
-        <div class="card-content">${item.content}</div>
-      </div>
-      <div class="card-date">${item.date}</div>
-    </div>
-  `).join('');
+    const container = document.getElementById('container');
+    container.innerHTML = data.map((item, i) => `
+        <div class="card ${item.pinned ? 'pinned' : ''}" 
+             onmousedown="startPress(${i})" onmouseup="cancelPress()" onmouseleave="cancelPress()"
+             ontouchstart="startPress(${i})" ontouchend="cancelPress()">
+            ${item.pinned ? '<div class="pin-dot"></div>' : ''}
+            <div>
+                <div class="card-type">${item.type}</div>
+                <div class="card-title">${item.title || 'Sans titre'}</div>
+                <div class="card-content">${item.content}</div>
+            </div>
+            <div class="card-date">${item.date}</div>
+        </div>
+    `).join('');
 }
 
 function search(q) {
-  const f = items.filter(i => i.title.toLowerCase().includes(q.toLowerCase()) || i.content.toLowerCase().includes(q.toLowerCase()));
-  render(f);
+    const f = items.filter(i => i.title.toLowerCase().includes(q.toLowerCase()) || i.content.toLowerCase().includes(q.toLowerCase()));
+    render(f);
 }
 
 render();
