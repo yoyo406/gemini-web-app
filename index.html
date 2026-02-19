@@ -3,365 +3,309 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MÉMOIRE // SYSTEM_OS_3.0</title>
+<title>MÉMOIRE // SYSTEM_CONTROL</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
 <style>
 :root {
-  --nt-black: #000000;
-  --nt-white: #FFFFFF;
-  --nt-grey-950: #0A0A0A;
-  --nt-grey-900: #121212;
-  --nt-grey-800: #1C1C1C;
-  --nt-grey-400: #888888;
-  --nt-red: #EB0000;
-  --nt-border: 1px solid #262626;
+  /* Mode Sombre par défaut (Nothing Black) */
+  --bg: #000000;
+  --surface: #121212;
+  --surface-2: #1C1C1C;
+  --text: #FFFFFF;
+  --text-dim: #888888;
+  --accent: #EB0000;
+  --border: 1px solid #2C2C2C;
   --font-dot: 'IBM Plex Mono', monospace;
   --font-main: 'Inter', sans-serif;
-  --safe-bottom: env(safe-area-inset-bottom, 20px);
+  --radius: 28px;
+}
+
+/* Thème Clair (Nothing White) */
+body.light-mode {
+  --bg: #F4F4F4;
+  --surface: #FFFFFF;
+  --surface-2: #EDEDED;
+  --text: #000000;
+  --text-dim: #666666;
+  --border: 1px solid #DBDBDB;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 body {
   font-family: var(--font-main);
-  background: var(--nt-black);
-  color: var(--nt-white);
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
-/* ── LAYOUT ── */
-.app-container { max-width: 1200px; margin: 0 auto; padding-bottom: 120px; }
-
+/* ── HEADER ── */
 header {
   padding: 40px 24px 20px;
   position: sticky; top: 0;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(30px);
+  background: var(--bg);
+  backdrop-filter: blur(20px);
   z-index: 100;
-  border-bottom: var(--nt-border);
+  border-bottom: var(--border);
 }
 
-.top-bar { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; }
-.logo { font-family: var(--font-dot); font-size: 26px; font-weight: 700; letter-spacing: -1px; }
-.logo span { color: var(--nt-red); font-size: 12px; margin-left: 5px; animation: blink 2s infinite; }
+.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.logo { font-family: var(--font-dot); font-size: 22px; font-weight: 700; }
 
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-/* ── FILTERS & CATEGORIES ── */
-.nav-scroll {
-  display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px;
-  scrollbar-width: none;
+.icon-btn {
+  background: var(--surface-2); border: var(--border); color: var(--text);
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
 }
-.nav-scroll::-webkit-scrollbar { display: none; }
 
-.chip {
-  padding: 8px 18px; border-radius: 40px; border: var(--nt-border);
-  background: transparent; color: var(--nt-grey-400);
-  font-family: var(--font-dot); font-size: 11px; white-space: nowrap; cursor: pointer;
-}
-.chip.active { background: var(--nt-white); color: var(--nt-black); border-color: var(--nt-white); }
-
-/* ── SEARCH ── */
-.search-wrapper {
-  display: flex; align-items: center; background: var(--nt-grey-900);
-  border-radius: 16px; padding: 12px 18px; border: var(--nt-border); margin-top: 10px;
-}
-.search-wrapper input { background: transparent; border: none; color: white; flex: 1; margin-left: 10px; outline: none; }
-
-/* ── GRID SYSTEM ── */
-.grid {
-  display: grid; padding: 24px; gap: 16px;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+/* ── GRID ── */
+.main-content { padding: 20px; max-width: 1200px; margin: 0 auto; }
+.grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); 
+  gap: 16px; 
 }
 .grid.list-view { grid-template-columns: 1fr; }
 
 /* ── CARDS ── */
 .card {
-  background: var(--nt-grey-900); border: var(--nt-border);
-  border-radius: 28px; padding: 24px; position: relative;
-  transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex; flex-direction: column;
+  background: var(--surface); border: var(--border);
+  border-radius: var(--radius); padding: 24px;
+  position: relative;
 }
-.card:hover { border-color: var(--nt-grey-400); transform: translateY(-4px); }
-.card.fav { border-left: 3px solid var(--nt-red); }
+.card-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+.card-body { color: var(--text-dim); font-size: 14px; margin-bottom: 15px; }
 
-.card-tag { font-family: var(--font-dot); font-size: 10px; color: var(--nt-grey-400); text-transform: uppercase; margin-bottom: 12px; }
-.card-title { font-size: 19px; font-weight: 700; margin-bottom: 8px; color: var(--nt-white); }
-.card-body { font-size: 14px; color: var(--nt-grey-400); line-height: 1.6; margin-bottom: 20px; flex: 1; }
-
-.card-img {
-  width: calc(100% + 48px); margin-left: -24px; height: 180px;
-  object-fit: cover; margin-bottom: 15px; border-bottom: var(--nt-border);
+/* ── SETTINGS DRAWER (MENU LATÉRAL) ── */
+.drawer-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  display: none; z-index: 1000;
 }
+.drawer-overlay.active { display: block; }
 
-.card-actions {
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: 320px;
+  background: var(--surface); border-left: var(--border);
+  z-index: 1001; padding: 40px 24px;
+  transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.drawer.active { transform: translateX(0); }
+
+.drawer-header { font-family: var(--font-dot); font-size: 14px; margin-bottom: 30px; color: var(--accent); }
+
+.setting-section { margin-bottom: 30px; }
+.setting-label { font-size: 11px; font-family: var(--font-dot); color: var(--text-dim); text-transform: uppercase; margin-bottom: 15px; display: block; }
+
+.setting-option {
   display: flex; justify-content: space-between; align-items: center;
-  padding-top: 15px; border-top: 1px solid #1A1A1A;
+  padding: 16px; background: var(--surface-2); border-radius: 16px; margin-bottom: 10px;
+  cursor: pointer; border: var(--border);
 }
-.card-date { font-family: var(--font-dot); font-size: 10px; color: var(--nt-grey-400); }
 
-.icon-btn {
-  background: transparent; border: none; color: var(--nt-grey-400);
-  cursor: pointer; padding: 5px; display: flex; align-items: center;
+.btn-full {
+  width: 100%; padding: 16px; border-radius: 50px; border: var(--border);
+  background: var(--surface-2); color: var(--text); font-family: var(--font-dot);
+  font-size: 12px; margin-bottom: 10px; cursor: pointer; text-align: left;
+  display: flex; align-items: center; gap: 10px;
 }
-.icon-btn:hover { color: var(--nt-white); }
-.icon-btn.active { color: var(--nt-red); }
+.btn-full:hover { border-color: var(--text); }
 
-/* ── FAB & MODAL ── */
+/* ── FAB ── */
 .fab {
-  position: fixed; bottom: var(--safe-bottom); right: 24px;
-  width: 64px; height: 64px; border-radius: 22px; /* Style Nothing 3.0 */
-  background: var(--nt-red); color: white; border: none;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 10px 30px rgba(235, 0, 0, 0.2); cursor: pointer; z-index: 200;
+  position: fixed; bottom: 30px; right: 24px;
+  width: 60px; height: 60px; border-radius: 20px;
+  background: var(--accent); color: white; border: none;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 90;
 }
 
+/* ── MODAL ── */
 .modal {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-  display: none; align-items: center; justify-content: center; z-index: 1000; padding: 15px;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+  display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
 }
 .modal.active { display: flex; }
-.modal-content {
-  background: var(--nt-grey-900); border: var(--nt-border);
-  width: 100%; max-width: 500px; padding: 30px; border-radius: 32px;
-}
+.modal-content { background: var(--surface); padding: 30px; border-radius: 32px; width: 100%; max-width: 450px; border: var(--border); }
+input, textarea { width: 100%; padding: 14px; background: var(--bg); border: var(--border); border-radius: 12px; color: var(--text); margin-top: 10px; outline: none; }
 
-.field { margin-bottom: 20px; }
-.field label { display: block; font-family: var(--font-dot); font-size: 10px; color: var(--nt-grey-400); margin-bottom: 8px; }
-.field input, .field textarea, .field select {
-  width: 100%; padding: 14px; background: var(--nt-black); border: var(--nt-border);
-  border-radius: 12px; color: white; outline: none; font-size: 15px;
-}
-
-.btn-row { display: flex; gap: 10px; }
-.btn {
-  flex: 1; padding: 16px; border-radius: 50px; border: none;
-  font-family: var(--font-dot); font-weight: 700; cursor: pointer; font-size: 12px;
-}
-.btn-primary { background: var(--nt-white); color: var(--nt-black); }
-.btn-secondary { background: transparent; color: var(--nt-white); border: var(--nt-border); }
-
-/* ── SETTINGS DRAWER ── */
-#settings-drawer {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--nt-grey-900); border-top: var(--nt-border);
-  padding: 30px 24px; border-radius: 30px 30px 0 0;
-  transform: translateY(100%); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1100;
-}
-#settings-drawer.active { transform: translateY(0); }
 </style>
 </head>
 <body>
 
-<div class="app-container">
-  <header>
-    <div class="top-bar">
-      <div class="logo">MÉMOIRE<span>●</span></div>
-      <div style="display:flex; gap:15px;">
-        <button class="icon-btn" onclick="toggleSettings()"><span class="material-icons-round">settings</span></button>
-        <button class="icon-btn" id="view-toggle" onclick="toggleView()"><span class="material-icons-round">grid_view</span></button>
-      </div>
+<header>
+  <div class="top-bar">
+    <div class="logo">MÉMOIRE</div>
+    <div style="display:flex; gap:10px;">
+        <button class="icon-btn" onclick="toggleView()" title="Changer de vue">
+            <span class="material-icons-round" id="view-icon">grid_view</span>
+        </button>
+        <button class="icon-btn" onclick="toggleDrawer(true)">
+            <span class="material-icons-round">settings</span>
+        </button>
     </div>
+  </div>
+</header>
 
-    <div class="nav-scroll" id="cat-filters">
-      <button class="chip active" onclick="filterCat('all')">ALL_DATA</button>
-      <button class="chip" onclick="filterCat('perso')">PERSONAL</button>
-      <button class="chip" onclick="filterCat('work')">WORK_SPACE</button>
-      <button class="chip" onclick="filterCat('ideas')">IDEAS</button>
-    </div>
-
-    <div class="search-wrapper">
-      <span class="material-icons-round" style="font-size:18px; color:var(--nt-grey-400)">search</span>
-      <input type="text" id="search-input" placeholder="SEARCH_SYSTEM..." oninput="render()">
-    </div>
-  </header>
-
-  <main class="grid" id="main-grid"></main>
-</div>
+<main class="main-content">
+  <div class="grid" id="note-grid"></div>
+</main>
 
 <button class="fab" onclick="openModal()">
-  <span class="material-icons-round" style="font-size:30px">add</span>
+  <span class="material-icons-round">add</span>
 </button>
 
-<div class="modal" id="modal-note">
-  <div class="modal-content">
-    <div class="field">
-      <label>CATEGORY_ID</label>
-      <select id="item-cat">
-        <option value="perso">PERSONAL</option>
-        <option value="work">WORK_SPACE</option>
-        <option value="ideas">IDEAS</option>
-      </select>
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer(false)"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">SYSTÈME_CONFIG_0.1</div>
+  
+  <div class="setting-section">
+    <span class="setting-label">Apparence</span>
+    <div class="setting-option" onclick="toggleTheme()">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="material-icons-round" id="theme-icon">dark_mode</span>
+        <span style="font-size:14px;">Thème Sombre</span>
+      </div>
+      <div id="theme-status" style="width:10px; height:10px; border-radius:50%; background:var(--accent);"></div>
     </div>
-    <div class="field">
-      <label>ENTRY_TITLE</label>
-      <input type="text" id="item-title" placeholder="...">
-    </div>
-    <div class="field">
-      <label>RAW_CONTENT</label>
-      <textarea id="item-content" rows="4"></textarea>
-    </div>
-    <div class="field">
-      <label>ATTACH_IMAGE_URL</label>
-      <input type="text" id="item-img" placeholder="https://...">
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-secondary" onclick="closeModal()">CANCEL</button>
-      <button class="btn btn-primary" onclick="saveItem()">SAVE_CHANGES</button>
-    </div>
+  </div>
+
+  <div class="setting-section">
+    <span class="setting-label">Données & Sauvegardes</span>
+    <button class="btn-full" onclick="exportJSON()">
+      <span class="material-icons-round">download</span> EXPORTER_JSON
+    </button>
+    <button class="btn-full" onclick="importJSON()">
+      <span class="material-icons-round">upload</span> IMPORTER_DATA
+    </button>
+    <button class="btn-full" onclick="factoryReset()" style="color:var(--accent); margin-top:20px;">
+      <span class="material-icons-round">delete_forever</span> EFFACER_TOUT
+    </button>
   </div>
 </div>
 
-<div id="settings-drawer">
-  <div style="width:40px; height:4px; background:var(--nt-grey-800); border-radius:10px; margin: 0 auto 25px;"></div>
-  <h3 style="font-family:var(--font-dot); font-size:14px; margin-bottom:20px;">SYSTEM_UTILITIES</h3>
-  <div class="btn-row">
-    <button class="btn btn-secondary" onclick="exportData()">EXPORT_JSON</button>
-    <button class="btn btn-secondary" onclick="importData()">IMPORT_DATA</button>
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h3 style="font-family:var(--font-dot); font-size:14px;">NOUVELLE_ENTRÉE</h3>
+    <input type="text" id="title" placeholder="Titre...">
+    <textarea id="content" rows="5" placeholder="Contenu..."></textarea>
+    <div style="display:flex; gap:10px; margin-top:20px;">
+        <button class="btn-full" style="text-align:center; justify-content:center;" onclick="closeModal()">ANNULER</button>
+        <button class="btn-full" style="text-align:center; justify-content:center; background:var(--text); color:var(--bg);" onclick="save()">SAUVER</button>
+    </div>
   </div>
-  <button class="btn btn-primary" style="width:100%; margin-top:10px; background:var(--nt-red); color:white" onclick="clearAll()">FACTORY_RESET</button>
 </div>
 
 <script>
-let items = JSON.parse(localStorage.getItem('nothing_pro_db')) || [];
-let currentCat = 'all';
+let notes = JSON.parse(localStorage.getItem('nothing_notes')) || [];
+let isDarkMode = true;
 let isListView = false;
 
-function toggleModal(show) {
-  document.getElementById('modal-note').classList.toggle('active', show);
-}
-
-function openModal() {
-  document.getElementById('item-title').value = '';
-  document.getElementById('item-content').value = '';
-  document.getElementById('item-img').value = '';
-  toggleModal(true);
-}
-
-function closeModal() { toggleModal(false); }
-
-function saveItem() {
-  const title = document.getElementById('item-title').value.trim();
-  const content = document.getElementById('item-content').value.trim();
-  const cat = document.getElementById('item-cat').value;
-  const img = document.getElementById('item-img').value.trim();
-
-  if(!title) return;
-
-  const item = {
-    id: Date.now(),
-    title, content, cat, img,
-    fav: false,
-    date: new Date().toLocaleDateString('fr-FR')
-  };
-
-  items.unshift(item);
-  sync();
-  render();
-  closeModal();
-}
-
-function toggleFav(id) {
-  const item = items.find(i => i.id === id);
-  if(item) {
-    item.fav = !item.fav;
-    sync();
+// INITIALISATION
+function init() {
+    const savedTheme = localStorage.getItem('theme');
+    if(savedTheme === 'light') toggleTheme();
     render();
-  }
 }
 
-function deleteItem(id) {
-  if(confirm("DELETE_ENTRY?")) {
-    items = items.filter(i => i.id !== id);
-    sync();
-    render();
-  }
+// NAVIGATION & UI
+function toggleDrawer(show) {
+    document.getElementById('drawer').classList.toggle('active', show);
+    document.getElementById('drawer-overlay').classList.toggle('active', show);
 }
 
-function filterCat(cat) {
-  currentCat = cat;
-  document.querySelectorAll('.chip').forEach(c => {
-    c.classList.toggle('active', c.textContent.toLowerCase().includes(cat.toLowerCase()));
-  });
-  render();
+function toggleTheme() {
+    isDarkMode = !isDarkMode;
+    document.body.classList.toggle('light-mode', !isDarkMode);
+    document.getElementById('theme-icon').innerText = isDarkMode ? 'dark_mode' : 'light_mode';
+    document.getElementById('theme-status').style.background = isDarkMode ? 'var(--accent)' : '#ccc';
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
 }
 
 function toggleView() {
-  isListView = !isListView;
-  document.getElementById('main-grid').classList.toggle('list-view', isListView);
-  document.getElementById('view-toggle').innerHTML = `<span class="material-icons-round">${isListView ? 'view_module' : 'grid_view'}</span>`;
+    isListView = !isListView;
+    document.getElementById('note-grid').classList.toggle('list-view', isListView);
+    document.getElementById('view-icon').innerText = isListView ? 'view_headline' : 'grid_view';
 }
 
-function toggleSettings() {
-  document.getElementById('settings-drawer').classList.toggle('active');
+// CRUD
+function openModal() { document.getElementById('modal').classList.add('active'); }
+function closeModal() { document.getElementById('modal').classList.remove('active'); }
+
+function save() {
+    const t = document.getElementById('title').value;
+    const c = document.getElementById('content').value;
+    if(!t && !c) return;
+    
+    notes.unshift({ id: Date.now(), title: t, content: c, date: new Date().toLocaleDateString() });
+    localStorage.setItem('nothing_notes', JSON.stringify(notes));
+    render();
+    closeModal();
+    document.getElementById('title').value = '';
+    document.getElementById('content').value = '';
 }
 
-function sync() { localStorage.setItem('nothing_pro_db', JSON.stringify(items)); }
+function deleteNote(id) {
+    notes = notes.filter(n => n.id !== id);
+    localStorage.setItem('nothing_notes', JSON.stringify(notes));
+    render();
+}
 
 function render() {
-  const query = document.getElementById('search-input').value.toLowerCase();
-  const grid = document.getElementById('main-grid');
-  
-  const filtered = items.filter(i => {
-    const matchCat = currentCat === 'all' || i.cat === currentCat;
-    const matchSearch = i.title.toLowerCase().includes(query) || i.content.toLowerCase().includes(query);
-    return matchCat && matchSearch;
-  });
-
-  grid.innerHTML = filtered.map(item => `
-    <div class="card ${item.fav ? 'fav' : ''}">
-      <div class="card-tag">${item.cat} // ID_${item.id.toString().slice(-4)}</div>
-      ${item.img ? `<img src="${item.img}" class="card-img" onerror="this.style.display='none'">` : ''}
-      <div class="card-title">${item.title}</div>
-      <div class="card-body">${item.content}</div>
-      <div class="card-actions">
-        <span class="card-date">${item.date}</span>
-        <div style="display:flex; gap:10px;">
-          <button class="icon-btn ${item.fav ? 'active' : ''}" onclick="toggleFav(${item.id})">
-            <span class="material-icons-round" style="font-size:18px">${item.fav ? 'star' : 'star_outline'}</span>
-          </button>
-          <button class="icon-btn" onclick="deleteItem(${item.id})">
-            <span class="material-icons-round" style="font-size:18px">delete_outline</span>
-          </button>
+    const grid = document.getElementById('note-grid');
+    grid.innerHTML = notes.map(n => `
+        <div class="card">
+            <div class="card-title">${n.title || 'SANS_TITRE'}</div>
+            <div class="card-body">${n.content}</div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-family:var(--font-dot); font-size:10px; color:var(--text-dim);">${n.date}</span>
+                <button onclick="deleteNote(${n.id})" style="background:none; border:none; color:var(--accent); cursor:pointer;">
+                    <span class="material-icons-round" style="font-size:18px;">close</span>
+                </button>
+            </div>
         </div>
-      </div>
-    </div>
-  `).join('');
+    `).join('');
 }
 
-// Utils
-function exportData() {
-  const blob = new Blob([JSON.stringify(items)], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'memo_nothing_backup.json'; a.click();
+// BACKUP
+function exportJSON() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(notes));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "nothing_backup.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
 }
 
-function importData() {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.onchange = e => {
-    const reader = new FileReader();
-    reader.onload = ev => {
-      items = JSON.parse(ev.target.result);
-      sync(); render();
+function importJSON() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = event => {
+            notes = JSON.parse(event.target.result);
+            localStorage.setItem('nothing_notes', JSON.stringify(notes));
+            render();
+            toggleDrawer(false);
+        };
+        reader.readAsText(file);
     };
-    reader.readAsText(e.target.files[0]);
-  };
-  input.click();
+    input.click();
 }
 
-function clearAll() {
-  if(confirm("FACTORY_RESET_ALL_DATA?")) {
-    items = []; sync(); render(); toggleSettings();
-  }
+function factoryReset() {
+    if(confirm("Voulez-vous supprimer TOUTES les données ?")) {
+        notes = [];
+        localStorage.clear();
+        location.reload();
+    }
 }
 
-render();
+init();
 </script>
 </body>
 </html>
