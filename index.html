@@ -2,252 +2,292 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MÉMOIRE // OS_MASTER</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Mémoire // Ultra_Fluid</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
 <style>
 :root {
-  --bg: #000000;
-  --surface: #0A0A0A;
-  --surface-2: #161616;
-  --text: #FFFFFF;
-  --text-dim: #888888;
-  --accent: #EB0000;
-  --border: 1px solid #262626;
-  --font-dot: 'IBM Plex Mono', monospace;
-  --font-main: 'Inter', sans-serif;
-}
-
-body.light-mode {
-  --bg: #F5F5F5; --surface: #FFFFFF; --surface-2: #F0F0F0; --text: #000000; --text-dim: #666666; --border: 1px solid #E0E0E0;
+  --md-primary: #6750A4;
+  --md-surface: #FFFBFE;
+  --md-surface-2: #F3EDF7;
+  --md-outline: #79747E;
+  --accent-red: #B3261E;
+  /* Courbe de transition Nothing OS / Material */
+  --fluid-curve: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --fast-curve: cubic-bezier(0.2, 0, 0, 1);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-body { font-family: var(--font-main); background: var(--bg); color: var(--text); min-height: 100vh; transition: background 0.3s; }
 
-/* ── HEADER ── */
-header { padding: 30px 20px; position: sticky; top: 0; background: var(--bg); backdrop-filter: blur(20px); z-index: 100; border-bottom: var(--border); }
-.top-bar { display: flex; justify-content: space-between; align-items: center; max-width: 1000px; margin: 0 auto; }
-.logo { font-family: var(--font-dot); font-size: 20px; font-weight: 700; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--md-surface);
+  color: #1C1B1F;
+  overflow-x: hidden;
+}
 
-/* ── GRID ── */
-.main-content { padding: 20px; max-width: 1000px; margin: 0 auto; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 15px; }
+/* ── ANIMATIONS DE CHARGEMENT ── */
+.fade-in { animation: fadeIn 0.6s var(--fast-curve) both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ── CARDS ── */
-.card { background: var(--surface); border: var(--border); border-radius: 24px; padding: 20px; position: relative; display: flex; flex-direction: column; }
-.card.pinned { border-color: var(--accent); border-width: 2px; }
-.card-img { width: calc(100% + 40px); margin-left: -20px; margin-top: -20px; height: 180px; object-fit: cover; margin-bottom: 15px; border-bottom: var(--border); }
-.card-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-.card-body { color: var(--text-dim); font-size: 14px; margin-bottom: 15px; white-space: pre-wrap; }
+/* ── HEADER & SEARCH ── */
+.app-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255, 251, 254, 0.85);
+  backdrop-filter: blur(20px);
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
 
-/* ── AUDIO PLAYER UI ── */
-.audio-player { background: var(--surface-2); border-radius: 12px; padding: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border: var(--border); }
-audio { height: 30px; flex: 1; filter: invert(1); }
+.header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 
-/* ── MENU POPUP (ACTION SHEET) ── */
-.action-sheet-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; z-index: 1000; align-items: flex-end; }
-.action-sheet-overlay.active { display: flex; }
-.action-sheet { background: var(--surface); width: 100%; border-radius: 30px 30px 0 0; padding: 30px 20px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-top: var(--border); }
-.action-sheet-overlay.active .action-sheet { transform: translateY(0); }
-.action-btn { width: 100%; padding: 18px; background: var(--surface-2); border: var(--border); border-radius: 18px; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 15px; cursor: pointer; font-family: var(--font-dot); font-size: 13px; }
+/* ── DRAWER (PARAMÈTRES) ── */
+.drawer-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+  z-index: 500; display: none; backdrop-filter: blur(4px);
+}
+.drawer-overlay.active { display: block; animation: fadeIn 0.3s ease; }
+
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: 300px;
+  background: var(--md-surface); z-index: 501;
+  transform: translateX(100%); transition: transform 0.4s var(--fast-curve);
+  padding: 24px; box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+}
+.drawer.active { transform: translateX(0); }
+
+/* ── CARDS GRID ── */
+.main-content { padding: 20px; max-width: 1200px; margin: 0 auto; }
+.cards-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: white; border-radius: 24px; padding: 20px;
+  border: 1px solid #E7E0EC;
+  transition: all 0.3s var(--fluid-curve);
+  cursor: pointer; position: relative;
+}
+.card:hover { 
+  transform: scale(1.02) translateY(-5px); 
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08); 
+}
+
+/* ── FAB ── */
+.fab {
+  position: fixed; bottom: 30px; right: 24px;
+  background: var(--md-primary); color: white;
+  width: 64px; height: 64px; border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 16px rgba(103, 80, 164, 0.3);
+  cursor: pointer; z-index: 200;
+  transition: all 0.3s var(--fluid-curve);
+}
+.fab:hover { transform: rotate(90deg) scale(1.1); }
 
 /* ── MODAL ── */
-.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
-.modal.active { display: flex; }
-.modal-content { background: var(--surface); border: var(--border); border-radius: 28px; width: 100%; max-width: 450px; padding: 25px; }
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  z-index: 1000; display: none; align-items: flex-end;
+}
+.modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
 
-.btn-full { width: 100%; padding: 15px; border-radius: 50px; border: var(--border); background: var(--surface-2); color: var(--text); font-family: var(--font-dot); font-size: 12px; margin-top: 10px; cursor: pointer; }
-.fab { position: fixed; bottom: 30px; right: 20px; width: 64px; height: 64px; border-radius: 22px; background: var(--accent); color: white; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 90; box-shadow: 0 10px 30px rgba(235, 0, 0, 0.3); }
+.modal-sheet {
+  background: white; width: 100%; border-radius: 32px 32px 0 0;
+  padding: 32px 24px; transform: translateY(100%);
+  transition: transform 0.4s var(--fluid-curve);
+}
+.modal-overlay.active .modal-sheet { transform: translateY(0); }
 
-/* ── VOICE RECORDER UI ── */
-#voice-rec-container { text-align: center; padding: 20px; }
-.rec-pulse { width: 60px; height: 60px; background: var(--accent); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; animation: pulse 1.5s infinite; }
-@keyframes pulse { 0% { box-shadow: 0 0 0 0px rgba(235, 0, 0, 0.4); } 100% { box-shadow: 0 0 0 20px rgba(235, 0, 0, 0); } }
+/* Style des boutons paramètres */
+.setting-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px; border-radius: 16px;
+  cursor: pointer; transition: background 0.2s;
+  color: #49454F; font-weight: 600; margin-bottom: 8px;
+}
+.setting-item:hover { background: var(--md-surface-2); }
+.setting-item.danger { color: var(--accent-red); }
+
 </style>
 </head>
 <body>
 
-<header>
-  <div class="top-bar">
-    <div class="logo">MÉMOIRE<span>●</span></div>
-    <div style="display:flex; gap:10px;">
-        <button onclick="toggleTheme()" style="background:none; border:none; color:var(--text); cursor:pointer;"><span class="material-icons-round">contrast</span></button>
-    </div>
+<header class="app-header">
+  <div class="header-row">
+    <h1 style="font-family: 'Nunito'; font-weight: 800; color: var(--md-primary);">Mémoire</h1>
+    <button class="icon-btn" onclick="toggleDrawer(true)" style="background:none; border:none; cursor:pointer;">
+      <span class="material-icons-round">settings</span>
+    </button>
+  </div>
+  <div class="search-bar" style="background: var(--md-surface-2); padding: 12px 16px; border-radius: 16px; display: flex; align-items: center; gap: 12px;">
+    <span class="material-icons-round" style="color: var(--md-outline)">search</span>
+    <input type="text" placeholder="Rechercher..." style="border:none; background:none; outline:none; width:100%; font-size:16px;" oninput="search(this.value)">
   </div>
 </header>
 
 <main class="main-content">
-  <div class="grid" id="note-grid"></div>
+  <div class="cards-grid" id="container">
+    </div>
 </main>
 
-<button class="fab" onclick="toggleActionMenu(true)">
-  <span class="material-icons-round" style="font-size:32px">add</span>
-</button>
-
-<div class="action-sheet-overlay" id="action-menu" onclick="toggleActionMenu(false)">
-    <div class="action-sheet" onclick="event.stopPropagation()">
-        <div style="width:40px; height:4px; background:var(--surface-2); margin:0 auto 25px; border-radius:10px;"></div>
-        <button class="action-btn" onclick="openModal('text')"><span class="material-icons-round">edit_note</span> CRÉER_TEXTE</button>
-        <button class="action-btn" onclick="openModal('image')"><span class="material-icons-round">image</span> AJOUTER_IMAGE</button>
-        <button class="action-btn" onclick="openModal('voice')"><span class="material-icons-round">mic</span> NOTE_VOCALE</button>
-        <button class="btn-full" onclick="toggleActionMenu(false)" style="background:none; border:none; margin-top:10px;">ANNULER</button>
-    </div>
+<div class="fab" onclick="openModal()">
+  <span class="material-icons-round" style="font-size: 32px;">add</span>
 </div>
 
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <h3 id="m-title-label" style="font-family:var(--font-dot); font-size:14px; margin-bottom:20px;">ENTRÉE_UNIT</h3>
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer(false)"></div>
+<div class="drawer" id="drawer">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px;">
+    <h2 style="font-family:'Nunito'">Paramètres</h2>
+    <button onclick="toggleDrawer(false)" style="background:none; border:none;"><span class="material-icons-round">close</span></button>
+  </div>
+  
+  <div class="setting-item" onclick="exportData()">
+    <span class="material-icons-round">download</span> Exporter (.json)
+  </div>
+  <div class="setting-item" onclick="importData()">
+    <span class="material-icons-round">upload</span> Importer
+  </div>
+  <div class="setting-item danger" onclick="factoryReset()">
+    <span class="material-icons-round">delete_forever</span> Réinitialiser tout
+  </div>
+  
+  <div style="position:absolute; bottom:24px; left:24px; font-size:12px; color:var(--md-outline)">
+    Version 2.0 // Fluid_UI
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-sheet">
+    <div style="display:flex; justify-content:space-between; margin-bottom:24px;">
+      <h2 id="modal-title">Nouveau souvenir</h2>
+      <button onclick="closeModal()" style="background:none; border:none;"><span class="material-icons-round">close</span></button>
+    </div>
     
-    <div id="form-fields">
-        <input type="text" id="m-title" placeholder="Titre..." style="width:100%; padding:12px; background:var(--bg); border:var(--border); border-radius:12px; color:var(--text); margin-bottom:15px; outline:none;">
-        <textarea id="m-content" rows="4" placeholder="Note..." style="width:100%; padding:12px; background:var(--bg); border:var(--border); border-radius:12px; color:var(--text); outline:none;"></textarea>
-    </div>
-
-    <div id="image-zone" style="display:none; margin-top:15px;">
-        <input type="file" id="file-input" accept="image/*" onchange="handleImage(this)" style="display:none">
-        <button class="btn-full" onclick="document.getElementById('file-input').click()">CHOISIR_IMAGE</button>
-        <img id="img-preview" style="width:100%; border-radius:12px; margin-top:10px; display:none">
-    </div>
-
-    <div id="voice-zone" style="display:none; margin-top:15px;">
-        <div id="voice-rec-container">
-            <div id="rec-status" class="rec-pulse" style="display:none"><span class="material-icons-round">mic</span></div>
-            <p id="timer" style="font-family:var(--font-dot); font-size:12px; margin-bottom:10px;">00:00</p>
-            <button class="btn-full" id="rec-btn" onclick="toggleRecording()">DÉMARRER_ENREGISTREMENT</button>
-            <audio id="voice-preview" controls style="display:none; width:100%; margin-top:15px;"></audio>
-        </div>
-    </div>
-
-    <div style="display:flex; gap:10px; margin-top:20px;">
-        <button class="btn-full" onclick="closeModal()">ANNULER</button>
-        <button class="btn-full" style="background:var(--text); color:var(--bg);" onclick="save()">SAUVER</button>
-    </div>
+    <input type="text" id="m-title" placeholder="Titre" style="width:100%; padding:16px; border-radius:12px; border:1px solid #CAC4D0; margin-bottom:16px; font-size:16px;">
+    <textarea id="m-content" placeholder="Notez ici..." rows="5" style="width:100%; padding:16px; border-radius:12px; border:1px solid #CAC4D0; margin-bottom:24px; font-size:16px;"></textarea>
+    
+    <button onclick="save()" style="width:100%; padding:16px; border-radius:100px; background:var(--md-primary); color:white; border:none; font-weight:700; font-size:16px; cursor:pointer;">
+      ENREGISTRER
+    </button>
   </div>
 </div>
 
 <script>
-let notes = JSON.parse(localStorage.getItem('nothing_master_db')) || [];
-let currentImg = null, currentAudio = null, mediaRecorder = null, audioChunks = [], timerInterval = null;
+let items = JSON.parse(localStorage.getItem('memoire_v2')) || [];
+let editingId = null;
 
-function toggleActionMenu(s) { document.getElementById('action-menu').classList.toggle('active', s); }
+function toggleDrawer(open) {
+  document.getElementById('drawer-overlay').classList.toggle('active', open);
+  document.getElementById('drawer').classList.toggle('active', open);
+}
 
-function openModal(type) {
-    toggleActionMenu(false);
-    document.getElementById('modal').classList.add('active');
-    document.getElementById('image-zone').style.display = (type === 'image') ? 'block' : 'none';
-    document.getElementById('voice-zone').style.display = (type === 'voice') ? 'block' : 'none';
-    document.getElementById('m-title-label').innerText = type.toUpperCase() + '_UNIT';
+function openModal(id = null) {
+  editingId = id;
+  if(id) {
+    const item = items.find(i => i.id === id);
+    document.getElementById('m-title').value = item.title;
+    document.getElementById('m-content').value = item.content;
+    document.getElementById('modal-title').innerText = "Modifier l'entrée";
+  } else {
+    document.getElementById('m-title').value = "";
+    document.getElementById('m-content').value = "";
+    document.getElementById('modal-title').innerText = "Nouveau souvenir";
+  }
+  document.getElementById('modal-overlay').classList.add('active');
 }
 
 function closeModal() {
-    document.getElementById('modal').classList.remove('active');
-    document.getElementById('m-title').value = '';
-    document.getElementById('m-content').value = '';
-    document.getElementById('img-preview').style.display = 'none';
-    document.getElementById('voice-preview').style.display = 'none';
-    currentImg = null; currentAudio = null;
-    stopRecording();
+  document.getElementById('modal-overlay').classList.remove('active');
 }
-
-function handleImage(input) {
-    const reader = new FileReader();
-    reader.onload = e => { 
-        currentImg = e.target.result; 
-        document.getElementById('img-preview').src = currentImg; 
-        document.getElementById('img-preview').style.display = 'block';
-    };
-    reader.readAsDataURL(input.files[0]);
-}
-
-// ── LOGIQUE AUDIO ──
-async function toggleRecording() {
-    const btn = document.getElementById('rec-btn');
-    const status = document.getElementById('rec-status');
-    
-    if (mediaRecorder && mediaRecorder.state === "recording") {
-        mediaRecorder.stop();
-        btn.innerText = "RECOMMENCER";
-        status.style.display = "none";
-        clearInterval(timerInterval);
-    } else {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
-        audioChunks = [];
-        
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-        mediaRecorder.onstop = () => {
-            const blob = new Blob(audioChunks, { type: 'audio/webm' });
-            const reader = new FileReader();
-            reader.onload = e => { 
-                currentAudio = e.target.result;
-                document.getElementById('voice-preview').src = currentAudio;
-                document.getElementById('voice-preview').style.display = 'block';
-            };
-            reader.readAsDataURL(blob);
-        };
-        
-        mediaRecorder.start();
-        btn.innerText = "ARRÊTER";
-        status.style.display = "flex";
-        startTimer();
-    }
-}
-
-function startTimer() {
-    let sec = 0;
-    const timer = document.getElementById('timer');
-    timerInterval = setInterval(() => {
-        sec++;
-        timer.innerText = new Date(sec * 1000).toISOString().substr(14, 5);
-    }, 1000);
-}
-
-function stopRecording() { if(mediaRecorder) mediaRecorder.stop(); clearInterval(timerInterval); }
 
 function save() {
-    const note = {
-        id: Date.now(),
-        title: document.getElementById('m-title').value || "SANS_TITRE",
-        content: document.getElementById('m-content').value,
-        img: currentImg,
-        audio: currentAudio,
-        date: new Date().toLocaleDateString('fr-FR')
-    };
-    notes.unshift(note);
-    localStorage.setItem('nothing_master_db', JSON.stringify(notes));
+  const title = document.getElementById('m-title').value;
+  const content = document.getElementById('m-content').value;
+  
+  if(editingId) {
+    const idx = items.findIndex(i => i.id === editingId);
+    items[idx] = {...items[idx], title, content};
+  } else {
+    items.unshift({ id: Date.now(), title, content, date: new Date().toLocaleDateString() });
+  }
+  
+  localStorage.setItem('memoire_v2', JSON.stringify(items));
+  render();
+  closeModal();
+}
+
+function deleteItem(id, e) {
+  e.stopPropagation();
+  if(confirm("Supprimer ?")) {
+    items = items.filter(i => i.id !== id);
+    localStorage.setItem('memoire_v2', JSON.stringify(items));
     render();
-    closeModal();
+  }
 }
 
-function deleteNote(id) { 
-    if(confirm("SUPPRIMER?")) { notes = notes.filter(n => n.id !== id); localStorage.setItem('nothing_master_db', JSON.stringify(notes)); render(); }
+function render(data = items) {
+  const container = document.getElementById('container');
+  container.innerHTML = data.map((item, index) => `
+    <div class="card fade-in" style="animation-delay: ${index * 0.05}s" onclick="openModal(${item.id})">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+        <h3 style="font-family:'Nunito'; font-size:18px;">${item.title || 'Sans titre'}</h3>
+        <button onclick="deleteItem(${item.id}, event)" style="background:none; border:none; color:var(--accent-red); cursor:pointer;">
+          <span class="material-icons-round" style="font-size:20px;">delete</span>
+        </button>
+      </div>
+      <p style="font-size:14px; color:#49454F; line-height:1.5;">${item.content}</p>
+      <div style="margin-top:16px; font-size:11px; color:var(--md-outline); font-weight:600;">${item.date}</div>
+    </div>
+  `).join('');
 }
 
-function render() {
-    const grid = document.getElementById('note-grid');
-    grid.innerHTML = notes.map(n => `
-        <div class="card">
-            ${n.img ? `<img src="${n.img}" class="card-img">` : ''}
-            <div class="card-title">${n.title}</div>
-            ${n.content ? `<div class="card-body">${n.content}</div>` : ''}
-            ${n.audio ? `
-                <div class="audio-player">
-                    <span class="material-icons-round" style="color:var(--accent)">play_circle</span>
-                    <audio src="${n.audio}" controls></audio>
-                </div>` : ''}
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
-                <span style="font-family:var(--font-dot); font-size:10px; color:var(--text-dim)">${n.date}</span>
-                <button onclick="deleteNote(${n.id})" style="background:none; border:none; color:var(--text-dim); cursor:pointer"><span class="material-icons-round" style="font-size:18px">delete</span></button>
-            </div>
-        </div>
-    `).join('');
+function search(val) {
+  const filtered = items.filter(i => 
+    i.title.toLowerCase().includes(val.toLowerCase()) || 
+    i.content.toLowerCase().includes(val.toLowerCase())
+  );
+  render(filtered);
 }
 
-function toggleTheme() { document.body.classList.toggle('light-mode'); }
+// PARAMÈTRES LOGIQUE
+function exportData() {
+  const blob = new Blob([JSON.stringify(items)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'memoire_backup.json';
+  a.click();
+}
+
+function importData() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.onchange = e => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      items = JSON.parse(ev.target.result);
+      localStorage.setItem('memoire_v2', JSON.stringify(items));
+      render();
+      toggleDrawer(false);
+    };
+    reader.readAsText(e.target.files[0]);
+  };
+  input.click();
+}
+
+function factoryReset() {
+  if(confirm("Tout effacer définitivement ?")) {
+    items = [];
+    localStorage.clear();
+    render();
+    toggleDrawer(false);
+  }
+}
+
 render();
 </script>
 </body>
