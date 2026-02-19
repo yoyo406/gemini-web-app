@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MÉMOIRE // OS_ULTRA_EDIT</title>
+<title>MÉMOIRE // OS_MASTER</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -22,121 +22,51 @@
 }
 
 body.light-mode {
-  --bg: #F5F5F5;
-  --surface: #FFFFFF;
-  --surface-2: #F0F0F0;
-  --text: #000000;
-  --text-dim: #666666;
-  --border: 1px solid #E0E0E0;
+  --bg: #F5F5F5; --surface: #FFFFFF; --surface-2: #F0F0F0; --text: #000000; --text-dim: #666666; --border: 1px solid #E0E0E0;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: var(--font-main); background: var(--bg); color: var(--text); min-height: 100vh; transition: background 0.3s; }
 
-body {
-  font-family: var(--font-main);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  transition: background 0.3s;
-}
-
-header {
-  padding: 30px 20px;
-  position: sticky; top: 0;
-  background: var(--bg);
-  backdrop-filter: blur(20px);
-  z-index: 100;
-  border-bottom: var(--border);
-}
-
+/* ── HEADER ── */
+header { padding: 30px 20px; position: sticky; top: 0; background: var(--bg); backdrop-filter: blur(20px); z-index: 100; border-bottom: var(--border); }
 .top-bar { display: flex; justify-content: space-between; align-items: center; max-width: 1000px; margin: 0 auto; }
 .logo { font-family: var(--font-dot); font-size: 20px; font-weight: 700; }
 
-.controls { display: flex; gap: 10px; }
-.icon-btn {
-  background: var(--surface-2); border: var(--border); color: var(--text);
-  width: 42px; height: 42px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center; cursor: pointer;
-}
-
+/* ── GRID ── */
 .main-content { padding: 20px; max-width: 1000px; margin: 0 auto; }
-.grid { 
-  display: grid; 
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); 
-  gap: 15px; 
-}
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 15px; }
 
-.card {
-  background: var(--surface); border: var(--border);
-  border-radius: 24px; padding: 20px;
-  position: relative; overflow: hidden;
-  display: flex; flex-direction: column;
-  transition: transform 0.2s;
-}
+/* ── CARDS ── */
+.card { background: var(--surface); border: var(--border); border-radius: 24px; padding: 20px; position: relative; display: flex; flex-direction: column; }
 .card.pinned { border-color: var(--accent); border-width: 2px; }
+.card-img { width: calc(100% + 40px); margin-left: -20px; margin-top: -20px; height: 180px; object-fit: cover; margin-bottom: 15px; border-bottom: var(--border); }
+.card-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.card-body { color: var(--text-dim); font-size: 14px; margin-bottom: 15px; white-space: pre-wrap; }
 
-.card-img {
-  width: calc(100% + 40px); margin-left: -20px; margin-top: -20px;
-  height: 180px; object-fit: cover; margin-bottom: 15px;
-  border-bottom: var(--border);
-}
+/* ── AUDIO PLAYER UI ── */
+.audio-player { background: var(--surface-2); border-radius: 12px; padding: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border: var(--border); }
+audio { height: 30px; flex: 1; filter: invert(1); }
 
-.card-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
-.card-body { color: var(--text-dim); font-size: 14px; margin-bottom: 15px; white-space: pre-wrap; flex-grow: 1; }
+/* ── MENU POPUP (ACTION SHEET) ── */
+.action-sheet-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; z-index: 1000; align-items: flex-end; }
+.action-sheet-overlay.active { display: flex; }
+.action-sheet { background: var(--surface); width: 100%; border-radius: 30px 30px 0 0; padding: 30px 20px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-top: var(--border); }
+.action-sheet-overlay.active .action-sheet { transform: translateY(0); }
+.action-btn { width: 100%; padding: 18px; background: var(--surface-2); border: var(--border); border-radius: 18px; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 15px; cursor: pointer; font-family: var(--font-dot); font-size: 13px; }
 
-.card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(128,128,128,0.1); }
-.card-date { font-family: var(--font-dot); font-size: 10px; color: var(--text-dim); }
-
-.pin-indicator { position: absolute; top: 15px; right: 15px; color: var(--accent); font-size: 18px; }
-
-.drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 1000; }
-.drawer-overlay.active { display: block; }
-
-.drawer {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--surface); border-top: var(--border);
-  border-radius: 30px 30px 0 0; padding: 30px 24px;
-  transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 1001;
-}
-.drawer.active { transform: translateY(0); }
-
-.modal {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-  display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
-}
+/* ── MODAL ── */
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
 .modal.active { display: flex; }
-.modal-content { 
-    background: var(--surface); border: var(--border); border-radius: 28px;
-    width: 100%; max-width: 450px; padding: 25px; max-height: 90vh; overflow-y: auto;
-}
+.modal-content { background: var(--surface); border: var(--border); border-radius: 28px; width: 100%; max-width: 450px; padding: 25px; }
 
-.field { margin-bottom: 15px; }
-.field label { display: block; font-family: var(--font-dot); font-size: 10px; color: var(--text-dim); margin-bottom: 5px; }
-input, textarea {
-  width: 100%; padding: 12px; background: var(--bg); border: var(--border);
-  border-radius: 12px; color: var(--text); outline: none; font-size: 15px;
-}
+.btn-full { width: 100%; padding: 15px; border-radius: 50px; border: var(--border); background: var(--surface-2); color: var(--text); font-family: var(--font-dot); font-size: 12px; margin-top: 10px; cursor: pointer; }
+.fab { position: fixed; bottom: 30px; right: 20px; width: 64px; height: 64px; border-radius: 22px; background: var(--accent); color: white; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 90; box-shadow: 0 10px 30px rgba(235, 0, 0, 0.3); }
 
-.upload-btn {
-    border: 1px dashed var(--text-dim); padding: 15px; border-radius: 12px;
-    text-align: center; cursor: pointer; font-size: 12px; color: var(--text-dim);
-}
-
-.btn-full {
-  width: 100%; padding: 15px; border-radius: 50px; border: var(--border);
-  background: var(--surface-2); color: var(--text); font-family: var(--font-dot);
-  font-size: 12px; margin-top: 10px; cursor: pointer;
-}
-
-.fab {
-  position: fixed; bottom: 30px; right: 20px;
-  width: 60px; height: 60px; border-radius: 18px;
-  background: var(--accent); color: white; border: none;
-  display: flex; align-items: center; justify-content: center; cursor: pointer;
-}
-
-#img-preview { width: 100%; border-radius: 10px; margin-top: 10px; display: none; max-height: 150px; object-fit: contain; }
+/* ── VOICE RECORDER UI ── */
+#voice-rec-container { text-align: center; padding: 20px; }
+.rec-pulse { width: 60px; height: 60px; background: var(--accent); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0px rgba(235, 0, 0, 0.4); } 100% { box-shadow: 0 0 0 20px rgba(235, 0, 0, 0); } }
 </style>
 </head>
 <body>
@@ -144,9 +74,8 @@ input, textarea {
 <header>
   <div class="top-bar">
     <div class="logo">MÉMOIRE<span>●</span></div>
-    <div class="controls">
-        <button class="icon-btn" onclick="toggleTheme()"><span class="material-icons-round" id="t-icon">dark_mode</span></button>
-        <button class="icon-btn" onclick="toggleDrawer(true)"><span class="material-icons-round">settings</span></button>
+    <div style="display:flex; gap:10px;">
+        <button onclick="toggleTheme()" style="background:none; border:none; color:var(--text); cursor:pointer;"><span class="material-icons-round">contrast</span></button>
     </div>
   </div>
 </header>
@@ -155,227 +84,170 @@ input, textarea {
   <div class="grid" id="note-grid"></div>
 </main>
 
-<button class="fab" onclick="openModal()">
-  <span class="material-icons-round">add</span>
+<button class="fab" onclick="toggleActionMenu(true)">
+  <span class="material-icons-round" style="font-size:32px">add</span>
 </button>
+
+<div class="action-sheet-overlay" id="action-menu" onclick="toggleActionMenu(false)">
+    <div class="action-sheet" onclick="event.stopPropagation()">
+        <div style="width:40px; height:4px; background:var(--surface-2); margin:0 auto 25px; border-radius:10px;"></div>
+        <button class="action-btn" onclick="openModal('text')"><span class="material-icons-round">edit_note</span> CRÉER_TEXTE</button>
+        <button class="action-btn" onclick="openModal('image')"><span class="material-icons-round">image</span> AJOUTER_IMAGE</button>
+        <button class="action-btn" onclick="openModal('voice')"><span class="material-icons-round">mic</span> NOTE_VOCALE</button>
+        <button class="btn-full" onclick="toggleActionMenu(false)" style="background:none; border:none; margin-top:10px;">ANNULER</button>
+    </div>
+</div>
 
 <div class="modal" id="modal">
   <div class="modal-content">
-    <h3 id="modal-title" style="font-family:var(--font-dot); font-size:14px; margin-bottom:20px;">NOUVELLE_ENTRÉE</h3>
-    <div class="field">
-        <label>TITLE_UNIT</label>
-        <input type="text" id="m-title" placeholder="...">
+    <h3 id="m-title-label" style="font-family:var(--font-dot); font-size:14px; margin-bottom:20px;">ENTRÉE_UNIT</h3>
+    
+    <div id="form-fields">
+        <input type="text" id="m-title" placeholder="Titre..." style="width:100%; padding:12px; background:var(--bg); border:var(--border); border-radius:12px; color:var(--text); margin-bottom:15px; outline:none;">
+        <textarea id="m-content" rows="4" placeholder="Note..." style="width:100%; padding:12px; background:var(--bg); border:var(--border); border-radius:12px; color:var(--text); outline:none;"></textarea>
     </div>
-    <div class="field">
-        <label>DATA_STREAM</label>
-        <textarea id="m-content" rows="4"></textarea>
+
+    <div id="image-zone" style="display:none; margin-top:15px;">
+        <input type="file" id="file-input" accept="image/*" onchange="handleImage(this)" style="display:none">
+        <button class="btn-full" onclick="document.getElementById('file-input').click()">CHOISIR_IMAGE</button>
+        <img id="img-preview" style="width:100%; border-radius:12px; margin-top:10px; display:none">
     </div>
-    <div class="field">
-        <label>ATTACH_VISUAL</label>
-        <div class="upload-btn" onclick="document.getElementById('file-input').click()">
-            <span class="material-icons-round">image</span><br>SÉLECTIONNER_IMAGE
+
+    <div id="voice-zone" style="display:none; margin-top:15px;">
+        <div id="voice-rec-container">
+            <div id="rec-status" class="rec-pulse" style="display:none"><span class="material-icons-round">mic</span></div>
+            <p id="timer" style="font-family:var(--font-dot); font-size:12px; margin-bottom:10px;">00:00</p>
+            <button class="btn-full" id="rec-btn" onclick="toggleRecording()">DÉMARRER_ENREGISTREMENT</button>
+            <audio id="voice-preview" controls style="display:none; width:100%; margin-top:15px;"></audio>
         </div>
-        <input type="file" id="file-input" hidden accept="image/*" onchange="previewImage(this)">
-        <img id="img-preview" src="">
-        <button id="remove-img" style="display:none; color:var(--accent); background:none; border:none; font-size:10px; margin-top:5px; cursor:pointer;" onclick="removeCurrentImg()">[ EFFACER_L'IMAGE ]</button>
     </div>
-    <div style="display:flex; gap:10px;">
+
+    <div style="display:flex; gap:10px; margin-top:20px;">
         <button class="btn-full" onclick="closeModal()">ANNULER</button>
-        <button class="btn-full" style="background:var(--text); color:var(--bg);" id="save-btn" onclick="save()">ENREGISTRER</button>
+        <button class="btn-full" style="background:var(--text); color:var(--bg);" onclick="save()">SAUVER</button>
     </div>
   </div>
 </div>
 
-<div class="drawer-overlay" id="overlay" onclick="toggleDrawer(false)"></div>
-<div class="drawer" id="drawer">
-    <div style="width:40px; height:4px; background:var(--surface-2); margin:0 auto 20px; border-radius:10px;"></div>
-    <button class="btn-full" onclick="exportData()">EXPORTER_SAUVEGARDE</button>
-    <button class="btn-full" onclick="importData()">IMPORTER_SAUVEGARDE</button>
-    <button class="btn-full" style="color:var(--accent)" onclick="reset()">FACTORY_RESET</button>
-</div>
-
 <script>
-let notes = JSON.parse(localStorage.getItem('nothing_notes_v3')) || [];
-let currentImage = null;
-let editingId = null; // Stocke l'ID de la note en cours de modification
+let notes = JSON.parse(localStorage.getItem('nothing_master_db')) || [];
+let currentImg = null, currentAudio = null, mediaRecorder = null, audioChunks = [], timerInterval = null;
 
-function toggleDrawer(s) {
-    document.getElementById('drawer').classList.toggle('active', s);
-    document.getElementById('overlay').classList.toggle('active', s);
+function toggleActionMenu(s) { document.getElementById('action-menu').classList.toggle('active', s); }
+
+function openModal(type) {
+    toggleActionMenu(false);
+    document.getElementById('modal').classList.add('active');
+    document.getElementById('image-zone').style.display = (type === 'image') ? 'block' : 'none';
+    document.getElementById('voice-zone').style.display = (type === 'voice') ? 'block' : 'none';
+    document.getElementById('m-title-label').innerText = type.toUpperCase() + '_UNIT';
 }
 
-function toggleTheme() {
-    const isLight = document.body.classList.toggle('light-mode');
-    document.getElementById('t-icon').innerText = isLight ? 'light_mode' : 'dark_mode';
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
-}
-
-function openModal(noteId = null) { 
-    editingId = noteId;
-    const modalTitle = document.getElementById('modal-title');
-    
-    if (editingId) {
-        modalTitle.innerText = "MODIFIER_UNITÉ";
-        const note = notes.find(n => n.id === editingId);
-        document.getElementById('m-title').value = note.title;
-        document.getElementById('m-content').value = note.content;
-        if(note.img) {
-            currentImage = note.img;
-            document.getElementById('img-preview').src = currentImage;
-            document.getElementById('img-preview').style.display = 'block';
-            document.getElementById('remove-img').style.display = 'block';
-        }
-    } else {
-        modalTitle.innerText = "NOUVELLE_ENTRÉE";
-        resetForm();
-    }
-    document.getElementById('modal').classList.add('active'); 
-}
-
-function closeModal() { 
+function closeModal() {
     document.getElementById('modal').classList.remove('active');
-    resetForm();
-}
-
-function resetForm() {
     document.getElementById('m-title').value = '';
     document.getElementById('m-content').value = '';
     document.getElementById('img-preview').style.display = 'none';
-    document.getElementById('remove-img').style.display = 'none';
-    document.getElementById('file-input').value = '';
-    currentImage = null;
-    editingId = null;
+    document.getElementById('voice-preview').style.display = 'none';
+    currentImg = null; currentAudio = null;
+    stopRecording();
 }
 
-function removeCurrentImg() {
-    currentImage = null;
-    document.getElementById('img-preview').style.display = 'none';
-    document.getElementById('remove-img').style.display = 'none';
-    document.getElementById('file-input').value = '';
+function handleImage(input) {
+    const reader = new FileReader();
+    reader.onload = e => { 
+        currentImg = e.target.result; 
+        document.getElementById('img-preview').src = currentImg; 
+        document.getElementById('img-preview').style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
 }
 
-function previewImage(input) {
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = e => {
-            currentImage = e.target.result;
-            document.getElementById('img-preview').src = currentImage;
-            document.getElementById('img-preview').style.display = 'block';
-            document.getElementById('remove-img').style.display = 'block';
+// ── LOGIQUE AUDIO ──
+async function toggleRecording() {
+    const btn = document.getElementById('rec-btn');
+    const status = document.getElementById('rec-status');
+    
+    if (mediaRecorder && mediaRecorder.state === "recording") {
+        mediaRecorder.stop();
+        btn.innerText = "RECOMMENCER";
+        status.style.display = "none";
+        clearInterval(timerInterval);
+    } else {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(audioChunks, { type: 'audio/webm' });
+            const reader = new FileReader();
+            reader.onload = e => { 
+                currentAudio = e.target.result;
+                document.getElementById('voice-preview').src = currentAudio;
+                document.getElementById('voice-preview').style.display = 'block';
+            };
+            reader.readAsDataURL(blob);
         };
-        reader.readAsDataURL(input.files[0]);
+        
+        mediaRecorder.start();
+        btn.innerText = "ARRÊTER";
+        status.style.display = "flex";
+        startTimer();
     }
 }
+
+function startTimer() {
+    let sec = 0;
+    const timer = document.getElementById('timer');
+    timerInterval = setInterval(() => {
+        sec++;
+        timer.innerText = new Date(sec * 1000).toISOString().substr(14, 5);
+    }, 1000);
+}
+
+function stopRecording() { if(mediaRecorder) mediaRecorder.stop(); clearInterval(timerInterval); }
 
 function save() {
-    const t = document.getElementById('m-title').value.trim();
-    const c = document.getElementById('m-content').value.trim();
-    if(!t && !c && !currentImage) return;
-
-    if (editingId) {
-        // Mode Modification
-        const idx = notes.findIndex(n => n.id === editingId);
-        notes[idx].title = t || "SANS_TITRE";
-        notes[idx].content = c;
-        notes[idx].img = currentImage;
-        // On ne change pas la date de création originale
-    } else {
-        // Mode Création
-        const note = {
-            id: Date.now(),
-            title: t || "SANS_TITRE",
-            content: c,
-            img: currentImage,
-            pinned: false,
-            date: new Date().toLocaleDateString('fr-FR')
-        };
-        notes.unshift(note);
-    }
-
-    sync();
+    const note = {
+        id: Date.now(),
+        title: document.getElementById('m-title').value || "SANS_TITRE",
+        content: document.getElementById('m-content').value,
+        img: currentImg,
+        audio: currentAudio,
+        date: new Date().toLocaleDateString('fr-FR')
+    };
+    notes.unshift(note);
+    localStorage.setItem('nothing_master_db', JSON.stringify(notes));
+    render();
     closeModal();
 }
 
-function togglePin(id) {
-    const idx = notes.findIndex(n => n.id === id);
-    notes[idx].pinned = !notes[idx].pinned;
-    notes.sort((a, b) => b.pinned - a.pinned || b.id - a.id);
-    sync();
-}
-
-function deleteNote(id) {
-    if(confirm("SUPPRIMER DÉFINITIVEMENT ?")) {
-        notes = notes.filter(n => n.id !== id);
-        sync();
-    }
-}
-
-function sync() {
-    localStorage.setItem('nothing_notes_v3', JSON.stringify(notes));
-    render();
+function deleteNote(id) { 
+    if(confirm("SUPPRIMER?")) { notes = notes.filter(n => n.id !== id); localStorage.setItem('nothing_master_db', JSON.stringify(notes)); render(); }
 }
 
 function render() {
     const grid = document.getElementById('note-grid');
     grid.innerHTML = notes.map(n => `
-        <div class="card ${n.pinned ? 'pinned' : ''}">
-            ${n.pinned ? '<span class="material-icons-round pin-indicator">push_pin</span>' : ''}
+        <div class="card">
             ${n.img ? `<img src="${n.img}" class="card-img">` : ''}
-            <div class="card-title">${escapeHtml(n.title)}</div>
-            <div class="card-body">${escapeHtml(n.content)}</div>
-            <div class="card-footer">
-                <span class="card-date">${n.date}</span>
-                <div style="display:flex; gap:8px;">
-                    <button class="icon-btn" style="width:30px; height:30px; background:none; border:none;" onclick="togglePin(${n.id})" title="Épingler">
-                        <span class="material-icons-round" style="font-size:18px; color:${n.pinned ? 'var(--accent)' : 'var(--text-dim)'}">push_pin</span>
-                    </button>
-                    <button class="icon-btn" style="width:30px; height:30px; background:none; border:none;" onclick="openModal(${n.id})" title="Modifier">
-                        <span class="material-icons-round" style="font-size:18px; color:var(--text-dim)">edit</span>
-                    </button>
-                    <button class="icon-btn" style="width:30px; height:30px; background:none; border:none;" onclick="deleteNote(${n.id})" title="Supprimer">
-                        <span class="material-icons-round" style="font-size:18px; color:var(--text-dim)">delete</span>
-                    </button>
-                </div>
+            <div class="card-title">${n.title}</div>
+            ${n.content ? `<div class="card-body">${n.content}</div>` : ''}
+            ${n.audio ? `
+                <div class="audio-player">
+                    <span class="material-icons-round" style="color:var(--accent)">play_circle</span>
+                    <audio src="${n.audio}" controls></audio>
+                </div>` : ''}
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
+                <span style="font-family:var(--font-dot); font-size:10px; color:var(--text-dim)">${n.date}</span>
+                <button onclick="deleteNote(${n.id})" style="background:none; border:none; color:var(--text-dim); cursor:pointer"><span class="material-icons-round" style="font-size:18px">delete</span></button>
             </div>
         </div>
     `).join('');
 }
 
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-function exportData() {
-    const blob = new Blob([JSON.stringify(notes)], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = `backup_nothing_${Date.now()}.json`;
-    a.click();
-}
-
-function importData() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.onchange = e => {
-        const reader = new FileReader();
-        reader.onload = ev => {
-            try {
-                notes = JSON.parse(ev.target.result);
-                sync();
-            } catch(e) { alert("ERREUR_FICHIER_INVALIDE"); }
-        };
-        reader.readAsText(e.target.files[0]);
-    };
-    input.click();
-}
-
-function reset() {
-    if(confirm("RESTAURATION D'USINE ? TOUT SERA EFFACÉ.")) { notes = []; sync(); }
-}
-
-if(localStorage.getItem('theme') === 'light') toggleTheme();
+function toggleTheme() { document.body.classList.toggle('light-mode'); }
 render();
 </script>
 </body>
