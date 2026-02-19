@@ -3,219 +3,236 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Mémoire</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Mémoire - Nothing Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 <style>
 :root {
-  --md-primary: #6750A4;
-  --md-surface: #FFFBFE;
-  --md-surface-variant: #E7E0EC;
-  --md-on-surface: #1C1B1F;
-  --md-outline-variant: #CAC4D0;
-  --fluid-curve: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --glass: rgba(255, 251, 254, 0.8);
+  --bg: #000000;
+  --card: #111111;
+  --text-main: #FFFFFF;
+  --text-dim: #888888;
+  --accent-red: #EB4432;
+  --border: #222222;
+  --dot-font: 'Space Mono', monospace; /* Simulation du style Dot Matrix */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-body { font-family: 'Inter', sans-serif; background: var(--md-surface); color: var(--md-on-surface); overflow-x: hidden; }
+body { 
+    font-family: 'Inter', sans-serif; 
+    background: var(--bg); 
+    color: var(--text-main); 
+    overflow-x: hidden;
+    padding-bottom: 100px;
+}
 
-/* ── ANIMATIONS ── */
-@keyframes fluidUp { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-.fade-in { animation: fluidUp 0.5s var(--fluid-curve) both; }
-
-/* ── HEADER & SEARCH ── */
+/* ── HEADER ── */
 .app-header {
   position: sticky; top: 0; z-index: 100;
-  background: var(--glass); backdrop-filter: blur(20px);
-  padding: 12px 20px; border-bottom: 1px solid var(--md-outline-variant);
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
+  padding: 20px; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
 }
-.header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.logo { font-family: var(--dot-font); font-weight: 700; font-size: 20px; letter-spacing: -1px; text-transform: uppercase; }
 
-/* ── SETTINGS DRAWER ── */
-#settings-drawer {
-  position: fixed; top: 0; right: 0; bottom: 0; width: 300px;
-  background: var(--md-surface); z-index: 501;
-  transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1);
-  padding: 24px; box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+/* ── SEARCH ── */
+.search-container {
+    padding: 16px 20px;
 }
-#settings-drawer.active { transform: translateX(0); }
-.drawer-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.3);
-  z-index: 500; display: none; backdrop-filter: blur(4px);
+.search-bar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 12px 20px;
+    display: flex; align-items: center; gap: 10px;
+}
+.search-bar input {
+    background: none; border: none; outline: none; color: white; width: 100%; font-size: 14px;
 }
 
-/* ── CARDS ── */
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; padding: 20px; }
+/* ── WIDGETS GRID ── */
+.cards-grid { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 12px; 
+    padding: 0 20px; 
+}
 .card {
-  background: white; border-radius: 24px; padding: 20px; border: 1px solid var(--md-outline-variant);
-  transition: all 0.3s var(--fluid-curve); cursor: pointer;
+  background: var(--card); 
+  border-radius: 28px; 
+  padding: 20px; 
+  border: 1px solid var(--border);
+  transition: transform 0.2s ease;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 160px;
 }
-.card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+/* Style spécial pour certains types pour varier le grid */
+.card:nth-child(3n) { grid-column: span 2; min-height: 120px; } 
 
-/* ── POPUP CHOIX (SELECTEUR) ── */
+.card-type { font-family: var(--dot-font); font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; }
+.card-title { font-weight: 600; font-size: 16px; margin-bottom: 6px; }
+.card-content { font-size: 13px; color: var(--text-dim); line-height: 1.4; }
+.card-date { font-family: var(--dot-font); font-size: 9px; color: var(--text-dim); margin-top: 15px; }
+
+/* ── POPUP CHOIX (NOTHING STYLE) ── */
 #choice-popup {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(8px); z-index: 1000;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(15px); z-index: 1000;
   display: none; align-items: center; justify-content: center;
 }
 .choice-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-  width: 90%; max-width: 340px; animation: fluidUp 0.4s var(--fluid-curve);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 90%; max-width: 360px;
 }
-.choice-card {
-  aspect-ratio: 1/1; background: white; border-radius: 32px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 10px; cursor: pointer; transition: transform 0.2s;
+.choice-item {
+  background: var(--card); border: 1px solid var(--border); border-radius: 32px;
+  aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; cursor: pointer;
 }
-.choice-card:active { transform: scale(0.9); }
-.choice-card .material-icons-round { font-size: 40px; color: var(--md-primary); }
-.choice-card span { font-weight: 700; font-family: 'Nunito'; font-size: 14px; }
+.choice-item .material-icons-round { font-size: 32px; }
+.choice-item span { font-family: var(--dot-font); font-size: 12px; text-transform: uppercase; }
+.choice-item.close { grid-column: span 2; aspect-ratio: auto; padding: 15px; border-radius: 100px; margin-top: 10px; background: white; color: black; }
 
 /* ── MODAL FORM ── */
 .modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-  z-index: 1100; display: none; align-items: flex-end;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1100;
+  display: none; align-items: flex-end;
 }
 .modal-sheet {
-  background: white; width: 100%; max-width: 600px; border-radius: 32px 32px 0 0;
-  padding: 24px; margin: 0 auto; transform: translateY(100%);
-  transition: transform 0.4s var(--fluid-curve);
+  background: var(--card); width: 100%; border-radius: 32px 32px 0 0;
+  padding: 30px 24px; border-top: 1px solid var(--border);
 }
-.modal-overlay.active { display: flex; }
-.modal-overlay.active .modal-sheet { transform: translateY(0); }
+.modal-sheet input, .modal-sheet textarea {
+    width: 100%; background: #1a1a1a; border: 1px solid var(--border);
+    border-radius: 16px; padding: 16px; color: white; margin-bottom: 12px; outline: none;
+}
+.save-btn {
+    width: 100%; padding: 18px; background: white; color: black; border: none;
+    border-radius: 100px; font-weight: 700; font-family: var(--dot-font); margin-top: 10px;
+}
 
-/* FAB */
+/* ── FAB ── */
 .fab {
   position: fixed; bottom: 30px; right: 24px;
-  background: var(--md-primary-container, #EADDFF); color: var(--md-primary);
-  padding: 16px 24px; border-radius: 24px; display: flex; align-items: center; gap: 8px;
-  font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer; z-index: 200;
-  transition: all 0.3s var(--fluid-curve);
+  background: white; color: black; width: 64px; height: 64px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5); cursor: pointer; z-index: 200;
 }
-.fab:hover { transform: scale(1.05); }
+
+/* Animations */
+.fade-up { animation: fadeUp 0.4s ease forwards; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
 <header class="app-header">
-  <div class="header-top">
-    <div style="font-family:'Nunito'; font-weight:800; font-size:24px; color:var(--md-primary)">Mémoire</div>
-    <div style="display:flex; gap:10px;">
-        <button onclick="toggleSettings(true)" style="background:none; border:none; cursor:pointer;"><span class="material-icons-round">settings</span></button>
-        <div id="user-avatar" style="width:32px; height:32px; background:var(--md-primary); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-weight:700">?</div>
-    </div>
-  </div>
-  <div style="background:var(--md-surface-variant); padding:10px 16px; border-radius:14px; display:flex; align-items:center; gap:10px;">
-    <span class="material-icons-round">search</span>
-    <input type="text" placeholder="Rechercher..." style="background:none; border:none; outline:none; width:100%" oninput="search(this.value)">
-  </div>
+  <div class="logo">Mémoire</div>
+  <span class="material-icons-round" onclick="toggleSettings(true)">more_vert</span>
 </header>
+
+<div class="search-container">
+    <div class="search-bar">
+        <span class="material-icons-round" style="color:var(--text-dim)">search</span>
+        <input type="text" placeholder="Rechercher..." oninput="search(this.value)">
+    </div>
+</div>
 
 <div class="cards-grid" id="container"></div>
 
 <div class="fab" onclick="toggleChoice(true)">
-  <span class="material-icons-round">add</span>
-  Nouveau
+  <span class="material-icons-round" style="font-size: 32px;">add</span>
 </div>
 
-<div id="choice-popup" onclick="toggleChoice(false)">
-  <div class="choice-grid" onclick="event.stopPropagation()">
-    <div class="choice-card" onclick="openForm('note')">
-      <span class="material-icons-round">edit_note</span>
-      <span>TEXTE</span>
+<div id="choice-popup">
+  <div class="choice-grid">
+    <div class="choice-item" onclick="openForm('écrit')">
+      <span class="material-icons-round">description</span>
+      <span>Écrit</span>
     </div>
-    <div class="choice-card" onclick="openForm('image')">
-      <span class="material-icons-round">image</span>
-      <span>IMAGE</span>
-    </div>
-    <div class="choice-card" onclick="openForm('link')">
+    <div class="choice-item" onclick="openForm('lien')">
       <span class="material-icons-round">link</span>
-      <span>LIEN</span>
+      <span>Lien</span>
     </div>
-    <div class="choice-card" onclick="toggleChoice(false)">
-      <span class="material-icons-round">close</span>
-      <span>FERMER</span>
+    <div class="choice-item" onclick="openForm('image')">
+      <span class="material-icons-round">image</span>
+      <span>Image</span>
     </div>
-  </div>
-</div>
-
-<div class="drawer-overlay" id="overlay" onclick="toggleSettings(false)"></div>
-<div id="settings-drawer">
-  <h2 style="font-family:'Nunito'; margin-bottom:20px">Paramètres</h2>
-  <div onclick="exportData()" style="padding:15px; border-radius:12px; background:#F3EDF7; margin-bottom:10px; cursor:pointer; display:flex; gap:10px">
-    <span class="material-icons-round">download</span> Exporter JSON
-  </div>
-  <div onclick="logout()" style="padding:15px; border-radius:12px; color:red; cursor:pointer; display:flex; gap:10px">
-    <span class="material-icons-round">logout</span> Déconnexion
+    <div class="choice-item" onclick="openForm('vocale')">
+      <span class="material-icons-round" style="color: var(--accent-red)">mic</span>
+      <span>Vocale</span>
+    </div>
+    <div class="choice-item close" onclick="toggleChoice(false)">
+      <span>Fermer</span>
+    </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal-sheet">
-    <h3 id="form-title" style="margin-bottom:15px; font-family:'Nunito'">Nouveau souvenir</h3>
-    <input type="text" id="title" placeholder="Titre" style="width:100%; padding:12px; border-radius:12px; border:1px solid #ccc; margin-bottom:10px">
-    <textarea id="content" placeholder="Contenu..." rows="4" style="width:100%; padding:12px; border-radius:12px; border:1px solid #ccc; margin-bottom:15px"></textarea>
-    <button onclick="save()" style="width:100%; padding:15px; background:var(--md-primary); color:white; border:none; border-radius:100px; font-weight:700">ENREGISTRER</button>
-    <button onclick="closeForm()" style="width:100%; padding:10px; background:none; border:none; margin-top:5px">Annuler</button>
+    <div id="form-title" style="font-family: var(--dot-font); margin-bottom: 20px; text-transform: uppercase; color: var(--text-dim)">Nouveau</div>
+    <input type="text" id="title" placeholder="Titre du widget">
+    <textarea id="content" placeholder="Contenu ou URL..." rows="4"></textarea>
+    <button class="save-btn" onclick="save()">AJOUTER</button>
+    <button onclick="closeForm()" style="width:100%; background:none; border:none; color:var(--text-dim); margin-top:15px; font-size:12px">ANNULER</button>
   </div>
 </div>
 
 <script>
-let items = JSON.parse(localStorage.getItem('notes')) || [];
-let currentType = 'note';
+let items = JSON.parse(localStorage.getItem('nothing_notes')) || [
+    { title: "Bienvenue", content: "Ceci est ton espace minimaliste.", type: "écrit", date: "20.02.2026" },
+    { title: "Design System", content: "Inspiré par Nothing OS (1)", type: "lien", date: "20.02.2026" }
+];
+let currentType = 'écrit';
 
 function toggleChoice(show) {
-  document.getElementById('choice-popup').style.display = show ? 'flex' : 'none';
-}
-
-function toggleSettings(show) {
-  document.getElementById('settings-drawer').classList.toggle('active', show);
-  document.getElementById('overlay').style.display = show ? 'block' : 'none';
+  const pop = document.getElementById('choice-popup');
+  pop.style.display = show ? 'flex' : 'none';
 }
 
 function openForm(type) {
   currentType = type;
   toggleChoice(false);
   document.getElementById('form-title').innerText = "Ajouter " + type;
-  document.getElementById('modal-overlay').classList.add('active');
+  document.getElementById('modal-overlay').style.display = 'flex';
+  setTimeout(() => document.querySelector('.modal-sheet').style.transform = 'translateY(0)', 10);
 }
 
 function closeForm() {
-  document.getElementById('modal-overlay').classList.remove('active');
+  document.getElementById('modal-overlay').style.display = 'none';
 }
 
 function save() {
   const title = document.getElementById('title').value;
   const content = document.getElementById('content').value;
-  items.unshift({ title, content, type: currentType, date: new Date().toLocaleDateString() });
-  localStorage.setItem('notes', JSON.stringify(items));
+  const now = new Date();
+  const formattedDate = `${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()}`;
+  
+  items.unshift({ title, content, type: currentType, date: formattedDate });
+  localStorage.setItem('nothing_notes', JSON.stringify(items));
   render();
   closeForm();
+  // Reset fields
+  document.getElementById('title').value = '';
+  document.getElementById('content').value = '';
 }
 
 function render(data = items) {
   const container = document.getElementById('container');
   container.innerHTML = data.map((item, i) => `
-    <div class="card fade-in" style="animation-delay: ${i * 0.05}s">
-      <div style="font-size:11px; color:var(--md-primary); font-weight:800; text-transform:uppercase; margin-bottom:5px">${item.type}</div>
-      <div style="font-family:'Nunito'; font-weight:700; font-size:16px">${item.title || 'Sans titre'}</div>
-      <div style="font-size:13px; color:#49454F; margin-top:8px">${item.content}</div>
-      <div style="margin-top:12px; font-size:10px; opacity:0.5">${item.date}</div>
+    <div class="card fade-up" style="animation-delay: ${i * 0.05}s">
+      <div>
+        <div class="card-type">${item.type}</div>
+        <div class="card-title">${item.title || 'Sans titre'}</div>
+        <div class="card-content">${item.content}</div>
+      </div>
+      <div class="card-date">${item.date}</div>
     </div>
   `).join('');
 }
 
 function search(q) {
-  const f = items.filter(i => i.title.toLowerCase().includes(q.toLowerCase()));
+  const f = items.filter(i => i.title.toLowerCase().includes(q.toLowerCase()) || i.content.toLowerCase().includes(q.toLowerCase()));
   render(f);
-}
-
-function exportData() {
-  const blob = new Blob([JSON.stringify(items)], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'sauvegarde.json'; a.click();
 }
 
 render();
