@@ -28,13 +28,26 @@
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); padding-bottom: 120px; overflow-x: hidden; }
 
-/* --- HEADER & SEARCH --- */
+/* --- HEADER & BARRE DE RECHERCHE (FIXÉE) --- */
 .app-header { position: sticky; top: 0; z-index: 1000; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
 .logo { font-family: var(--dot-font); font-weight: 700; font-size: 16px; text-transform: uppercase; letter-spacing: 2px; }
 
-.search-container { padding: 16px 20px 0 20px; }
-.search-bar { background: var(--card); border: 1px solid var(--border); border-radius: 100px; padding: 12px 20px; display: flex; align-items: center; gap: 10px; }
-.search-bar input { background: none; border: none; outline: none; color: white; width: 100%; font-size: 14px; }
+.search-container { padding: 16px 20px 0 20px; background: var(--bg); }
+.search-bar { 
+    background: #111111; 
+    border: 1px solid #222222; 
+    border-radius: 24px; 
+    padding: 14px 20px; 
+    display: flex; 
+    align-items: center; 
+    gap: 12px;
+}
+.search-bar .material-icons-round { color: #555555; font-size: 20px; }
+.search-bar input { 
+    background: none; border: none; outline: none; color: #FFFFFF; 
+    width: 100%; font-size: 15px; font-family: 'Inter', sans-serif;
+}
+.search-bar input::placeholder { color: #444444; }
 
 /* --- GRID & CARDS --- */
 .cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 20px; }
@@ -48,7 +61,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 .card-image { width: 100%; height: 80px; object-fit: cover; border-radius: 12px; margin-bottom: 8px; }
 .card-audio { width: 100%; height: 30px; margin-top: 8px; filter: invert(1); }
 
-/* --- POPUP SPEED DIAL (MODÈLE DEMANDÉ) --- */
+/* --- POPUP SPEED DIAL --- */
 .popup-overlay { 
     position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
     z-index: 2000; display: none; flex-direction: column; align-items: flex-end; justify-content: flex-end; padding: 30px 24px 110px 24px; 
@@ -59,11 +72,10 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: translateY(20px); border: 1px solid #333;
 }
 .popup-overlay.active .dial-item { opacity: 1; transform: translateY(0); }
-.popup-overlay.active .dial-item:nth-child(1) { transition-delay: 0.2s; } /* Inversé pour l'ordre d'apparition du bas */
+.popup-overlay.active .dial-item:nth-child(1) { transition-delay: 0.2s; }
 .popup-overlay.active .dial-item:nth-child(2) { transition-delay: 0.15s; }
 .popup-overlay.active .dial-item:nth-child(3) { transition-delay: 0.1s; }
 .popup-overlay.active .dial-item:nth-child(4) { transition-delay: 0.05s; }
-
 .dial-item span { font-family: var(--dot-font); font-size: 13px; text-transform: uppercase; color: white; letter-spacing: 1px; }
 .dial-item .material-icons-round { font-size: 22px; color: white; }
 
@@ -76,7 +88,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 }
 .fab.active { transform: rotate(45deg); background: var(--accent-red); color: white; }
 
-/* --- MENUS & MODALS --- */
+/* --- MODALS & MENUS --- */
 .header-menu-overlay { position: fixed; inset: 0; z-index: 3000; display: none; justify-content: flex-end; align-items: flex-start; padding: 60px 20px; }
 .context-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 3000; display: none; align-items: center; justify-content: center; }
 .menu-box { background: #1a1a1a; border: 1px solid var(--border); border-radius: 28px; width: 240px; padding: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
@@ -87,9 +99,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 .modal-sheet { background: var(--card); width: 100%; border-radius: 32px 32px 0 0; padding: 30px 20px; border-top: 1px solid var(--border); transition: transform 0.3s ease-out; transform: translateY(100%); }
 .modal-overlay.active .modal-sheet { transform: translateY(0); }
 
-input[type="text"], textarea { width: 100%; background: #1a1a1a; border: 1px solid var(--border); border-radius: 16px; padding: 16px; color: white; margin-bottom: 12px; outline: none; font-size: 16px; font-family: 'Inter', sans-serif; }
 .save-btn { width: 100%; padding: 18px; background: white; color: black; border: none; border-radius: 100px; font-weight: 700; font-family: var(--dot-font); margin-top: 10px; }
-
 #record-btn { width: 100%; padding: 20px; background: var(--accent-red); color: white; border: none; border-radius: 100px; font-weight: 700; font-family: var(--dot-font); display: none; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
 #record-btn.recording { animation: pulse 1.5s infinite; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
@@ -104,7 +114,7 @@ input[type="text"], textarea { width: 100%; background: #1a1a1a; border: 1px sol
 
 <div class="search-container">
     <div class="search-bar">
-        <span class="material-icons-round" style="color:var(--text-dim)">search</span>
+        <span class="material-icons-round">search</span>
         <input type="text" id="search-input" placeholder="Rechercher..." oninput="search(this.value)">
     </div>
 </div>
@@ -119,28 +129,16 @@ input[type="text"], textarea { width: 100%; background: #1a1a1a; border: 1px sol
 
 <div class="popup-overlay" id="choice-popup" onclick="togglePopup()">
   <div class="speed-dial-list" onclick="event.stopPropagation()">
-    <div class="dial-item" onclick="openForm('écrit')">
-        <span class="material-icons-round">notes</span>
-        <span>Écrit</span>
-    </div>
-    <div class="dial-item" onclick="openForm('lien')">
-        <span class="material-icons-round">link</span>
-        <span>Lien</span>
-    </div>
-    <div class="dial-item" onclick="handleImageClick()">
-        <span class="material-icons-round">photo_library</span>
-        <span>Image</span>
-    </div>
-    <div class="dial-item" onclick="openForm('vocale')">
-        <span class="material-icons-round" style="color:var(--accent-red)">mic</span>
-        <span>Vocale</span>
-    </div>
+    <div class="dial-item" onclick="openForm('écrit')"><span class="material-icons-round">notes</span><span>Écrit</span></div>
+    <div class="dial-item" onclick="openForm('lien')"><span class="material-icons-round">link</span><span>Lien</span></div>
+    <div class="dial-item" onclick="handleImageClick()"><span class="material-icons-round">photo_library</span><span>Image</span></div>
+    <div class="dial-item" onclick="openForm('vocale')"><span class="material-icons-round" style="color:var(--accent-red)">mic</span><span>Vocale</span></div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal-sheet">
-    <div id="form-title" style="font-family: var(--dot-font); margin-bottom: 15px; font-size: 10px; color: var(--text-dim); text-transform: uppercase;">Nouveau</div>
+    <div style="font-family: var(--dot-font); margin-bottom: 15px; font-size: 10px; color: var(--text-dim); text-transform: uppercase;">Nouveau</div>
     <input type="text" id="title" placeholder="Titre (optionnel)">
     <img id="preview-img" style="width:100%; max-height:180px; object-fit:contain; display:none; border-radius:16px; margin-bottom:12px; border: 1px solid var(--border);">
     <button id="record-btn" onclick="toggleRecording()"><span class="material-icons-round">mic</span> Démarrer</button>
@@ -202,13 +200,16 @@ function render(data = items) {
     }).join('');
 }
 
-// --- POPUP SPEED DIAL ---
+function search(q) {
+    const query = q.toLowerCase().trim();
+    if (!query) { render(items); return; }
+    render(items.filter(i => (i.title || "").toLowerCase().includes(query) || (i.content || "").toLowerCase().includes(query)));
+}
+
 function togglePopup() {
     const overlay = document.getElementById('choice-popup');
     const fab = document.getElementById('main-fab');
-    const isActive = overlay.classList.contains('active');
-    
-    if(!isActive) {
+    if(!overlay.classList.contains('active')) {
         overlay.style.display = 'flex';
         fab.classList.add('active');
         setTimeout(() => overlay.classList.add('active'), 10);
@@ -220,17 +221,11 @@ function togglePopup() {
 }
 
 function openForm(type) {
-    currentType = type;
-    togglePopup();
-    document.getElementById('title').value = '';
-    document.getElementById('content').value = '';
-    document.getElementById('preview-img').style.display = 'none';
-    document.getElementById('audio-preview').style.display = 'none';
+    currentType = type; togglePopup();
+    document.getElementById('title').value = ''; document.getElementById('content').value = '';
+    document.getElementById('preview-img').style.display = 'none'; document.getElementById('audio-preview').style.display = 'none';
     document.getElementById('record-btn').style.display = type === 'vocale' ? 'flex' : 'none';
-    if(type === 'image' && currentMediaData) {
-        document.getElementById('preview-img').src = currentMediaData;
-        document.getElementById('preview-img').style.display = 'block';
-    }
+    if(type === 'image' && currentMediaData) { document.getElementById('preview-img').src = currentMediaData; document.getElementById('preview-img').style.display = 'block'; }
     document.getElementById('modal-overlay').style.display = 'flex';
     setTimeout(() => document.getElementById('modal-overlay').classList.add('active'), 10);
 }
@@ -240,34 +235,16 @@ function closeForm() {
     setTimeout(() => { document.getElementById('modal-overlay').style.display = 'none'; currentMediaData = null; }, 300);
 }
 
-// --- LOGIQUE DATA ---
 function save() {
-    const t = document.getElementById('title').value.trim();
-    const c = document.getElementById('content').value.trim();
+    const t = document.getElementById('title').value.trim(); const c = document.getElementById('content').value.trim();
     if(!t && !c && !currentMediaData) return;
-    const now = new Date();
-    const d = `${now.getDate().toString().padStart(2,'0')}.${(now.getMonth()+1).toString().padStart(2,'0')}.${now.getFullYear().toString().slice(-2)}`;
+    const now = new Date(); const d = `${now.getDate().toString().padStart(2,'0')}.${(now.getMonth()+1).toString().padStart(2,'0')}.${now.getFullYear().toString().slice(-2)}`;
     items.unshift({ title: t, content: c, type: currentType, date: d, pinned: false, media: currentMediaData });
-    saveToDisk();
-    closeForm();
+    saveToDisk(); closeForm();
 }
 
-function saveToDisk() {
-    items.sort((a,b) => b.pinned - a.pinned);
-    localStorage.setItem('essential_space_v2', JSON.stringify(items));
-    render();
-}
+function saveToDisk() { items.sort((a,b) => b.pinned - a.pinned); localStorage.setItem('essential_space_v2', JSON.stringify(items)); render(); }
 
-function search(q) {
-    const filtered = items.filter(i => (i.title + i.content).toLowerCase().includes(q.toLowerCase()));
-    render(filtered);
-}
-
-function clearAll() {
-    if(confirm("Supprimer toutes les notes ?")) { items = []; saveToDisk(); toggleHeaderMenu(false); }
-}
-
-// --- MÉTODES MÈDIA ---
 function handleImageClick() { togglePopup(); document.getElementById('image-input').click(); }
 document.getElementById('image-input').onchange = (e) => {
     const reader = new FileReader();
@@ -279,32 +256,21 @@ async function toggleRecording() {
     const btn = document.getElementById('record-btn');
     if(!isRecording) {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
-        audioChunks = [];
+        mediaRecorder = new MediaRecorder(stream); audioChunks = [];
         mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
         mediaRecorder.onstop = () => {
             const blob = new Blob(audioChunks, { type: 'audio/webm' });
             const reader = new FileReader();
-            reader.onload = ev => { 
-                currentMediaData = ev.target.result; 
-                document.getElementById('audio-preview').src = ev.target.result; 
-                document.getElementById('audio-preview').style.display = 'block'; 
-            };
+            reader.onload = ev => { currentMediaData = ev.target.result; document.getElementById('audio-preview').src = ev.target.result; document.getElementById('audio-preview').style.display = 'block'; };
             reader.readAsDataURL(blob);
         };
-        mediaRecorder.start();
-        isRecording = true; btn.classList.add('recording'); btn.innerText = "ARRÊTER";
-    } else {
-        mediaRecorder.stop();
-        isRecording = false; btn.classList.remove('recording'); btn.innerText = "REPRENDRE";
-    }
+        mediaRecorder.start(); isRecording = true; btn.classList.add('recording'); btn.innerText = "ARRÊTER";
+    } else { mediaRecorder.stop(); isRecording = false; btn.classList.remove('recording'); btn.innerText = "REPRENDRE"; }
 }
 
-// --- APPUI LONG & MENUS ---
 function startPress(i, e) {
     if(e.target.tagName === 'AUDIO') return;
-    selectedIndex = i;
-    e.currentTarget.classList.add('pressing');
+    selectedIndex = i; e.currentTarget.classList.add('pressing');
     pressTimer = setTimeout(() => {
         e.currentTarget.classList.remove('pressing');
         document.getElementById('pin-text').innerHTML = items[i].pinned ? '<span class="material-icons-round">push_pin</span> Détacher' : '<span class="material-icons-round">push_pin</span> Épingler';
@@ -319,8 +285,7 @@ function toggleHeaderMenu(show) { document.getElementById('header-menu-overlay')
 function handleMenuAction(action) {
     if(action === 'delete') items.splice(selectedIndex, 1);
     else items[selectedIndex].pinned = !items[selectedIndex].pinned;
-    saveToDisk();
-    closeContextMenu();
+    saveToDisk(); closeContextMenu();
 }
 
 async function exportData() {
@@ -337,11 +302,10 @@ async function exportData() {
 function triggerImport() { document.getElementById('import-input').click(); }
 function importData(e) {
     const reader = new FileReader();
-    reader.onload = (ev) => { 
-        try { items = JSON.parse(ev.target.result); saveToDisk(); alert("Restauré !"); } catch(err) { alert("Invalide"); }
-    };
+    reader.onload = (ev) => { try { items = JSON.parse(ev.target.result); saveToDisk(); alert("Restauré !"); } catch(err) { alert("Invalide"); } };
     reader.readAsText(e.target.files[0]);
 }
+function clearAll() { if(confirm("Tout supprimer ?")) { items = []; saveToDisk(); toggleHeaderMenu(false); } }
 
 render();
 </script>
