@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#000000">
 
-<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMjAiIGZpbGw9ImJsYWNrIi8+PGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIxNDUxIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIxIDE1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG9wYWNpdHk9IjAuOCIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMTE1IiBzdHJva2U9IiM0NDQiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIxIDEyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjI4IiBmaWxsPSIjRUI0NDMyIj48YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJvcGFjaXR5IiB2YWx1ZXM9IjE7MC43OzEiIGR1cj0iM3MiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiAvPjwvY2lyY2xlPjx0ZXh0IHg9IjUwJSIgeT0iNDI1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9ImJvbGQiIGxldHRlci1zcGFjaW5nPSI2IiBvcGFjaXR5PSIwLjYiPkVTU0VOVElBTCBTUEFDRTwvdGV4dD48L3N2Zz4=">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMjAiIGZpbGw9ImJsYWNrIi8+PGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIxNDUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIxIDE1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG9wYWNpdHk9IjAuOCIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMTE1IiBzdHJva2U9IiM0NDQiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIxIDEyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjI4IiBmaWxsPSIjRUI0NDMyIj48YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJvcGFjaXR5IiB2YWx1ZXM9IjE7MC43OzEiIGR1cj0iM3MiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiAvPjwvY2lyY2xlPjx0ZXh0IHg9IjUwJSIgeT0iNDI1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9ImJvbGQiIGxldHRlci1zcGFjaW5nPSI2IiBvcGFjaXR5PSIwLjYiPkVTU0VOVElBTCBTUEFDRTwvdGV4dD48L3N2Zz4=">
 
 <style>
 :root {
@@ -48,42 +48,51 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 .card-image { width: 100%; height: 80px; object-fit: cover; border-radius: 12px; margin-bottom: 8px; }
 .card-audio { width: 100%; height: 30px; margin-top: 8px; filter: invert(1); }
 
-/* --- POPUP GRID 2x2 --- */
-.popup-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 24px; }
-.choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%; max-width: 360px; }
-.choice-item { 
-    background: #111; border: 1px solid var(--border); border-radius: 32px; aspect-ratio: 1/1; 
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; 
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; transform: translateY(30px) scale(0.8);
+/* --- POPUP SPEED DIAL (MODÈLE DEMANDÉ) --- */
+.popup-overlay { 
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
+    z-index: 2000; display: none; flex-direction: column; align-items: flex-end; justify-content: flex-end; padding: 30px 24px 110px 24px; 
 }
-.popup-overlay.active .choice-item { opacity: 1; transform: translateY(0) scale(1); }
-.popup-overlay.active .choice-item:nth-child(1) { transition-delay: 0.05s; }
-.popup-overlay.active .choice-item:nth-child(2) { transition-delay: 0.1s; }
-.popup-overlay.active .choice-item:nth-child(3) { transition-delay: 0.15s; }
-.popup-overlay.active .choice-item:nth-child(4) { transition-delay: 0.2s; }
+.speed-dial-list { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; width: 100%; }
+.dial-item { 
+    background: #222; border-radius: 100px; padding: 12px 24px; display: flex; align-items: center; gap: 16px; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: translateY(20px); border: 1px solid #333;
+}
+.popup-overlay.active .dial-item { opacity: 1; transform: translateY(0); }
+.popup-overlay.active .dial-item:nth-child(1) { transition-delay: 0.2s; } /* Inversé pour l'ordre d'apparition du bas */
+.popup-overlay.active .dial-item:nth-child(2) { transition-delay: 0.15s; }
+.popup-overlay.active .dial-item:nth-child(3) { transition-delay: 0.1s; }
+.popup-overlay.active .dial-item:nth-child(4) { transition-delay: 0.05s; }
 
-.choice-item span { font-family: var(--dot-font); font-size: 10px; text-transform: uppercase; color: var(--text-dim); }
-.choice-item .material-icons-round { font-size: 32px; color: white; }
+.dial-item span { font-family: var(--dot-font); font-size: 13px; text-transform: uppercase; color: white; letter-spacing: 1px; }
+.dial-item .material-icons-round { font-size: 22px; color: white; }
 
-/* --- MENUS --- */
+/* --- FAB (BOUTON +) --- */
+.fab-container { position: fixed; bottom: 30px; right: 24px; z-index: 2500; display: flex; flex-direction: column; align-items: flex-end; }
+.fab { 
+    background: white; color: black; width: 64px; height: 64px; border-radius: 50%; 
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+    transition: transform 0.3s ease;
+}
+.fab.active { transform: rotate(45deg); background: var(--accent-red); color: white; }
+
+/* --- MENUS & MODALS --- */
 .header-menu-overlay { position: fixed; inset: 0; z-index: 3000; display: none; justify-content: flex-end; align-items: flex-start; padding: 60px 20px; }
 .context-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 3000; display: none; align-items: center; justify-content: center; }
 .menu-box { background: #1a1a1a; border: 1px solid var(--border); border-radius: 28px; width: 240px; padding: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
 .menu-item { padding: 15px; display: flex; align-items: center; gap: 12px; color: white; font-size: 14px; border-radius: 20px; }
-.menu-item:active { background: #333; }
 .menu-item.delete { color: var(--accent-red); }
 
-/* --- MODALS --- */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2500; display: none; align-items: flex-end; }
 .modal-sheet { background: var(--card); width: 100%; border-radius: 32px 32px 0 0; padding: 30px 20px; border-top: 1px solid var(--border); transition: transform 0.3s ease-out; transform: translateY(100%); }
 .modal-overlay.active .modal-sheet { transform: translateY(0); }
 
+input[type="text"], textarea { width: 100%; background: #1a1a1a; border: 1px solid var(--border); border-radius: 16px; padding: 16px; color: white; margin-bottom: 12px; outline: none; font-size: 16px; font-family: 'Inter', sans-serif; }
 .save-btn { width: 100%; padding: 18px; background: white; color: black; border: none; border-radius: 100px; font-weight: 700; font-family: var(--dot-font); margin-top: 10px; }
+
 #record-btn { width: 100%; padding: 20px; background: var(--accent-red); color: white; border: none; border-radius: 100px; font-weight: 700; font-family: var(--dot-font); display: none; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
 #record-btn.recording { animation: pulse 1.5s infinite; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-.fab { position: fixed; bottom: 30px; right: 24px; background: white; color: black; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 500; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 </style>
 </head>
 <body>
@@ -102,24 +111,30 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 
 <div class="cards-grid" id="container"></div>
 
-<div class="fab" onclick="toggleChoice(true)">
-  <span class="material-icons-round" style="font-size: 32px;">add</span>
-</div>
-
-<div class="header-menu-overlay" id="header-menu-overlay" onclick="toggleHeaderMenu(false)">
-    <div class="menu-box" onclick="event.stopPropagation()">
-        <div class="menu-item" onclick="exportData()"><span class="material-icons-round">share</span> Partager / Exporter</div>
-        <div class="menu-item" onclick="triggerImport()"><span class="material-icons-round">upload</span> Restaurer (Import)</div>
-        <div class="menu-item delete" onclick="clearAll()"><span class="material-icons-round">delete_sweep</span> Tout effacer</div>
+<div class="fab-container">
+    <div class="fab" id="main-fab" onclick="togglePopup()">
+        <span class="material-icons-round" style="font-size: 32px;">add</span>
     </div>
 </div>
 
-<div class="popup-overlay" id="choice-popup" onclick="toggleChoice(false)">
-  <div class="choice-grid" onclick="event.stopPropagation()">
-    <div class="choice-item" onclick="openForm('écrit')"><span class="material-icons-round">notes</span><span>Écrit</span></div>
-    <div class="choice-item" onclick="openForm('lien')"><span class="material-icons-round">link</span><span>Lien</span></div>
-    <div class="choice-item" onclick="handleImageClick()"><span class="material-icons-round">photo_library</span><span>Image</span></div>
-    <div class="choice-item" onclick="openForm('vocale')"><span class="material-icons-round">mic</span><span>Vocale</span></div>
+<div class="popup-overlay" id="choice-popup" onclick="togglePopup()">
+  <div class="speed-dial-list" onclick="event.stopPropagation()">
+    <div class="dial-item" onclick="openForm('écrit')">
+        <span class="material-icons-round">notes</span>
+        <span>Écrit</span>
+    </div>
+    <div class="dial-item" onclick="openForm('lien')">
+        <span class="material-icons-round">link</span>
+        <span>Lien</span>
+    </div>
+    <div class="dial-item" onclick="handleImageClick()">
+        <span class="material-icons-round">photo_library</span>
+        <span>Image</span>
+    </div>
+    <div class="dial-item" onclick="openForm('vocale')">
+        <span class="material-icons-round" style="color:var(--accent-red)">mic</span>
+        <span>Vocale</span>
+    </div>
   </div>
 </div>
 
@@ -134,6 +149,14 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
     <button class="save-btn" onclick="save()">ENREGISTRER</button>
     <button onclick="closeForm()" style="width:100%; background:none; border:none; color:var(--text-dim); margin-top:15px; font-size:11px; font-family:var(--dot-font)">ANNULER</button>
   </div>
+</div>
+
+<div class="header-menu-overlay" id="header-menu-overlay" onclick="toggleHeaderMenu(false)">
+    <div class="menu-box" onclick="event.stopPropagation()">
+        <div class="menu-item" onclick="exportData()"><span class="material-icons-round">share</span> Partager / Exporter</div>
+        <div class="menu-item" onclick="triggerImport()"><span class="material-icons-round">upload</span> Restaurer (Import)</div>
+        <div class="menu-item delete" onclick="clearAll()"><span class="material-icons-round">delete_sweep</span> Tout effacer</div>
+    </div>
 </div>
 
 <div class="context-overlay" id="context-overlay" onclick="closeContextMenu()">
@@ -159,7 +182,7 @@ let isRecording = false;
 function render(data = items) {
     const container = document.getElementById('container');
     if (data.length === 0) {
-        container.innerHTML = `<div style="grid-column: span 2; text-align:center; padding: 50px; color: var(--text-dim); font-family: var(--dot-font); font-size:10px; letter-spacing:1px;">ESPACE VIDE</div>`;
+        container.innerHTML = `<div style="grid-column: span 2; text-align:center; padding: 50px; color: var(--text-dim); font-family: var(--dot-font); font-size:10px;">ESPACE VIDE</div>`;
         return;
     }
     container.innerHTML = data.map((item, i) => {
@@ -179,20 +202,26 @@ function render(data = items) {
     }).join('');
 }
 
-// --- NAVIGATION & UI ---
-function toggleChoice(show) {
-    const p = document.getElementById('choice-popup');
-    if(show) { p.style.display = 'flex'; setTimeout(() => p.classList.add('active'), 10); }
-    else { p.classList.remove('active'); setTimeout(() => p.style.display = 'none', 400); }
-}
-
-function toggleHeaderMenu(show) {
-    document.getElementById('header-menu-overlay').style.display = show ? 'flex' : 'none';
+// --- POPUP SPEED DIAL ---
+function togglePopup() {
+    const overlay = document.getElementById('choice-popup');
+    const fab = document.getElementById('main-fab');
+    const isActive = overlay.classList.contains('active');
+    
+    if(!isActive) {
+        overlay.style.display = 'flex';
+        fab.classList.add('active');
+        setTimeout(() => overlay.classList.add('active'), 10);
+    } else {
+        overlay.classList.remove('active');
+        fab.classList.remove('active');
+        setTimeout(() => overlay.style.display = 'none', 300);
+    }
 }
 
 function openForm(type) {
     currentType = type;
-    toggleChoice(false);
+    togglePopup();
     document.getElementById('title').value = '';
     document.getElementById('content').value = '';
     document.getElementById('preview-img').style.display = 'none';
@@ -211,7 +240,7 @@ function closeForm() {
     setTimeout(() => { document.getElementById('modal-overlay').style.display = 'none'; currentMediaData = null; }, 300);
 }
 
-// --- DATA ---
+// --- LOGIQUE DATA ---
 function save() {
     const t = document.getElementById('title').value.trim();
     const c = document.getElementById('content').value.trim();
@@ -238,8 +267,8 @@ function clearAll() {
     if(confirm("Supprimer toutes les notes ?")) { items = []; saveToDisk(); toggleHeaderMenu(false); }
 }
 
-// --- MEDIA ---
-function handleImageClick() { toggleChoice(false); document.getElementById('image-input').click(); }
+// --- MÉTODES MÈDIA ---
+function handleImageClick() { togglePopup(); document.getElementById('image-input').click(); }
 document.getElementById('image-input').onchange = (e) => {
     const reader = new FileReader();
     reader.onload = (ev) => { currentMediaData = ev.target.result; openForm('image'); };
@@ -267,11 +296,11 @@ async function toggleRecording() {
         isRecording = true; btn.classList.add('recording'); btn.innerText = "ARRÊTER";
     } else {
         mediaRecorder.stop();
-        isRecording = false; btn.classList.remove('recording'); btn.innerText = "REDÉMARRER";
+        isRecording = false; btn.classList.remove('recording'); btn.innerText = "REPRENDRE";
     }
 }
 
-// --- CONTEXT MENU & EXPORT ---
+// --- APPUI LONG & MENUS ---
 function startPress(i, e) {
     if(e.target.tagName === 'AUDIO') return;
     selectedIndex = i;
@@ -285,6 +314,8 @@ function startPress(i, e) {
 }
 function endPress(e) { clearTimeout(pressTimer); e.currentTarget.classList.remove('pressing'); }
 function closeContextMenu() { document.getElementById('context-overlay').style.display = 'none'; }
+function toggleHeaderMenu(show) { document.getElementById('header-menu-overlay').style.display = show ? 'flex' : 'none'; }
+
 function handleMenuAction(action) {
     if(action === 'delete') items.splice(selectedIndex, 1);
     else items[selectedIndex].pinned = !items[selectedIndex].pinned;
@@ -299,7 +330,7 @@ async function exportData() {
         try { await navigator.share({ files: [file], title: 'Backup Essential Space' }); } catch(e) {}
     } else {
         const blob = new Blob([data], { type: "application/json" });
-        const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = 'essential_backup.json'; a.click();
+        const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = 'backup.json'; a.click();
     }
 }
 
@@ -307,7 +338,7 @@ function triggerImport() { document.getElementById('import-input').click(); }
 function importData(e) {
     const reader = new FileReader();
     reader.onload = (ev) => { 
-        try { items = JSON.parse(ev.target.result); saveToDisk(); alert("Restauré !"); } catch(err) { alert("Fichier invalide"); }
+        try { items = JSON.parse(ev.target.result); saveToDisk(); alert("Restauré !"); } catch(err) { alert("Invalide"); }
     };
     reader.readAsText(e.target.files[0]);
 }
