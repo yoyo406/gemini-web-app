@@ -23,6 +23,9 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 /* ── HEADER & SEARCH ── */
 .app-header { position: sticky; top: 0; z-index: 1000; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
 .logo { font-family: var(--dot-font); font-weight: 700; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; }
+.header-icon { color: var(--text-dim); cursor: pointer; padding: 5px; }
+.header-icon:active { color: white; }
+
 .search-container { padding: 16px 20px 0 20px; }
 .search-bar { background: var(--card); border: 1px solid var(--border); border-radius: 100px; padding: 12px 20px; display: flex; align-items: center; gap: 10px; }
 .search-bar input { background: none; border: none; outline: none; color: white; width: 100%; font-size: 14px; }
@@ -43,10 +46,13 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 .card-image { width: 100%; height: 80px; object-fit: cover; border-radius: 12px; margin-bottom: 8px; filter: grayscale(20%); }
 .card-audio { width: 100%; height: 30px; margin-top: 8px; filter: invert(1) hue-rotate(180deg); }
 
-/* ── CONTEXT MENU ── */
+/* ── MENUS (CONTEXT & HEADER) ── */
 .context-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 3000; display: none; align-items: center; justify-content: center; }
-.context-menu { background: #1a1a1a; border: 1px solid var(--border); border-radius: 28px; width: 220px; padding: 10px; }
-.menu-item { padding: 15px; display: flex; align-items: center; gap: 12px; color: white; font-size: 15px; border-radius: 20px; }
+.header-menu-overlay { position: fixed; inset: 0; z-index: 3000; display: none; justify-content: flex-end; align-items: flex-start; padding: 60px 20px; }
+.menu-box { background: #1a1a1a; border: 1px solid var(--border); border-radius: 28px; width: 220px; padding: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); animation: pop 0.2s ease-out; }
+@keyframes pop { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.menu-item { padding: 15px; display: flex; align-items: center; gap: 12px; color: white; font-size: 14px; font-weight: 500; border-radius: 20px; cursor: pointer; }
+.menu-item:active { background: #333; }
 .menu-item.delete { color: var(--accent-red); }
 
 /* ── POPUPS & MODALS ── */
@@ -66,7 +72,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(0.98); } 100% { transform: scale(1); } }
 
-.fab { position: fixed; bottom: 30px; right: 24px; background: white; color: black; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 500; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.fab { position: fixed; bottom: 30px; right: 24px; background: white; color: black; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 500; box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer; }
 
 /* Image Preview */
 #preview-img { width: 100%; max-height: 200px; object-fit: contain; border-radius: 16px; display: none; margin-bottom: 12px; border: 1px solid var(--border); }
@@ -77,7 +83,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 
 <header class="app-header">
   <div class="logo">MÉMOIRE.</div>
-  <span class="material-icons-round" style="color:var(--text-dim)">more_vert</span>
+  <span class="material-icons-round header-icon" onclick="openHeaderMenu()">more_vert</span>
 </header>
 
 <div class="search-container">
@@ -94,6 +100,18 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 </div>
 
 <input type="file" id="image-input" accept="image/*" style="display: none;">
+<input type="file" id="import-input" accept=".json" style="display: none;" onchange="importData(event)">
+
+<div class="header-menu-overlay" id="header-menu-overlay" onclick="closeHeaderMenu()">
+    <div class="menu-box" onclick="event.stopPropagation()">
+        <div class="menu-item" onclick="exportData()">
+            <span class="material-icons-round">download</span> Sauvegarder (Export)
+        </div>
+        <div class="menu-item" onclick="triggerImport()">
+            <span class="material-icons-round">upload</span> Restaurer (Import)
+        </div>
+    </div>
+</div>
 
 <div class="popup-overlay" id="choice-popup" onclick="toggleChoice(false)">
   <div class="choice-grid" onclick="event.stopPropagation()">
@@ -105,7 +123,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 </div>
 
 <div class="context-overlay" id="context-overlay" onclick="closeContextMenu()">
-    <div class="context-menu" onclick="event.stopPropagation()">
+    <div class="menu-box" onclick="event.stopPropagation()">
         <div class="menu-item" id="pin-text" onclick="handleMenuAction('pin')"><span class="material-icons-round">push_pin</span> Épingler</div>
         <div class="menu-item delete" onclick="handleMenuAction('delete')"><span class="material-icons-round">delete</span> Supprimer</div>
     </div>
@@ -139,7 +157,7 @@ let pressTimer = null;
 let isScrolling = false;
 
 // Variables pour les médias
-let currentMediaData = null; // Stockera l'image Base64 ou l'audio Base64
+let currentMediaData = null;
 let mediaRecorder = null;
 let audioChunks = [];
 let isRecording = false;
@@ -161,7 +179,6 @@ function render(data = items) {
             mediaHtml = `<audio src="${item.media}" class="card-audio" controls></audio>`;
         }
 
-        // Les notes vocales/images prennent souvent plus de place
         const spanClass = (item.type === 'image' || item.type === 'vocale') ? 'style="grid-column: span 2;"' : '';
 
         return `
@@ -183,9 +200,7 @@ function render(data = items) {
 
 // --- GESTION APPUI LONG ---
 function handlePressStart(index, e) {
-    // Ne pas déclencher si on clique sur l'audio player
     if(e.target.tagName.toLowerCase() === 'audio' || e.target.tagName.toLowerCase() === 'input') return;
-    
     if (isScrolling) return;
     const card = e.currentTarget;
     card.classList.add('pressing');
@@ -221,6 +236,62 @@ function handleMenuAction(action) {
     saveAndRefresh();
 }
 
+// --- HEADER MENU (EXPORT / IMPORT) ---
+function openHeaderMenu() { document.getElementById('header-menu-overlay').style.display = 'flex'; }
+function closeHeaderMenu() { document.getElementById('header-menu-overlay').style.display = 'none'; }
+
+function exportData() {
+    closeHeaderMenu();
+    if (items.length === 0) return alert("Aucune donnée à sauvegarder.");
+    
+    const dataStr = JSON.stringify(items);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement("a");
+    a.href = url;
+    
+    // Génère un nom de fichier avec la date du jour
+    const date = new Date();
+    const formattedDate = `${date.getFullYear()}${(date.getMonth()+1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+    a.download = `memoire_backup_${formattedDate}.json`;
+    
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function triggerImport() {
+    closeHeaderMenu();
+    document.getElementById('import-input').click();
+}
+
+function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importedItems = JSON.parse(e.target.result);
+            if (Array.isArray(importedItems)) {
+                if (confirm("Attention : L'importation remplacera toutes vos notes actuelles. Voulez-vous continuer ?")) {
+                    items = importedItems;
+                    saveAndRefresh();
+                    alert("Sauvegarde importée avec succès !");
+                }
+            } else {
+                alert("Le format du fichier n'est pas valide.");
+            }
+        } catch (error) {
+            alert("Erreur lors de la lecture du fichier de sauvegarde.");
+        }
+        event.target.value = ''; // Réinitialise l'input
+    };
+    reader.readAsText(file);
+}
+
 // --- GESTION DES FICHIERS ET MEDIAS ---
 function handleImageClick() {
     toggleChoice(false);
@@ -244,7 +315,6 @@ async function toggleRecording() {
     const btn = document.getElementById('record-btn');
     
     if (!isRecording) {
-        // Demander accès au micro et démarrer
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             mediaRecorder = new MediaRecorder(stream);
@@ -262,7 +332,7 @@ async function toggleRecording() {
                     audioPreview.style.display = 'block';
                 };
                 reader.readAsDataURL(audioBlob);
-                stream.getTracks().forEach(track => track.stop()); // Couper le micro
+                stream.getTracks().forEach(track => track.stop());
             };
             
             mediaRecorder.start();
@@ -273,14 +343,12 @@ async function toggleRecording() {
             alert("Accès au microphone refusé ou introuvable.");
         }
     } else {
-        // Arrêter l'enregistrement
         mediaRecorder.stop();
         isRecording = false;
         btn.classList.remove('recording');
         btn.innerHTML = `<span class="material-icons-round">mic</span> Réenregistrer`;
     }
 }
-
 
 // --- FORMULAIRE ---
 function toggleChoice(show) { document.getElementById('choice-popup').style.display = show ? 'flex' : 'none'; }
@@ -289,7 +357,6 @@ function openForm(type) {
     currentType = type;
     toggleChoice(false);
     
-    // Reset UI
     document.getElementById('title').value = '';
     document.getElementById('content').value = '';
     document.getElementById('preview-img').style.display = 'none';
@@ -297,7 +364,6 @@ function openForm(type) {
     document.getElementById('audio-preview').style.display = 'none';
     if(type !== 'image' && type !== 'vocale') currentMediaData = null;
     
-    // Configuration UI selon le type
     if (type === 'image' && currentMediaData) {
         document.getElementById('preview-img').src = currentMediaData;
         document.getElementById('preview-img').style.display = 'block';
@@ -317,10 +383,9 @@ function openForm(type) {
 }
 
 function closeForm() {
-    if(isRecording && mediaRecorder) mediaRecorder.stop(); // Sécurité
+    if(isRecording && mediaRecorder) mediaRecorder.stop();
     document.getElementById('modal-overlay').classList.remove('active');
     setTimeout(() => document.getElementById('modal-overlay').style.display = 'none', 300);
-    // Reset file input
     document.getElementById('image-input').value = '';
 }
 
@@ -334,14 +399,7 @@ function save() {
     const now = new Date();
     const dateStr = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth()+1).toString().padStart(2, '0')}.${now.getFullYear().toString().slice(-2)}`;
 
-    items.unshift({ 
-        title, 
-        content, 
-        type: currentType, 
-        date: dateStr, 
-        pinned: false,
-        media: currentMediaData // Sauvegarde de la Base64 ici
-    });
+    items.unshift({ title, content, type: currentType, date: dateStr, pinned: false, media: currentMediaData });
     
     saveAndRefresh();
     closeForm();
@@ -352,10 +410,9 @@ function saveAndRefresh() {
         localStorage.setItem('nothing_media_v1', JSON.stringify(items));
         render();
     } catch (e) {
-        // Le LocalStorage a une limite de 5MB. Les images peuvent vite la remplir.
         if (e.name === 'QuotaExceededError') {
-            alert("L'espace de stockage est plein ! Supprimez d'anciennes images pour faire de la place.");
-            items.shift(); // Retire la note qui vient de faire crasher
+            alert("L'espace de stockage est plein ! Supprimez d'anciennes images ou faites un export de sauvegarde.");
+            items.shift();
         }
     }
 }
