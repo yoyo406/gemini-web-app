@@ -9,10 +9,20 @@
 <!-- iOS -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<!-- Android : barre d'état ET barre de navigation transparentes -->
+<meta name="apple-mobile-web-app-title" content="Mind Space">
+<!-- Android PWA : barres transparentes en mode standalone -->
 <meta name="theme-color" content="transparent">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="transparent">
 <meta name="theme-color" media="(prefers-color-scheme: dark)"  content="transparent">
+<link rel="manifest" href="data:application/json,{
+  &quot;name&quot;: &quot;Mind Space&quot;,
+  &quot;short_name&quot;: &quot;Mind Space&quot;,
+  &quot;display&quot;: &quot;standalone&quot;,
+  &quot;orientation&quot;: &quot;portrait&quot;,
+  &quot;background_color&quot;: &quot;transparent&quot;,
+  &quot;theme_color&quot;: &quot;transparent&quot;,
+  &quot;start_url&quot;: &quot;.&quot;
+}">
 
 <style>
 /* ═══════════════════════════════════
