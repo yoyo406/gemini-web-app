@@ -250,6 +250,17 @@ body:not(.dark-theme) .nav-btn { color: rgba(0,0,0,0.48); }
   transform: rotate(45deg) scale(1.05);
 }
 
+/* FIX bouton + en thème clair */
+body:not(.dark-theme) .nav-btn.nav-add {
+  background: #EB4432;
+  color: #FFFFFF;
+  box-shadow: 0 4px 18px rgba(235, 68, 50, 0.35);
+}
+
+body:not(.dark-theme) .nav-btn.nav-add.active {
+  background: #111111;
+}
+
 /* ═══════════════════════════════════
    SPEED DIAL
 ═══════════════════════════════════ */
