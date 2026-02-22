@@ -1850,7 +1850,7 @@ body.modal-open .navbar {
       const showBody = !wide && item.title && item.content;
       const typeIcon = TYPE_ICON[item.type] || '·';
 
-      let html = '<div class="card' + (wide ? ' wide' : '') + '" data-widget="' + theme + '" onclick="openEdit(' + i + ')">';
+      let html = '<div class="card' + (wide ? ' wide' : '') + '" data-widget="' + theme + '" onclick="openEdit(' + items.indexOf(item) + ')">';
       if (item.pinned) html += '<div class="pin-dot"></div>';
       html += '<div class="card-inner">';
       html += '<div class="card-type">' + typeIcon + ' ' + esc(item.type) + '</div>';
