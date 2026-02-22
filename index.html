@@ -31,32 +31,32 @@
 :root {
   /* Base colors - Light mode */
   --bg-primary: #F5F5F7;
-  --bg-secondary: rgba(255, 255, 255, 0.85);  /* Augmenté de 0.72 à 0.85 */
-  --bg-tertiary: rgba(255, 255, 255, 0.6);   /* Augmenté de 0.45 à 0.6 */
+  --bg-secondary: rgba(255, 255, 255, 0.72);
+  --bg-tertiary: rgba(255, 255, 255, 0.45);
   
-  /* Glass effects - PLUS OPaques */
-  --glass-bg: rgba(255, 255, 255, 0.75);      /* Augmenté de 0.25 à 0.75 */
-  --glass-border: rgba(255, 255, 255, 0.9);   /* Augmenté de 0.4 à 0.9 */
-  --glass-highlight: rgba(255, 255, 255, 0.95); /* Augmenté de 0.6 à 0.95 */
-
+  /* Glass effects */
+  --glass-bg: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-highlight: rgba(255, 255, 255, 0.6);
+  --glass-shadow: rgba(0, 0, 0, 0.08);
   
   /* Text colors */
   --text-primary: #1C1C1E;
   --text-secondary: rgba(60, 60, 67, 0.6);
   --text-tertiary: rgba(60, 60, 67, 0.3);
   
-  /* Accent - Pure iOS Blue */
-  --accent-gradient: #007AFF;
-  --accent-blue: #007AFF;
-  --accent-purple: #007AFF;
-  --accent-pink: #007AFF;
-  --accent-orange: #007AFF;
+  /* Accent gradient - Palette Mind Space */
+  --accent-gradient: linear-gradient(135deg, #5B8DF6 0%, #C45EE2 40%, #F0449A 70%, #F97240 100%);
+  --accent-blue: #5B8DF6;
+  --accent-purple: #C45EE2;
+  --accent-pink: #F0449A;
+  --accent-orange: #F97240;
   
   /* Elevation */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
-  --shadow-glow: 0 0 40px rgba(0, 122, 255, 0.15);
+  --shadow-glow: 0 0 40px rgba(91, 141, 246, 0.15);
   
   /* Typography */
   --font-primary: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', sans-serif;
@@ -92,7 +92,7 @@ body.dark-theme {
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 40px rgba(10, 132, 255, 0.2);
+  --shadow-glow: 0 0 40px rgba(91, 141, 246, 0.2);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -129,9 +129,9 @@ body::before {
   position: fixed;
   inset: 0;
   background: 
-    radial-gradient(ellipse at 20% 20%, rgba(0, 122, 255, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(0, 122, 255, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(0, 122, 255, 0.04) 0%, transparent 60%);
+    radial-gradient(ellipse at 20% 20%, rgba(91, 141, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(175, 82, 222, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255, 45, 85, 0.04) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
@@ -253,13 +253,11 @@ body::before {
 /* Liquid Glass Card */
 .card {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px) saturate(1.6);
-  -webkit-backdrop-filter: blur(20px) saturate(1.6);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: 18px;
   aspect-ratio: 1 / 1;
-  transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.25s;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -364,7 +362,7 @@ body.dark-theme .card[data-widget="gray"] {
   height: 8px;
   background: var(--accent-gradient);
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(0, 122, 255, 0.5);
+  box-shadow: 0 0 8px rgba(255, 45, 85, 0.5);
 }
 
 .card[data-widget="red"] .pin-dot {
@@ -536,7 +534,7 @@ body.modal-open .navbar {
   color: var(--accent-blue);
 }
 
-/* Add button - Blue glow */
+/* Add button - Gradient glow */
 .nav-btn.nav-add {
   width: 56px;
   height: 56px;
@@ -544,7 +542,7 @@ body.modal-open .navbar {
   color: #FFFFFF;
   border: none;
   box-shadow: 
-    0 4px 20px rgba(0, 122, 255, 0.4),
+    0 4px 20px rgba(91, 141, 246, 0.4),
     0 0 0 1px rgba(255, 255, 255, 0.2) inset;
   transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -561,7 +559,7 @@ body.modal-open .navbar {
 .nav-btn.nav-add.active {
   transform: rotate(45deg) scale(1.05);
   box-shadow: 
-    0 6px 24px rgba(0, 122, 255, 0.5),
+    0 6px 24px rgba(91, 141, 246, 0.5),
     0 0 0 1px rgba(255, 255, 255, 0.3) inset;
 }
 
@@ -579,7 +577,7 @@ body.modal-open .navbar {
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  padding-bottom: 130px;
+  padding-bottom: calc(120px + var(--safe-bottom));
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -665,11 +663,17 @@ body.modal-open .navbar {
 }
 
 .dial-item .dial-icon-red {
-  color: var(--accent-blue);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .dial-item .dial-label-red {
-  color: var(--accent-blue);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -682,21 +686,22 @@ body.modal-open .navbar {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   z-index: 10000;
-  display: none;
+  display: flex;
   align-items: flex-end;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s;
 }
 
 .modal-overlay.visible {
-  display: flex;
   opacity: 1;
+  visibility: visible;
 }
 
 .modal-sheet {
-  background: rgba(255, 255, 255, 0.95);  /* Remplace var(--glass-bg) */
-  backdrop-filter: blur(40px) saturate(1.8); /* Augmenté saturate */
-  -webkit-backdrop-filter: blur(40px) saturate(1.8);
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px) saturate(2);
+  -webkit-backdrop-filter: blur(40px) saturate(2);
   width: 100%;
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   padding: 20px 24px calc(40px + var(--safe-bottom));
@@ -758,7 +763,7 @@ body.modal-open .navbar {
 .modal-sheet input:focus,
 .modal-sheet textarea:focus {
   background: rgba(120, 120, 128, 0.16);
-  border-color: rgba(0, 122, 255, 0.3);
+  border-color: rgba(91, 141, 246, 0.3);
 }
 
 .modal-sheet input::placeholder,
@@ -791,7 +796,7 @@ body.modal-open .navbar {
   cursor: pointer;
   font-size: 13px;
   letter-spacing: 1.5px;
-  box-shadow: 0 4px 20px rgba(0, 122, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 45, 85, 0.3);
   transition: all 0.2s ease;
   flex-shrink: 0;
   -webkit-appearance: none;
@@ -800,7 +805,7 @@ body.modal-open .navbar {
 
 #record-btn:active {
   transform: scale(0.98);
-  box-shadow: 0 2px 12px rgba(0, 122, 255, 0.25);
+  box-shadow: 0 2px 12px rgba(255, 45, 85, 0.25);
 }
 
 #audio-preview {
@@ -841,7 +846,7 @@ body.modal-open .navbar {
   box-shadow: 0 0 0 3px var(--bg-primary), 0 0 0 5px var(--text-primary);
 }
 
-/* Save button - Blue gradient */
+/* Save button - Liquid Glass gradient */
 .save-btn {
   width: 100%;
   padding: 18px;
@@ -855,7 +860,7 @@ body.modal-open .navbar {
   font-size: 13px;
   letter-spacing: 1.5px;
   box-shadow: 
-    0 4px 20px rgba(0, 122, 255, 0.35),
+    0 4px 20px rgba(91, 141, 246, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.2) inset;
   transition: all 0.25s ease;
   flex-shrink: 0;
@@ -866,7 +871,7 @@ body.modal-open .navbar {
 .save-btn:active {
   transform: scale(0.98);
   box-shadow: 
-    0 2px 12px rgba(0, 122, 255, 0.3),
+    0 2px 12px rgba(91, 141, 246, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
@@ -907,7 +912,7 @@ body.modal-open .navbar {
 }
 
 .action-btn.delete {
-  color: var(--accent-blue);
+  color: var(--accent-pink);
 }
 
 .close-btn {
@@ -956,8 +961,8 @@ body.modal-open .navbar {
   position: absolute;
   inset: 0;
   background: 
-    radial-gradient(ellipse at 10% 20%, rgba(0, 122, 255, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 90% 80%, rgba(0, 122, 255, 0.04) 0%, transparent 50%);
+    radial-gradient(ellipse at 10% 20%, rgba(91, 141, 246, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 80%, rgba(175, 82, 222, 0.04) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -1037,16 +1042,14 @@ body.modal-open .navbar {
 /* Theme selector card - Premium glass */
 .theme-selector-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
-  padding: 24px;
+  padding: 20px;
   box-shadow: 
     0 1px 0 var(--glass-highlight) inset,
     var(--shadow-md);
   position: relative;
-  overflow: hidden;
+  /* PAS de overflow:hidden ici — ça coupait les boutons */
 }
 
 .theme-selector-card::before {
@@ -1083,7 +1086,7 @@ body.modal-open .navbar {
   justify-content: center;
   color: white;
   font-size: 24px;
-  box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(91, 141, 246, 0.3);
 }
 
 .theme-selector-info {
@@ -1106,53 +1109,52 @@ body.modal-open .navbar {
 /* Theme options - Glass buttons */
 .theme-options {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
-  position: relative;
-  z-index: 1;
 }
 
 .theme-option {
   flex: 1;
-  padding: 16px 12px;
-  border-radius: var(--radius-lg);
+  min-width: 0;
+  padding: 12px 8px;
+  border-radius: var(--radius-md);
   border: 2px solid transparent;
   background: rgba(120, 120, 128, 0.12);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   cursor: pointer;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
   position: relative;
   -webkit-user-select: none;
   user-select: none;
+  overflow: hidden;
 }
 
 .theme-option:active {
-  background: rgba(120, 120, 128, 0.16);
+  transform: scale(0.96);
+  background: rgba(120, 120, 128, 0.18);
 }
 
 .theme-option.selected {
   border-color: var(--accent-blue);
-  background: rgba(0, 122, 255, 0.1);
+  background: rgba(91, 141, 246, 0.12);
   color: var(--accent-blue);
 }
 
 .theme-option-preview {
-  width: 48px;
-  height: 32px;
+  width: 40px;
+  height: 26px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--glass-border);
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .preview-dark {
@@ -1180,7 +1182,7 @@ body.modal-open .navbar {
   opacity: 0;
   transform: scale(0);
   transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.4);
+  box-shadow: 0 2px 8px rgba(91, 141, 246, 0.4);
 }
 
 .theme-option.selected::after {
@@ -1191,11 +1193,9 @@ body.modal-open .navbar {
 /* Settings items - Glass list */
 .settings-item {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px) saturate(1.6);
-  -webkit-backdrop-filter: blur(20px) saturate(1.6);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 18px 20px;
+  padding: 16px 18px;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -1203,11 +1203,15 @@ body.modal-open .navbar {
   box-shadow: 
     0 1px 0 var(--glass-highlight) inset,
     var(--shadow-sm);
-  transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform 0.2s ease, background 0.2s ease;
   position: relative;
   overflow: hidden;
   -webkit-user-select: none;
   user-select: none;
+  width: 100%;
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .settings-item::before {
@@ -1254,23 +1258,23 @@ body.modal-open .navbar {
   transform: scale(0.95);
 }
 
-/* Gradient backgrounds for icons - All Blue */
+/* Gradient backgrounds for icons */
 .icon-palette {
-  background: var(--accent-gradient);
+  background: linear-gradient(135deg, #AF52DE 0%, #FF2D55 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(175, 82, 222, 0.3);
 }
 
 .icon-share {
-  background: var(--accent-gradient);
+  background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(91, 141, 246, 0.3);
 }
 
 .icon-upload {
-  background: var(--accent-gradient);
+  background: linear-gradient(135deg, #FF9500 0%, #FF2D55 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
 }
 
 .settings-item-label {
@@ -1327,8 +1331,8 @@ body.modal-open .navbar {
   position: absolute;
   inset: 0;
   background: 
-    radial-gradient(ellipse at 80% 10%, rgba(0, 122, 255, 0.05) 0%, transparent 40%),
-    radial-gradient(ellipse at 20% 90%, rgba(0, 122, 255, 0.04) 0%, transparent 40%);
+    radial-gradient(ellipse at 80% 10%, rgba(91, 141, 246, 0.05) 0%, transparent 40%),
+    radial-gradient(ellipse at 20% 90%, rgba(175, 82, 222, 0.04) 0%, transparent 40%);
   pointer-events: none;
 }
 
@@ -1447,8 +1451,8 @@ body.modal-open .navbar {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(0, 122, 255, 0.2); }
-  50% { box-shadow: 0 0 30px rgba(0, 122, 255, 0.35); }
+  0%, 100% { box-shadow: 0 0 20px rgba(91, 141, 246, 0.2); }
+  50% { box-shadow: 0 0 30px rgba(91, 141, 246, 0.35); }
 }
 
 @keyframes shimmer {
@@ -1463,6 +1467,237 @@ body.modal-open .navbar {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ═══ HEADER UPGRADES ═══ */
+.header-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-top: 2px;
+  letter-spacing: 0.1px;
+}
+
+.header-badge {
+  min-width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0;
+  box-shadow: 0 1px 0 var(--glass-highlight) inset, var(--shadow-sm);
+  padding: 0 12px;
+}
+
+.header-badge-count {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header-badge-label {
+  font-size: 8px;
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ═══ CARD ENTRY ANIMATION ═══ */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.card.animate-in {
+  animation: cardIn 0.35s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+.card.animate-in:nth-child(1) { animation-delay: 0ms; }
+.card.animate-in:nth-child(2) { animation-delay: 35ms; }
+.card.animate-in:nth-child(3) { animation-delay: 70ms; }
+.card.animate-in:nth-child(4) { animation-delay: 105ms; }
+.card.animate-in:nth-child(5) { animation-delay: 140ms; }
+.card.animate-in:nth-child(6) { animation-delay: 175ms; }
+.card.animate-in:nth-child(7) { animation-delay: 210ms; }
+.card.animate-in:nth-child(8) { animation-delay: 245ms; }
+
+/* Card delete animation */
+@keyframes cardOut {
+  to { opacity: 0; transform: scale(0.85); }
+}
+.card.removing {
+  animation: cardOut 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* ═══ RELATIVE TIME ON CARD ═══ */
+.card-date {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  opacity: 0.35;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+/* ═══ TOAST NOTIFICATION ═══ */
+.toast {
+  position: fixed;
+  bottom: calc(100px + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  padding: 11px 18px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ═══ STATS CARD ═══ */
+.stats-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: 0 1px 0 var(--glass-highlight) inset, var(--shadow-sm);
+  margin-bottom: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--glass-highlight) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.stat-sep {
+  width: 1px;
+  height: 36px;
+  background: var(--glass-border);
+}
+
+/* ═══ DANGER ZONE ═══ */
+.settings-item-danger {
+  border-color: rgba(240, 68, 154, 0.2) !important;
+}
+
+.icon-danger {
+  background: linear-gradient(135deg, #F0449A 0%, #F97240 100%) !important;
+  box-shadow: 0 4px 12px rgba(240, 68, 154, 0.3) !important;
+}
+
+.settings-label-danger {
+  color: var(--accent-pink) !important;
+}
+
+/* ═══ VERSION LABEL ═══ */
+.settings-version {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-tertiary);
+  letter-spacing: 2px;
+  padding: 24px 0 8px;
+}
+
+/* ═══ SWIPE INDICATOR ON MODAL ═══ */
+.modal-handle {
+  width: 44px;
+  height: 5px;
+  background: var(--text-tertiary);
+  border-radius: 3px;
+  margin: 0 auto 24px;
+  flex-shrink: 0;
+  cursor: grab;
+}
+
+/* ═══ EMPTY STATE UPGRADE ═══ */
+.empty-state {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  gap: 16px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+
+.empty-text {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.empty-hint {
+  color: var(--text-tertiary);
+  font-size: 13px;
+  font-family: var(--font-primary);
+  text-align: center;
+  max-width: 200px;
+  line-height: 1.5;
 }
 
 /* Mobile optimizations */
@@ -1495,7 +1730,11 @@ body.modal-open .navbar {
 
 <!-- HEADER -->
 <header class="app-header">
-  <div class="logo">MIND <span>SPACE</span></div>
+  <div>
+    <div class="logo">MIND <span>SPACE</span></div>
+    <div class="header-sub" id="header-sub">Aujourd'hui</div>
+  </div>
+  <div class="header-badge" id="header-badge"></div>
 </header>
 
 <!-- RECHERCHE -->
@@ -1579,7 +1818,25 @@ body.modal-open .navbar {
     </button>
   </div>
   <div class="settings-scroll">
-    
+
+    <!-- Stats card -->
+    <div class="stats-card">
+      <div class="stat-item">
+        <div class="stat-value" id="stat-total">0</div>
+        <div class="stat-label">Notes</div>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-pinned">0</div>
+        <div class="stat-label">Épinglées</div>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-media">0</div>
+        <div class="stat-label">Médias</div>
+      </div>
+    </div>
+
     <!-- Section Apparence -->
     <div class="settings-section-label">Apparence</div>
     
@@ -1612,7 +1869,7 @@ body.modal-open .navbar {
     
     <button class="settings-item" onclick="exportData()">
       <div class="settings-item-icon-wrapper icon-share">
-        <span class="material-icons-round settings-item-icon">share</span>
+        <span class="material-icons-round settings-item-icon">ios_share</span>
       </div>
       <div style="flex:1">
         <div class="settings-item-label">Exporter les notes</div>
@@ -1631,7 +1888,22 @@ body.modal-open .navbar {
       </div>
       <span class="material-icons-round settings-item-arrow">chevron_right</span>
     </button>
-    
+
+    <!-- Section Danger -->
+    <div class="settings-section-label">Danger</div>
+
+    <button class="settings-item settings-item-danger" onclick="clearAllNotes()">
+      <div class="settings-item-icon-wrapper icon-danger">
+        <span class="material-icons-round settings-item-icon">delete_sweep</span>
+      </div>
+      <div style="flex:1">
+        <div class="settings-item-label settings-label-danger">Tout effacer</div>
+        <div class="settings-item-sub">Supprime toutes les notes définitivement</div>
+      </div>
+      <span class="material-icons-round settings-item-arrow">chevron_right</span>
+    </button>
+
+    <div class="settings-version">MIND SPACE · v2.0</div>
   </div>
 </div>
 
@@ -1709,6 +1981,9 @@ body.modal-open .navbar {
 <input type="file" id="image-input" accept="image/*" style="display:none">
 <input type="file" id="import-input" accept=".json" style="display:none" onchange="importData(event)">
 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 <script>
 (function() {
   'use strict';
@@ -1726,6 +2001,7 @@ body.modal-open .navbar {
   let audioChunks = [];
   let isRecording = false;
   let themeMode = 'auto';
+  let isFirstRender = true;
 
   /* ═══════════════════════════════
      INITIALISATION
@@ -1802,6 +2078,71 @@ body.modal-open .navbar {
       .replace(/"/g, '&quot;');
   }
 
+  // Vibration haptique légère
+  function haptic(pattern) {
+    if (navigator.vibrate) navigator.vibrate(pattern || 8);
+  }
+
+  // Toast notification (remplace les alert)
+  var toastTimer = null;
+  function showToast(msg, duration) {
+    var t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { t.classList.remove('show'); }, duration || 2500);
+  }
+
+  // Temps relatif
+  function relativeTime(dateStr) {
+    if (!dateStr) return '';
+    // Format dd.mm.yy
+    var parts = dateStr.split('.');
+    if (parts.length !== 3) return dateStr;
+    var d = parseInt(parts[0], 10);
+    var m = parseInt(parts[1], 10) - 1;
+    var y = 2000 + parseInt(parts[2], 10);
+    var then = new Date(y, m, d);
+    var now = new Date();
+    var diffDays = Math.floor((now - then) / 86400000);
+    if (diffDays === 0) return "Aujourd'hui";
+    if (diffDays === 1) return 'Hier';
+    if (diffDays < 7) return 'Il y a ' + diffDays + 'j';
+    if (diffDays < 30) return 'Il y a ' + Math.floor(diffDays / 7) + 'sem';
+    return dateStr;
+  }
+
+  // Mise à jour du header et des stats
+  function updateMeta() {
+    var total = items.length;
+    var pinned = items.filter(function(i) { return i.pinned; }).length;
+    var media = items.filter(function(i) { return i.media; }).length;
+
+    // Badge header
+    var badge = document.getElementById('header-badge');
+    if (badge) {
+      badge.innerHTML = '<div class="header-badge-count">' + total + '</div><div class="header-badge-label">notes</div>';
+    }
+
+    // Sous-titre header
+    var sub = document.getElementById('header-sub');
+    if (sub) {
+      var days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+      var months = ['jan','fév','mar','avr','mai','juin','jul','aoû','sep','oct','nov','déc'];
+      var now = new Date();
+      sub.textContent = days[now.getDay()] + ' ' + now.getDate() + ' ' + months[now.getMonth()];
+    }
+
+    // Stats paramètres
+    var stTotal = document.getElementById('stat-total');
+    var stPinned = document.getElementById('stat-pinned');
+    var stMedia = document.getElementById('stat-media');
+    if (stTotal) stTotal.textContent = total;
+    if (stPinned) stPinned.textContent = pinned;
+    if (stMedia) stMedia.textContent = media;
+  }
+
   /* ═══════════════════════════════
      WIDGETS
   ═══════════════════════════════ */
@@ -1823,22 +2164,18 @@ body.modal-open .navbar {
     const container = document.getElementById('container');
     if (!container) return;
     
-    // Trier : épinglés en premier
-    let sortedItems = items.slice().sort(function(a, b) {
-      if (a.pinned && !b.pinned) return -1;
-      if (!a.pinned && b.pinned) return 1;
-      return 0;
-    });
-    
     const data = currentQuery
-      ? sortedItems.filter(function(it) {
+      ? items.filter(function(it) {
           const text = ((it.title || '') + ' ' + (it.content || '')).toLowerCase();
           return text.includes(currentQuery);
         })
-      : sortedItems;
+      : items;
 
     if (!data.length) {
-      container.innerHTML = '<div class="empty-state">ESPACE VIDE</div>';
+      container.innerHTML = currentQuery
+        ? '<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">Aucun résultat</div><div class="empty-hint">Aucune note ne correspond à &laquo;&nbsp;' + esc(currentQuery) + '&nbsp;&raquo;</div></div>'
+        : '<div class="empty-state"><div class="empty-icon">✦</div><div class="empty-text">Espace vide</div><div class="empty-hint">Appuie sur + pour créer ta première note</div></div>';
+      updateMeta();
       return;
     }
 
@@ -1849,8 +2186,11 @@ body.modal-open .navbar {
       const title = item.title || (item.content ? item.content.slice(0, 40) : '');
       const showBody = !wide && item.title && item.content;
       const typeIcon = TYPE_ICON[item.type] || '·';
+      const timeStr = relativeTime(item.date);
+      // animate-in uniquement sur le premier rendu (isFirstRender)
+      const animClass = isFirstRender && i < 8 ? ' animate-in' : '';
 
-      let html = '<div class="card' + (wide ? ' wide' : '') + '" data-widget="' + theme + '" onclick="openEditById(' + item.id + ')">';
+      let html = '<div class="card' + (wide ? ' wide' : '') + animClass + '" data-widget="' + theme + '" onclick="openEdit(' + i + ')">';
       if (item.pinned) html += '<div class="pin-dot"></div>';
       html += '<div class="card-inner">';
       html += '<div class="card-type">' + typeIcon + ' ' + esc(item.type) + '</div>';
@@ -1863,10 +2203,13 @@ body.modal-open .navbar {
       }
       if (showBody) html += '<div class="card-content" ' + txtAttr + '>' + esc(item.content) + '</div>';
       html += '</div>';
-      html += '<div class="card-date">' + esc(item.date || '') + '</div>';
+      html += '<div class="card-date">' + esc(timeStr) + '</div>';
       html += '</div>';
       return html;
     }).join('');
+
+    updateMeta();
+    isFirstRender = false;
   };
 
   /* ═══════════════════════════════
@@ -1966,11 +2309,6 @@ body.modal-open .navbar {
     showModal();
   };
 
-  window.openEditById = function(id) {
-  const index = items.findIndex(function(it) { return it.id === id; });
-  if (index !== -1) openEdit(index);
-  };
-
   /* ═══════════════════════════════
      SAUVEGARDE
   ═══════════════════════════════ */
@@ -1987,7 +2325,6 @@ body.modal-open .navbar {
                  String(now.getFullYear()).slice(-2);
     
     const note = {
-      id: editingIndex !== null ? items[editingIndex].id : Date.now(), // ID unique
       title: title,
       content: content,
       type: currentType,
@@ -2003,8 +2340,11 @@ body.modal-open .navbar {
       items.unshift(note);
     }
     
+    var wasEditing = editingIndex !== null;
     saveToDisk();
     closeForm();
+    haptic(12);
+    showToast(wasEditing ? 'Note modifiée ✓' : 'Note créée ✓');
   };
 
   window.togglePinModal = function() {
@@ -2012,15 +2352,29 @@ body.modal-open .navbar {
     items[editingIndex].pinned = !items[editingIndex].pinned;
     const pinBtn = document.getElementById('pin-btn-modal');
     if (pinBtn) pinBtn.classList.toggle('active', items[editingIndex].pinned);
+    haptic(10);
     saveToDisk();
   };
 
   window.deleteNoteModal = function() {
     if (editingIndex === null || editingIndex < 0 || editingIndex >= items.length) return;
     if (!confirm('Supprimer cette note ?')) return;
+    haptic([10, 30, 10]);
     items.splice(editingIndex, 1);
     saveToDisk();
     closeForm();
+    showToast('Note supprimée');
+  };
+
+  /* ═══ TOUT EFFACER ═══ */
+  window.clearAllNotes = function() {
+    if (!items.length) { showToast('Aucune note à effacer'); return; }
+    if (!confirm('Effacer toutes les ' + items.length + ' notes ? Cette action est irréversible.')) return;
+    haptic([20, 50, 20]);
+    items = [];
+    saveToDisk();
+    closeSettings();
+    showToast('Toutes les notes effacées');
   };
 
   /* ═══════════════════════════════
@@ -2043,13 +2397,12 @@ body.modal-open .navbar {
   window.closeForm = function() {
     const overlay = document.getElementById('modal-overlay');
     if (!overlay) return;
-    
     overlay.classList.remove('open');
+    overlay.classList.remove('visible');
     document.body.classList.remove('modal-open');
-    
-    setTimeout(function() {
-      overlay.classList.remove('visible');
-    }, 400);
+    // Reset swipe transform
+    const sheet = overlay.querySelector('.modal-sheet');
+    if (sheet) sheet.style.transform = '';
   };
 
   window.closeFormFromOverlay = function(event) {
@@ -2072,7 +2425,9 @@ body.modal-open .navbar {
       popup.classList.add('visible');
       fab.classList.add('active');
       requestAnimationFrame(function() {
-        popup.classList.add('anim');
+        requestAnimationFrame(function() {
+          popup.classList.add('anim');
+        });
       });
     }
   };
@@ -2105,10 +2460,12 @@ body.modal-open .navbar {
     
     const reader = new FileReader();
     reader.onload = function(evt) {
-      currentMediaData = evt.target.result;
+      // resetModal D'ABORD (sinon il remet currentMediaData à null)
       editingIndex = null;
       currentType = 'image';
       resetModal();
+      // PUIS on assigne les données
+      currentMediaData = evt.target.result;
       
       const modalLabel = document.getElementById('modal-label');
       const previewImg = document.getElementById('preview-img');
@@ -2151,18 +2508,23 @@ body.modal-open .navbar {
           
           mediaRecorder.onstop = function() {
             const blob = new Blob(audioChunks, { type: 'audio/webm' });
-            currentMediaData = URL.createObjectURL(blob);
-            const audioPreview = document.getElementById('audio-preview');
-            if (audioPreview) {
-              audioPreview.src = currentMediaData;
-              audioPreview.style.display = 'block';
-            }
+            const fr = new FileReader();
+            fr.onload = function(ev) {
+              currentMediaData = ev.target.result;
+              const audioPreview = document.getElementById('audio-preview');
+              if (audioPreview) {
+                audioPreview.src = currentMediaData;
+                audioPreview.style.display = 'block';
+              }
+            };
+            fr.readAsDataURL(blob);
+            stream.getTracks().forEach(function(t) { t.stop(); });
           };
           
           mediaRecorder.start();
           isRecording = true;
           btn.textContent = 'ARRÊTER';
-          btn.style.background = '#007AFF';
+          btn.style.background = 'linear-gradient(135deg, #FF2D55 0%, #FF6B35 100%)';
         })
         .catch(function() {
           alert('Microphone non accessible');
@@ -2237,6 +2599,7 @@ body.modal-open .navbar {
   ═══════════════════════════════ */
   function saveToDisk() {
     try {
+      items.sort(function(a, b) { return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0); });
       localStorage.setItem('essential_space_v2', JSON.stringify(items));
     } catch (e) {}
     render();
@@ -2271,9 +2634,9 @@ body.modal-open .navbar {
         if (Array.isArray(data)) {
           items = data;
           saveToDisk();
-          alert('Notes importées avec succès !');
+          showToast(data.length + ' notes importées ✓');
         } else {
-          alert('Fichier invalide');
+          showToast('Fichier invalide ✗');
         }
       } catch (err) {
         alert('Erreur lors de l\'import');
@@ -2288,8 +2651,34 @@ body.modal-open .navbar {
   ═══════════════════════════════ */
   function setupEventListeners() {
     const imageInput = document.getElementById('image-input');
-    if (imageInput) {
-      imageInput.addEventListener('change', handleImageChange);
+    if (imageInput) imageInput.addEventListener('change', handleImageChange);
+
+    // Swipe down to close modal
+    const sheet = document.querySelector('.modal-sheet');
+    if (sheet) {
+      var startY = 0, isDragging = false;
+      sheet.addEventListener('touchstart', function(e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        startY = e.touches[0].clientY;
+        isDragging = true;
+        sheet.style.transition = 'none';
+      }, { passive: true });
+      sheet.addEventListener('touchmove', function(e) {
+        if (!isDragging) return;
+        var dy = e.touches[0].clientY - startY;
+        if (dy > 0) sheet.style.transform = 'translateY(' + dy + 'px)';
+      }, { passive: true });
+      sheet.addEventListener('touchend', function(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        sheet.style.transition = '';
+        var dy = e.changedTouches[0].clientY - startY;
+        if (dy > 120) {
+          closeForm();
+        } else {
+          sheet.style.transform = '';
+        }
+      }, { passive: true });
     }
   }
 
