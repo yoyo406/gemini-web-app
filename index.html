@@ -136,12 +136,15 @@ body {
 .card.pressing { transform: scale(0.94); }
 
 /* Thèmes widget */
+/* Thème clair : carte blanche sur fond gris clair → ombre pour la distinguer */
 .card[data-widget="dark"]  { background: #111111; color: #FFFFFF; }
-.card[data-widget="light"] { background: #FFFFFF;  color: #111111; box-shadow: 0 2px 18px rgba(0,0,0,0.1); }
-.card[data-widget="red"]   { background: #EB4432;  color: #FFFFFF; }
-.card[data-widget="gray"]  { background: #C8C8C8;  color: #111111; }
-body.dark-theme .card[data-widget="dark"]  { background: #FFFFFF; color: #111111; }
-body.dark-theme .card[data-widget="light"] { background: #111111; color: #FFFFFF; box-shadow: none; }
+.card[data-widget="light"] { background: #FFFFFF; color: #111111; box-shadow: 0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.08); }
+.card[data-widget="red"]   { background: #EB4432; color: #FFFFFF; }
+.card[data-widget="gray"]  { background: #C8C8C8; color: #111111; }
+
+/* Thème sombre : carte noire sur fond noir → bordure + légère ombre claire */
+body.dark-theme .card[data-widget="dark"]  { background: #FFFFFF; color: #111111; box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
+body.dark-theme .card[data-widget="light"] { background: #1E1E1E; color: #FFFFFF; border: 1px solid rgba(255,255,255,0.1); box-shadow: none; }
 body.dark-theme .card[data-widget="gray"]  { background: #3A3A3A; color: #FFFFFF; }
 
 /* Pin */
@@ -1049,9 +1052,11 @@ document.getElementById('image-input').onchange = e => {
   const file = e.target.files[0]; if (!file) return;
   const fr = new FileReader();
   fr.onload = ev => {
-    currentMediaData = ev.target.result;
+    // resetModal d'abord (remet currentMediaData à null)
     editingIndex = null; currentType = 'image';
     resetModal();
+    // Puis on set currentMediaData et l'aperçu
+    currentMediaData = ev.target.result;
     document.getElementById('modal-label').textContent = 'NOUVEAU';
     applyModalLayout('image');
     document.getElementById('preview-img').src = ev.target.result;
