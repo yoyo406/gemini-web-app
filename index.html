@@ -585,14 +585,6 @@ body.dark-theme .dial-item {
     <audio id="audio-preview" controls></audio>
     <textarea id="note-content" placeholder="Contenu..." rows="6"></textarea>
 
-    <div class="color-picker" id="color-picker-ui">
-      <div class="color-btn white-btn" id="cbtn-default" style="background:#FFFFFF" onclick="setTextColor('default')"></div>
-      <div class="color-btn" id="cbtn-red"    style="background:#EB4432" onclick="setTextColor('#EB4432')"></div>
-      <div class="color-btn" id="cbtn-yellow" style="background:#FFD700" onclick="setTextColor('#FFD700')"></div>
-      <div class="color-btn" id="cbtn-green"  style="background:#00FF7F" onclick="setTextColor('#00FF7F')"></div>
-      <div class="color-btn" id="cbtn-blue"   style="background:#00BFFF" onclick="setTextColor('#00BFFF')"></div>
-    </div>
-
     <button class="save-btn" onclick="saveNote()">ENREGISTRER</button>
 
     <div class="action-bar" id="edit-actions" style="display:none">
@@ -734,7 +726,6 @@ let items            = JSON.parse(localStorage.getItem('essential_space_v2')) ||
 let currentType      = 'écrit';
 let currentMediaData = null;
 let editingIndex     = null;
-let selectedColor    = null;
 let currentQuery     = '';
 let mediaRecorder, audioChunks = [], isRecording = false;
 
@@ -842,22 +833,6 @@ function render() {
   }).join('');
 }
 
-/* ═══════════════════════════════
-   COULEURS
-═══════════════════════════════ */
-const COLOR_BTN = {
-  'default':'cbtn-default','#EB4432':'cbtn-red',
-  '#FFD700':'cbtn-yellow','#00FF7F':'cbtn-green','#00BFFF':'cbtn-blue',
-};
-
-function setTextColor(color) {
-  selectedColor = color === 'default' ? null : color;
-  document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
-  const btn = document.getElementById(COLOR_BTN[color] || 'cbtn-default');
-  if (btn) btn.classList.add('active');
-  const ta = document.getElementById('note-content');
-  if (ta && ta.style.display !== 'none') ta.style.color = selectedColor || defaultColor();
-}
 
 /* ═══════════════════════════════
    LAYOUT MODAL
