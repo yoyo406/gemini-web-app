@@ -788,7 +788,15 @@ function defaultColor() { return isCurrentlyDark() ? '#FFFFFF' : '#111111'; }
 /* ═══════════════════════════════
    WIDGETS
 ═══════════════════════════════ */
-const WIDGET_SEQ = ['dark','red','light','dark','red','light','dark','red'];
+const WIDGET_SEQ = ['red','light','dark','red','light','dark'];
+
+function getWidgetTheme(item, index) {
+  if (item.pinned) return 'red';
+  if (item.type === 'vocale') return 'dark';
+  if (item.type === 'image') return 'light';
+
+  return WIDGET_SEQ[index % WIDGET_SEQ.length];
+}
 
 function getWidgetTheme(item, index) {
   if (item.pinned)            return 'red';
