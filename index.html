@@ -2,13 +2,17 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Mind Space</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<!-- iOS -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#E8E8E8">
+<!-- Android : barre d'état ET barre de navigation transparentes -->
+<meta name="theme-color" content="transparent">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="transparent">
+<meta name="theme-color" media="(prefers-color-scheme: dark)"  content="transparent">
 
 <style>
 /* ═══════════════════════════════════
@@ -45,15 +49,21 @@ body.dark-theme {
   margin: 0; padding: 0;
   -webkit-tap-highlight-color: transparent;
 }
-html { background: var(--bg); }
+html {
+  background: var(--bg);
+  /* Étend le fond jusqu'aux bords de l'écran */
+  height: 100%;
+}
 body {
   font-family: 'Inter', sans-serif;
   background: var(--bg);
   color: var(--text-main);
-  padding-bottom: 110px;
+  /* Espace pour la barre de navigation Android en bas */
+  padding-bottom: calc(110px + env(safe-area-inset-bottom));
   overflow-x: hidden;
   transition: background 0.25s, color 0.25s;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* ═══════════════════════════════════
@@ -62,7 +72,8 @@ body {
 .app-header {
   position: sticky; top: 0; z-index: 100;
   background: var(--bg);
-  padding: 22px 24px 14px;
+  /* Espace pour la barre d'état transparente */
+  padding: calc(22px + env(safe-area-inset-top)) 24px 14px;
   display: flex; align-items: center;
 }
 .logo {
@@ -206,7 +217,8 @@ body.dark-theme .card[data-widget="light"] .card-audio { filter: invert(1); }
 ═══════════════════════════════════ */
 .navbar {
   position: fixed;
-  bottom: 24px; left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
   display: flex; align-items: center; gap: 6px;
@@ -773,8 +785,6 @@ function isCurrentlyDark() {
 
 function applyTheme() {
   document.body.classList.toggle('dark-theme', isCurrentlyDark());
-  document.querySelector('meta[name="theme-color"]')
-    .setAttribute('content', isCurrentlyDark() ? '#141414' : '#E8E8E8');
 
   ['dark','light','auto'].forEach(m => {
     const el = document.getElementById('theme-opt-' + m);
