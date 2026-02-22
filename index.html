@@ -45,12 +45,12 @@
   --text-secondary: rgba(60, 60, 67, 0.6);
   --text-tertiary: rgba(60, 60, 67, 0.3);
   
-  /* Accent gradient - Vibrant iOS colors */
-  --accent-gradient: linear-gradient(135deg, #007AFF 0%, #5856D6 25%, #AF52DE 50%, #FF2D55 75%, #FF9500 100%);
+  /* Accent - Pure iOS Blue */
+  --accent-gradient: #007AFF;
   --accent-blue: #007AFF;
-  --accent-purple: #AF52DE;
-  --accent-pink: #FF2D55;
-  --accent-orange: #FF9500;
+  --accent-purple: #007AFF;
+  --accent-pink: #007AFF;
+  --accent-orange: #007AFF;
   
   /* Elevation */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -130,8 +130,8 @@ body::before {
   inset: 0;
   background: 
     radial-gradient(ellipse at 20% 20%, rgba(0, 122, 255, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(175, 82, 222, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(255, 45, 85, 0.04) 0%, transparent 60%);
+    radial-gradient(ellipse at 80% 80%, rgba(0, 122, 255, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(0, 122, 255, 0.04) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
@@ -364,7 +364,7 @@ body.dark-theme .card[data-widget="gray"] {
   height: 8px;
   background: var(--accent-gradient);
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(255, 45, 85, 0.5);
+  box-shadow: 0 0 8px rgba(0, 122, 255, 0.5);
 }
 
 .card[data-widget="red"] .pin-dot {
@@ -536,7 +536,7 @@ body.modal-open .navbar {
   color: var(--accent-blue);
 }
 
-/* Add button - Gradient glow */
+/* Add button - Blue glow */
 .nav-btn.nav-add {
   width: 56px;
   height: 56px;
@@ -665,17 +665,11 @@ body.modal-open .navbar {
 }
 
 .dial-item .dial-icon-red {
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent-blue);
 }
 
 .dial-item .dial-label-red {
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent-blue);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -797,7 +791,7 @@ body.modal-open .navbar {
   cursor: pointer;
   font-size: 13px;
   letter-spacing: 1.5px;
-  box-shadow: 0 4px 20px rgba(255, 45, 85, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 122, 255, 0.3);
   transition: all 0.2s ease;
   flex-shrink: 0;
   -webkit-appearance: none;
@@ -806,7 +800,7 @@ body.modal-open .navbar {
 
 #record-btn:active {
   transform: scale(0.98);
-  box-shadow: 0 2px 12px rgba(255, 45, 85, 0.25);
+  box-shadow: 0 2px 12px rgba(0, 122, 255, 0.25);
 }
 
 #audio-preview {
@@ -847,7 +841,7 @@ body.modal-open .navbar {
   box-shadow: 0 0 0 3px var(--bg-primary), 0 0 0 5px var(--text-primary);
 }
 
-/* Save button - Liquid Glass gradient */
+/* Save button - Blue gradient */
 .save-btn {
   width: 100%;
   padding: 18px;
@@ -913,7 +907,7 @@ body.modal-open .navbar {
 }
 
 .action-btn.delete {
-  color: var(--accent-pink);
+  color: var(--accent-blue);
 }
 
 .close-btn {
@@ -963,7 +957,7 @@ body.modal-open .navbar {
   inset: 0;
   background: 
     radial-gradient(ellipse at 10% 20%, rgba(0, 122, 255, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 90% 80%, rgba(175, 82, 222, 0.04) 0%, transparent 50%);
+    radial-gradient(ellipse at 90% 80%, rgba(0, 122, 255, 0.04) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -1260,23 +1254,23 @@ body.modal-open .navbar {
   transform: scale(0.95);
 }
 
-/* Gradient backgrounds for icons */
+/* Gradient backgrounds for icons - All Blue */
 .icon-palette {
-  background: linear-gradient(135deg, #AF52DE 0%, #FF2D55 100%);
+  background: var(--accent-gradient);
   color: white;
-  box-shadow: 0 4px 12px rgba(175, 82, 222, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
 }
 
 .icon-share {
-  background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+  background: var(--accent-gradient);
   color: white;
   box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
 }
 
 .icon-upload {
-  background: linear-gradient(135deg, #FF9500 0%, #FF2D55 100%);
+  background: var(--accent-gradient);
   color: white;
-  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
 }
 
 .settings-item-label {
@@ -1334,7 +1328,7 @@ body.modal-open .navbar {
   inset: 0;
   background: 
     radial-gradient(ellipse at 80% 10%, rgba(0, 122, 255, 0.05) 0%, transparent 40%),
-    radial-gradient(ellipse at 20% 90%, rgba(175, 82, 222, 0.04) 0%, transparent 40%);
+    radial-gradient(ellipse at 20% 90%, rgba(0, 122, 255, 0.04) 0%, transparent 40%);
   pointer-events: none;
 }
 
@@ -2155,7 +2149,7 @@ body.modal-open .navbar {
           mediaRecorder.start();
           isRecording = true;
           btn.textContent = 'ARRÊTER';
-          btn.style.background = 'linear-gradient(135deg, #FF2D55 0%, #FF6B35 100%)';
+          btn.style.background = '#007AFF';
         })
         .catch(function() {
           alert('Microphone non accessible');
