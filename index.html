@@ -6,8 +6,11 @@
 <title>Mind Space</title>
 
 <!-- ── PWA Core ── -->
+<link rel="manifest" href="manifest.json">
 <meta name="application-name" content="Mind Space">
 <meta name="description" content="Prenez des notes, organisez vos idées">
+
+<!-- theme-color adaptatif clair/sombre -->
 <meta name="theme-color" content="#2D5BE3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#12131A"  media="(prefers-color-scheme: dark)">
 
@@ -18,9 +21,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mind Space">
-<!-- apple-touch-icon injecté dynamiquement par initPWA() -->
+<link rel="apple-touch-icon" href="icon-180.png">
 
-<!-- ── Open Graph (partage) ── -->
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="64x64" href="icon-64.png">
+
+<!-- ── Open Graph ── -->
 <meta property="og:title" content="Mind Space">
 <meta property="og:description" content="Prenez des notes, organisez vos idées">
 <meta property="og:type" content="website">
@@ -1931,11 +1937,7 @@ body.modal-open { overflow: hidden; }
   border-radius: 12px;
   flex-shrink: 0;
   overflow: hidden;
-}
-
-#pwa-banner-logo canvas {
-  width: 44px;
-  height: 44px;
+  object-fit: cover;
 }
 
 .pwa-banner-text { flex: 1; min-width: 0; }
@@ -3063,218 +3065,32 @@ body.modal-open { overflow: hidden; }
 })();
 </script>
 <!-- ══════════════════════════════════════════════════════════
-     PWA — Logo · Manifest · Service Worker · Install Prompt
+     PWA — Service Worker + Bannière d'installation
 ════════════════════════════════════════════════════════════ -->
 <script>
 (function initPWA() {
   'use strict';
 
-  /* ───────────────────────────────────────────────
-     1. LOGO — Génération Canvas (gradient + étoile)
-  ─────────────────────────────────────────────────*/
-  function buildIcon(size) {
-    var cv = document.createElement('canvas');
-    cv.width = cv.height = size;
-    var c = cv.getContext('2d');
-    var r = Math.round(size * 0.225);  // border-radius
-
-    /* Fond dégradé bleu → violet */
-    var g = c.createLinearGradient(0, 0, size, size);
-    g.addColorStop(0,   '#1E4FD8');
-    g.addColorStop(0.5, '#2D5BE3');
-    g.addColorStop(1,   '#6750A4');
-    
-    /* Rounded rect (compatible tous navigateurs) */
-    c.beginPath();
-    c.moveTo(r, 0);
-    c.lineTo(size - r, 0);
-    c.quadraticCurveTo(size, 0, size, r);
-    c.lineTo(size, size - r);
-    c.quadraticCurveTo(size, size, size - r, size);
-    c.lineTo(r, size);
-    c.quadraticCurveTo(0, size, 0, size - r);
-    c.lineTo(0, r);
-    c.quadraticCurveTo(0, 0, r, 0);
-    c.closePath();
-    c.fillStyle = g;
-    c.fill();
-
-    /* Halo derrière l'étoile */
-    var cx = size / 2, cy = size / 2;
-    var haloGrad = c.createRadialGradient(cx, cy, 0, cx, cy, size * 0.38);
-    haloGrad.addColorStop(0, 'rgba(255,255,255,0.18)');
-    haloGrad.addColorStop(1, 'rgba(255,255,255,0)');
-    c.beginPath();
-    c.arc(cx, cy, size * 0.38, 0, Math.PI * 2);
-    c.fillStyle = haloGrad;
-    c.fill();
-
-    /* Étoile 4 branches (sparkle ✦) */
-    var outer = size * 0.29;
-    var inner = size * 0.08;
-    c.shadowColor = 'rgba(255,255,255,0.5)';
-    c.shadowBlur = size * 0.06;
-    c.fillStyle = '#FFFFFF';
-    c.beginPath();
-    for (var i = 0; i < 8; i++) {
-      var rad = (i % 2 === 0) ? outer : inner;
-      var angle = (i * Math.PI / 4) - Math.PI / 2;
-      var px = cx + rad * Math.cos(angle);
-      var py = cy + rad * Math.sin(angle);
-      if (i === 0) c.moveTo(px, py); else c.lineTo(px, py);
-    }
-    c.closePath();
-    c.fill();
-
-    /* Petit point décoratif haut-droit */
-    c.shadowBlur = 0;
-    c.globalAlpha = 0.45;
-    c.fillStyle = '#FFFFFF';
-    c.beginPath();
-    c.arc(cx + outer * 0.72, cy - outer * 0.72, size * 0.05, 0, Math.PI * 2);
-    c.fill();
-    c.globalAlpha = 1;
-
-    return cv;   // retourne le canvas directement
-  }
-
-  /* Générer toutes les tailles utiles */
-  var cv192 = buildIcon(192);
-  var cv512 = buildIcon(512);
-  var cv180 = buildIcon(180);   // Apple Touch
-  var cv64  = buildIcon(64);    // Favicon
-
-  var img192 = cv192.toDataURL('image/png');
-  var img512 = cv512.toDataURL('image/png');
-  var img180 = cv180.toDataURL('image/png');
-  var img64  = cv64.toDataURL('image/png');
-
-  /* ───────────────────────────────────────────────
-     2. FAVICON dynamique
-  ─────────────────────────────────────────────────*/
-  var fav = document.querySelector('link[rel="icon"]');
-  if (!fav) { fav = document.createElement('link'); fav.rel = 'icon'; document.head.appendChild(fav); }
-  fav.type = 'image/png';
-  fav.href = img64;
-
-  /* ───────────────────────────────────────────────
-     3. APPLE TOUCH ICON
-  ─────────────────────────────────────────────────*/
-  var apple = document.querySelector('link[rel="apple-touch-icon"]');
-  if (!apple) { apple = document.createElement('link'); apple.rel = 'apple-touch-icon'; document.head.appendChild(apple); }
-  apple.href = img180;
-
-  /* ───────────────────────────────────────────────
-     4. WEB APP MANIFEST via Blob URL
-        (technique single-file : évite un fichier externe)
-        Supporté Chrome 93+, Edge 93+, Firefox 90+
-  ─────────────────────────────────────────────────*/
-  var manifest = {
-    name: 'Mind Space',
-    short_name: 'Mind Space',
-    description: 'Prenez des notes, organisez vos idées — rapide, hors-ligne, beau.',
-    start_url: './',
-    scope: './',
-    display: 'standalone',
-    display_override: ['standalone', 'minimal-ui'],
-    orientation: 'portrait-primary',
-    background_color: '#EEF0FA',
-    theme_color: '#2D5BE3',
-    lang: 'fr',
-    dir: 'ltr',
-    categories: ['productivity', 'utilities'],
-    icons: [
-      { src: img192, sizes: '192x192', type: 'image/png', purpose: 'any' },
-      { src: img192, sizes: '192x192', type: 'image/png', purpose: 'maskable' },
-      { src: img512, sizes: '512x512', type: 'image/png', purpose: 'any' },
-      { src: img512, sizes: '512x512', type: 'image/png', purpose: 'maskable' }
-    ],
-    shortcuts: [
-      {
-        name: 'Nouvelle note',
-        short_name: 'Note',
-        description: 'Créer une nouvelle note',
-        url: './'
-      }
-    ]
-  };
-
-  try {
-    var mBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
-    var mURL  = URL.createObjectURL(mBlob);
-    var prev  = document.querySelector('link[rel="manifest"]');
-    if (prev) prev.remove();
-    var mLink = document.createElement('link');
-    mLink.rel  = 'manifest';
-    mLink.href = mURL;
-    document.head.insertBefore(mLink, document.head.firstChild);
-  } catch(e) { console.warn('[PWA] Manifest:', e); }
-
-  /* ───────────────────────────────────────────────
-     5. SERVICE WORKER via Blob URL
-        Cache-first pour les polices (offline),
-        Network-first pour le reste.
-        Note : scope limité au blob: origin → hors-ligne
-        partiel (fonts uniquement) en mode fichier local.
-        Sur HTTPS (GitHub Pages, Vercel…) = 100% offline.
-  ─────────────────────────────────────────────────*/
+  /* ─── 1. Service Worker réel (même origine) ─── */
   if ('serviceWorker' in navigator) {
-    var SW_CODE = [
-      "const V='ms-v2';",
-      "const FONTS=[",
-      "  'https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;700&family=Roboto:wght@400;500&display=swap',",
-      "  'https://fonts.googleapis.com/icon?family=Material+Icons+Round'",
-      "];",
-      "self.addEventListener('install',function(e){",
-      "  self.skipWaiting();",
-      "  e.waitUntil(caches.open(V).then(function(cache){",
-      "    return Promise.all(FONTS.map(function(u){",
-      "      return fetch(u,{mode:'no-cors'}).then(function(r){return cache.put(u,r);}).catch(function(){});",
-      "    }));",
-      "  }));",
-      "});",
-      "self.addEventListener('activate',function(e){",
-      "  e.waitUntil(caches.keys().then(function(keys){",
-      "    return Promise.all(keys.filter(function(k){return k!==V;}).map(function(k){return caches.delete(k);}));",
-      "  }).then(function(){return clients.claim();}));",
-      "});",
-      "self.addEventListener('fetch',function(e){",
-      "  var u=e.request.url;",
-      "  if(u.includes('fonts.goog')||u.includes('fonts.gstat')){",
-      "    e.respondWith(caches.open(V).then(function(cache){",
-      "      return cache.match(e.request).then(function(hit){",
-      "        if(hit)return hit;",
-      "        return fetch(e.request).then(function(r){cache.put(e.request,r.clone());return r;}).catch(function(){return new Response('',{status:503});});",
-      "      });",
-      "    }));",
-      "    return;",
-      "  }",
-      "  e.respondWith(fetch(e.request).catch(function(){",
-      "    return caches.match(e.request).then(function(r){",
-      "      return r||new Response('Hors-ligne',{status:503,headers:{'Content-Type':'text/plain'}});",
-      "    });",
-      "  }));",
-      "});"
-    ].join('\n');
-
-    try {
-      var swBlob = new Blob([SW_CODE], { type: 'application/javascript' });
-      var swURL  = URL.createObjectURL(swBlob);
-      navigator.serviceWorker.register(swURL)
-        .then(function(reg) { console.log('[PWA] SW enregistré ✓', reg.scope); })
-        .catch(function(err) { console.info('[PWA] SW non supporté en fichier local (normal) :', err.message); });
-    } catch(e) { console.warn('[PWA] SW:', e); }
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('./sw.js', { scope: './' })
+        .then(function (reg) {
+          console.log('[PWA] Service Worker actif ✓ scope:', reg.scope);
+        })
+        .catch(function (err) {
+          // Normal en file:// — déployer sur HTTPS pour le SW
+          console.info('[PWA] SW non enregistré (HTTPS requis) :', err.message);
+        });
+    });
   }
 
-  /* ───────────────────────────────────────────────
-     6. BANNIÈRE D'INSTALLATION (prompt Chrome)
-  ─────────────────────────────────────────────────*/
+  /* ─── 2. Bannière d'installation Chrome ─── */
   var deferredPrompt = null;
 
-  window.addEventListener('beforeinstallprompt', function(e) {
+  window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
     deferredPrompt = e;
-    // Petit délai pour ne pas apparaître immédiatement
     setTimeout(showInstallBanner, 1800);
   });
 
@@ -3284,10 +3100,10 @@ body.modal-open { overflow: hidden; }
     var banner = document.createElement('div');
     banner.id = 'pwa-banner';
     banner.innerHTML =
-      '<div id="pwa-banner-logo"></div>' +
+      '<img id="pwa-banner-logo" src="icon-192.png" alt="Mind Space">' +
       '<div class="pwa-banner-text">' +
         '<div class="pwa-banner-title">Installer Mind Space</div>' +
-        '<div class="pwa-banner-sub">Accès rapide depuis l\'écran d\'accueil</div>' +
+        '<div class="pwa-banner-sub">Accès rapide · Fonctionne hors-ligne</div>' +
       '</div>' +
       '<button id="pwa-install-btn">Installer</button>' +
       '<button id="pwa-dismiss-btn" aria-label="Fermer">' +
@@ -3295,40 +3111,32 @@ body.modal-open { overflow: hidden; }
       '</button>';
     document.body.appendChild(banner);
 
-    /* Mini-logo dans la bannière */
-    var logoWrap = document.getElementById('pwa-banner-logo');
-    var miniCv = buildIcon(44);
-    miniCv.style.cssText = 'width:44px;height:44px;border-radius:11px;display:block;';
-    logoWrap.appendChild(miniCv);
-
-    /* Animation d'entrée */
-    requestAnimationFrame(function() {
-      requestAnimationFrame(function() { banner.classList.add('visible'); });
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { banner.classList.add('visible'); });
     });
 
-    /* Bouton Installer */
-    document.getElementById('pwa-install-btn').addEventListener('click', function() {
+    document.getElementById('pwa-install-btn').addEventListener('click', function () {
       if (!deferredPrompt) return;
       deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(function(choice) {
-        console.log('[PWA] Install choice:', choice.outcome);
+      deferredPrompt.userChoice.then(function (choice) {
+        console.log('[PWA] Choix utilisateur :', choice.outcome);
         deferredPrompt = null;
-        banner.classList.remove('visible');
-        setTimeout(function() { banner.remove(); }, 450);
+        hideBanner();
       });
     });
 
-    /* Bouton Fermer */
-    document.getElementById('pwa-dismiss-btn').addEventListener('click', function() {
-      banner.classList.remove('visible');
-      setTimeout(function() { banner.remove(); }, 450);
-    });
+    document.getElementById('pwa-dismiss-btn').addEventListener('click', hideBanner);
   }
 
-  /* Masquer la bannière si déjà installé */
-  window.addEventListener('appinstalled', function() {
+  function hideBanner() {
     var b = document.getElementById('pwa-banner');
-    if (b) { b.classList.remove('visible'); setTimeout(function(){ b.remove(); }, 450); }
+    if (!b) return;
+    b.classList.remove('visible');
+    setTimeout(function () { b.remove(); }, 450);
+  }
+
+  window.addEventListener('appinstalled', function () {
+    hideBanner();
     console.log('[PWA] Application installée ✓');
   });
 
