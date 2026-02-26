@@ -7,7 +7,7 @@
 <link rel="manifest" href="manifest.json">
 <meta name="application-name" content="Mind Space">
 <meta name="description" content="Prenez des notes, organisez vos idées">
-<meta name="theme-color" content="#0D0E18" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#1C1C1E" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#EEEEF8" media="(prefers-color-scheme: light)">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -48,38 +48,38 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0D0E18;
-    --surface: rgba(255,255,255,0.05);
-    --surface-hi: rgba(255,255,255,0.09);
-    --glass: rgba(255,255,255,0.06);
-    --glass-border: rgba(255,255,255,0.10);
-    --pill-bg: rgba(22,22,38,0.90);
-    --pill-border: rgba(255,255,255,0.09);
-    --nav-active-bg: rgba(245,166,35,0.22);
-    --nav-icon: rgba(255,255,255,0.45);
+    --bg: #1C1C1E;
+    --surface: rgba(255,255,255,0.08);
+    --surface-hi: rgba(255,255,255,0.14);
+    --glass: rgba(255,255,255,0.10);
+    --glass-border: rgba(255,255,255,0.18);
+    --pill-bg: rgba(44,44,48,0.96);
+    --pill-border: rgba(255,255,255,0.14);
+    --nav-active-bg: rgba(245,166,35,0.25);
+    --nav-icon: rgba(255,255,255,0.55);
     --nav-icon-active: #F5A623;
-    --text-1: #EEEEFA;
-    --text-2: #9090B8;
-    --text-3: #505070;
-    --shadow-card: 0 2px 16px rgba(0,0,0,0.38), 0 0 0 1px rgba(255,255,255,0.06);
+    --text-1: #F2F2F7;
+    --text-2: #AEAEB2;
+    --text-3: #8E8E93;
+    --shadow-card: 0 2px 16px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.10);
   }
 }
 
 [data-theme="dark"] {
-  --bg: #0D0E18;
-  --surface: rgba(255,255,255,0.05);
-  --surface-hi: rgba(255,255,255,0.09);
-  --glass: rgba(255,255,255,0.06);
-  --glass-border: rgba(255,255,255,0.10);
-  --pill-bg: rgba(22,22,38,0.90);
-  --pill-border: rgba(255,255,255,0.09);
-  --nav-active-bg: rgba(245,166,35,0.22);
-  --nav-icon: rgba(255,255,255,0.45);
+  --bg: #1C1C1E;
+  --surface: rgba(255,255,255,0.08);
+  --surface-hi: rgba(255,255,255,0.14);
+  --glass: rgba(255,255,255,0.10);
+  --glass-border: rgba(255,255,255,0.18);
+  --pill-bg: rgba(44,44,48,0.96);
+  --pill-border: rgba(255,255,255,0.14);
+  --nav-active-bg: rgba(245,166,35,0.25);
+  --nav-icon: rgba(255,255,255,0.55);
   --nav-icon-active: #F5A623;
-  --text-1: #EEEEFA;
-  --text-2: #9090B8;
-  --text-3: #505070;
-  --shadow-card: 0 2px 16px rgba(0,0,0,0.38), 0 0 0 1px rgba(255,255,255,0.06);
+  --text-1: #F2F2F7;
+  --text-2: #AEAEB2;
+  --text-3: #8E8E93;
+  --shadow-card: 0 2px 16px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.10);
 }
 
 [data-theme="light"] {
@@ -109,6 +109,22 @@ body::before {
     radial-gradient(ellipse 80% 60% at 15% -5%, rgba(245,166,35,0.18) 0%, transparent 60%),
     radial-gradient(ellipse 60% 50% at 90% 110%, rgba(80,140,255,0.16) 0%, transparent 55%),
     radial-gradient(ellipse 45% 40% at 55% 55%, rgba(180,100,255,0.07) 0%, transparent 60%);
+}
+
+/* Gradients adoucis sur fond gris foncé */
+[data-theme="dark"] body::before {
+  background:
+    radial-gradient(ellipse 80% 60% at 15% -5%, rgba(245,166,35,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 110%, rgba(80,140,255,0.09) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 40% at 55% 55%, rgba(180,100,255,0.05) 0%, transparent 60%);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body::before {
+    background:
+      radial-gradient(ellipse 80% 60% at 15% -5%, rgba(245,166,35,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 110%, rgba(80,140,255,0.09) 0%, transparent 55%),
+      radial-gradient(ellipse 45% 40% at 55% 55%, rgba(180,100,255,0.05) 0%, transparent 60%);
+  }
 }
 
 button { font-family: var(--font); cursor: pointer; border: none; background: none; }
@@ -1043,7 +1059,7 @@ body.modal-open { overflow: hidden; }
   }
   function updateMetaThemeColor(isDark) {
     document.querySelectorAll('meta[name="theme-color"]').forEach(function(m) {
-      if (isDark && m.getAttribute('media').includes('dark')) m.setAttribute('content', '#0D0E18');
+      if (isDark && m.getAttribute('media').includes('dark')) m.setAttribute('content', '#1C1C1E');
       if (!isDark && m.getAttribute('media').includes('light')) m.setAttribute('content', '#EEEEF8');
     });
   }
