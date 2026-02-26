@@ -380,46 +380,51 @@ button { font-family: var(--font); cursor: pointer; border: none; background: no
 /* ═══ SPEED DIAL ═══ */
 .speed-dial-overlay {
   position: fixed; inset: 0; z-index: 190;
-  background: rgba(0,0,0,0); display: none;
+  background: rgba(0,0,0,0);
+  /* transition sur la classe de base = animée à l'ouverture ET à la fermeture */
   transition: background 0.22s ease;
+  display: none;
+  pointer-events: auto;
 }
 .speed-dial-overlay.visible { display: block; }
-.speed-dial-overlay.anim { background: rgba(0,0,0,0.30); }
+.speed-dial-overlay.anim    { background: rgba(0,0,0,0.32); }
 
 .speed-dial-list {
   position: absolute; right: 16px;
-  bottom: calc(80px + var(--sab));
+  /* 12px padding-bottom + 14px padding + 56px FAB + 12px gap = 94px */
+  bottom: calc(94px + var(--sab));
   display: flex; flex-direction: column; gap: 10px; align-items: flex-end;
-  transform: translateY(14px); opacity: 0;
-  transition: opacity 0.22s ease, transform 0.26s cubic-bezier(0.34,1.2,0.64,1);
+  transform: translateY(16px); opacity: 0;
+  transition: opacity 0.22s ease, transform 0.28s cubic-bezier(0.34,1.2,0.64,1);
   pointer-events: none;
 }
 .speed-dial-overlay.anim .speed-dial-list {
   transform: translateY(0); opacity: 1; pointer-events: auto;
 }
 
-.dial-row { opacity: 0; transform: translateY(10px); transition: opacity 0.2s ease, transform 0.22s cubic-bezier(0.34,1.2,0.64,1); }
+.dial-row { opacity: 0; transform: translateY(12px); transition: opacity 0.20s ease, transform 0.24s cubic-bezier(0.34,1.4,0.64,1); }
 .speed-dial-overlay.anim .dial-row { opacity: 1; transform: translateY(0); }
+/* Apparition bottom-up : la 3ème pill (bas, proche FAB) en premier */
 .speed-dial-overlay.anim .dial-row:nth-child(3) { transition-delay: 0ms; }
-.speed-dial-overlay.anim .dial-row:nth-child(2) { transition-delay: 45ms; }
-.speed-dial-overlay.anim .dial-row:nth-child(1) { transition-delay: 90ms; }
+.speed-dial-overlay.anim .dial-row:nth-child(2) { transition-delay: 55ms; }
+.speed-dial-overlay.anim .dial-row:nth-child(1) { transition-delay: 110ms; }
 
 .dial-label { display: none; }
 
 .dial-fab {
   display: flex; align-items: center; gap: 10px;
-  padding: 12px 18px; border-radius: 999px;
-  background: var(--surface-hi); backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  padding: 12px 20px; border-radius: 999px;
+  /* Pas de backdrop-filter ici : le fond sombre de l'overlay le casserait */
+  background: var(--surface-hi);
   border: 1px solid var(--glass-border);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.22), 0 1px 6px rgba(0,0,0,0.12);
   font-size: 14px; font-weight: 600; color: var(--text-1);
-  white-space: nowrap; transition: transform 0.15s ease;
+  white-space: nowrap; transition: transform 0.16s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.14s ease;
   position: relative; overflow: hidden;
 }
-.dial-fab:active { transform: scale(0.96); }
-.dial-fab::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: transparent; transition: background 0.1s ease; }
-.dial-fab:active::after { background: rgba(0,0,0,0.06); }
+.dial-fab:active { transform: scale(0.95); box-shadow: 0 2px 10px rgba(0,0,0,0.16); }
+.dial-fab::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: transparent; transition: background 0.10s ease; }
+.dial-fab:active::after { background: rgba(0,0,0,0.07); }
 .dial-fab .material-icons-round { font-size: 20px; color: var(--accent); }
 .dial-text { font-size: 14px; font-weight: 600; color: var(--text-1); }
 
@@ -1018,6 +1023,7 @@ body.modal-open { overflow: hidden; }
   var currentTheme = 'system';
   window.setTheme = function(t) {
     currentTheme = t;
+    hTap();
     localStorage.setItem('ms_theme', t);
     applyTheme(t);
     ['system','light','dark'].forEach(function(name) {
@@ -1063,7 +1069,18 @@ body.modal-open { overflow: hidden; }
     if (str == null) return '';
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
-  function haptic(p) { if (navigator.vibrate) navigator.vibrate(p || 8); }
+  function haptic(p) { if (navigator.vibrate) navigator.vibrate(p || 6); }
+
+  /* Patterns Pixel-style :
+     - tap léger (chip, nav)        : 6ms
+     - tap medium (FAB, save)       : 10ms
+     - confirm (création/modif)     : [4, 40, 8]
+     - warning (suppression)        : [8, 60, 14]
+     - long press                   : [6, 20, 6]                */
+  function hTap()     { haptic(6); }
+  function hMedium()  { haptic(10); }
+  function hConfirm() { haptic([4, 40, 8]); }
+  function hWarning() { haptic([8, 60, 14]); }
   var toastTimer = null;
   function showToast(msg, dur) {
     var t = document.getElementById('toast');
@@ -1104,6 +1121,7 @@ body.modal-open { overflow: hidden; }
 
   window.setFilter = function(f) {
     currentFilter = f;
+    hTap();
     ['all','pinned','image','vocale'].forEach(function(name) {
       var chip = document.getElementById('chip-'+name);
       if (chip) chip.classList.toggle('active', name === f);
@@ -1188,18 +1206,24 @@ body.modal-open { overflow: hidden; }
   }
   window.closeForm=function() {
     var overlay=document.getElementById('modal-overlay'); if(!overlay) return;
-    overlay.classList.remove('open'); document.body.classList.remove('modal-open');
-    setTimeout(function(){overlay.classList.remove('visible');},400);
+    overlay.classList.remove('open');
+    /* Bug 4 fix: retirer modal-open APRÈS la fin de l'animation (400ms), pas avant */
+    setTimeout(function(){
+      overlay.classList.remove('visible');
+      document.body.classList.remove('modal-open');
+    },400);
     var sheet=overlay.querySelector('.modal-sheet'); if(sheet) sheet.style.transform='';
   };
   window.closeFormFromOverlay=function(e){if(e.target===e.currentTarget)closeForm();};
   window.openForm=function(type) {
     closePopup(); editingIndex=null; currentType=type||'écrit'; resetModal();
+    hMedium();
     var lbl=document.getElementById('modal-label'); if(lbl) lbl.textContent='Nouvelle note';
     applyModalLayout(currentType); showModal();
   };
   window.openEdit=function(index) {
     if(index<0||index>=items.length) return;
+    hTap(); /* Bug 6 fix: haptic sur tap carte */
     editingIndex=index; var item=items[index]; resetModal();
     var lbl=document.getElementById('modal-label');
     var titleEl=document.getElementById('note-title');
@@ -1230,7 +1254,7 @@ body.modal-open { overflow: hidden; }
     };
     var wasEditing=editingIndex!==null;
     if(wasEditing) items[editingIndex]=note; else items.unshift(note);
-    saveToDisk(); closeForm(); haptic(12);
+    saveToDisk(); closeForm(); hConfirm();
     showToast(wasEditing?'Note modifiée ✓':'Note créée ✓');
   };
   window.togglePinModal=function() {
@@ -1238,19 +1262,13 @@ body.modal-open { overflow: hidden; }
     items[editingIndex].pinned=!items[editingIndex].pinned;
     var pb=document.getElementById('pin-btn-modal');
     if(pb) pb.classList.toggle('active',items[editingIndex].pinned);
-    haptic(10); saveToDisk();
+    hTap(); saveToDisk();
   };
   window.deleteNoteModal=function() {
     if(editingIndex===null) return;
     if(!confirm('Supprimer cette note ?')) return;
-    haptic([10,30,10]); items.splice(editingIndex,1); saveToDisk(); closeForm(); showToast('Note supprimée');
+    hWarning(); items.splice(editingIndex,1); saveToDisk(); closeForm(); showToast('Note supprimée');
   };
-  window.clearAllNotes=function() {
-    if(!items.length){showToast('Aucune note à effacer');return;}
-    if(!confirm('Effacer toutes les '+items.length+' notes ?')) return;
-    haptic([20,50,20]); items=[]; saveToDisk(); closeSettings(); showToast('Toutes les notes effacées');
-  };
-
   var dialOpen=false;
   window.togglePopup=function() {
     if(dialOpen){closePopup();return;}
@@ -1259,6 +1277,7 @@ body.modal-open { overflow: hidden; }
     if(!popup) return;
     dialOpen=true;
     if(addBtn) addBtn.classList.add('open');
+    haptic(6);
     popup.classList.add('visible');
     requestAnimationFrame(function(){requestAnimationFrame(function(){popup.classList.add('anim');});});
   };
@@ -1269,11 +1288,11 @@ body.modal-open { overflow: hidden; }
     dialOpen=false;
     if(addBtn) addBtn.classList.remove('open');
     popup.classList.remove('anim');
-    setTimeout(function(){popup.classList.remove('visible');},280);
+    setTimeout(function(){ popup.classList.remove('visible'); }, 230);
   };
 
   window.handleImageClick=function() {
-    closePopup(); var ii=document.getElementById('image-input'); if(ii) ii.click();
+    closePopup(); hMedium(); var ii=document.getElementById('image-input'); if(ii) ii.click();
   };
   function handleImageChange(e) {
     var file=e.target.files[0]; if(!file) return;
@@ -1320,6 +1339,7 @@ body.modal-open { overflow: hidden; }
     var sc=document.getElementById('search-container');
     var nb=document.getElementById('nav-search');
     if(!sc) return;
+    hTap();
     sc.classList.toggle('open');
     var isOpen=sc.classList.contains('open');
     if(nb) nb.classList.toggle('active',isOpen);
@@ -1329,7 +1349,13 @@ body.modal-open { overflow: hidden; }
   window.search=function(q){currentQuery=q?q.toLowerCase().trim():'';render();};
   window.navHome=function() {
     var sc=document.getElementById('search-container');
-    if(sc&&sc.classList.contains('open')) toggleSearch();
+    /* Bug 3 fix: fermer la recherche silencieusement pour éviter double haptic */
+    if(sc&&sc.classList.contains('open')) {
+      sc.classList.remove('open');
+      var nb=document.getElementById('nav-search'); if(nb) nb.classList.remove('active');
+      var si=document.getElementById('search-input'); if(si){si.value='';currentQuery='';}
+    }
+    hTap(); /* un seul haptic */
     currentFilter='all';
     ['all','pinned','image','vocale'].forEach(function(n){
       var c=document.getElementById('chip-'+n); if(c) c.classList.toggle('active',n==='all');
@@ -1339,20 +1365,33 @@ body.modal-open { overflow: hidden; }
     });
     render();
   };
+  var _settingsScrollHandler = null; /* Bug 2 fix: référence pour pouvoir supprimer l'ancien listener */
   window.openSettings=function() {
+    hTap();
     ['nav-home','nav-search'].forEach(function(id){var el=document.getElementById(id);if(el)el.classList.remove('active');});
     var ns=document.getElementById('nav-settings'); if(ns) ns.classList.add('active');
     var ol=document.getElementById('settings-overlay'); if(ol) ol.classList.add('visible');
     updateStorageBar();
     var scroll=document.getElementById('settings-scroll');
-    if(scroll) scroll.addEventListener('scroll',function(){
-      ol.classList.toggle('settings-scrolled',scroll.scrollTop>4);
-    });
+    if(scroll) {
+      /* supprimer l'ancien listener avant d'en ajouter un nouveau */
+      if(_settingsScrollHandler) scroll.removeEventListener('scroll', _settingsScrollHandler);
+      _settingsScrollHandler = function(){ ol.classList.toggle('settings-scrolled', scroll.scrollTop>4); };
+      scroll.addEventListener('scroll', _settingsScrollHandler);
+    }
   };
   window.closeSettings=function() {
+    hTap();
     var ol=document.getElementById('settings-overlay'); if(ol) ol.classList.remove('visible');
     var nh=document.getElementById('nav-home'); var ns=document.getElementById('nav-settings');
     if(nh) nh.classList.add('active'); if(ns) ns.classList.remove('active');
+  };
+  window.clearAllNotes=function() {
+    if(!items.length){showToast('Aucune note à effacer');return;}
+    if(!confirm('Effacer toutes les '+items.length+' notes ?')) return;
+    hWarning(); items=[]; saveToDisk(); closeSettings();
+    /* Bug 7 fix: updateMeta explicite car closeSettings se produit avant render() de saveToDisk */
+    updateMeta(); showToast('Toutes les notes effacées');
   };
   function updateStorageBar() {
     try {
@@ -1422,11 +1461,11 @@ body.modal-open { overflow: hidden; }
     var menu=document.getElementById('context-menu'); var ol=document.getElementById('context-overlay');
     if(menu) menu.classList.remove('visible'); if(ol) ol.classList.remove('visible'); ctxIndex=null;
   };
-  window.ctxOpen=function(){var i=ctxIndex;closeContextMenu();if(i!==null)openEdit(i);};
+  window.ctxOpen=function(){var i=ctxIndex;closeContextMenu();hTap();if(i!==null)openEdit(i);};
   window.ctxPin=function() {
     if(ctxIndex===null||!items[ctxIndex]) return;
     var was=items[ctxIndex].pinned; items[ctxIndex].pinned=!was;
-    haptic(10); saveToDisk(); closeContextMenu(); showToast(was?'Note désépinglée':'Note épinglée');
+    hTap(); saveToDisk(); closeContextMenu(); showToast(was?'Note désépinglée':'Note épinglée');
   };
   window.ctxDuplicate=function() {
     if(ctxIndex===null||!items[ctxIndex]) return;
@@ -1434,11 +1473,11 @@ body.modal-open { overflow: hidden; }
     clone.pinned=false; clone.colorKey=COLORS[items.length%COLORS.length];
     var n=new Date();
     clone.date=[n.getDate(),n.getMonth()+1,n.getFullYear()%100].map(function(v){return String(v).padStart(2,'0');}).join('.');
-    items.splice(ctxIndex+1,0,clone); haptic(12); saveToDisk(); closeContextMenu(); showToast('Note dupliquée');
+    items.splice(ctxIndex+1,0,clone); hConfirm(); saveToDisk(); closeContextMenu(); showToast('Note dupliquée');
   };
   window.ctxDelete=function() {
     if(ctxIndex===null||!items[ctxIndex]) return;
-    var i=ctxIndex; closeContextMenu(); haptic([10,40,10]); items.splice(i,1); saveToDisk(); showToast('Note supprimée');
+    var i=ctxIndex; closeContextMenu(); hWarning(); items.splice(i,1); saveToDisk(); showToast('Note supprimée');
   };
 
   function setupLongPress() {
@@ -1457,7 +1496,7 @@ body.modal-open { overflow: hidden; }
       var card=e.target.closest('.card'); if(!card||e.target.closest('audio')) return;
       var t=e.touches[0]; pressStartX=t.clientX; pressStartY=t.clientY;
       card.classList.add('press-active');
-      pressTimer=setTimeout(function(){card.classList.remove('press-active');var ri=getCardIndex(card);if(ri!==-1)openContextMenu(ri,t.clientX,t.clientY);},500);
+      pressTimer=setTimeout(function(){card.classList.remove('press-active');haptic([6,20,6]);var ri=getCardIndex(card);if(ri!==-1)openContextMenu(ri,t.clientX,t.clientY);},500);
     },{passive:true});
     container.addEventListener('touchend',function(e){clearTimeout(pressTimer);var card=e.target.closest('.card');if(card)card.classList.remove('press-active');},{passive:true});
     container.addEventListener('touchmove',function(e){
