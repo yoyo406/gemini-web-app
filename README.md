@@ -1,4 +1,4 @@
-# 🌟 Mind Space
+# 🌟 Mind Space (DISCLAIMER : THIS IS A BETA VERSION OF MY WEBSITE/APP SO IF THERE A BUG PLS REPORT !!)
 
 **Mind Space** est une application de prise de notes personnelle, progressive (PWA), entièrement côté client — aucun serveur, aucun compte, aucune donnée quittant ton appareil.
 
