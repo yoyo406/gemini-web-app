@@ -29,7 +29,6 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
   padding:max(54px,env(safe-area-inset-top,54px)) 18px 12px;
   flex-shrink:0;
 }
-/* Logo rond gauche */
 .hdr-logo{
   width:38px;height:38px;border-radius:50%;
   background:var(--surface2);border:1px solid var(--border);
@@ -40,7 +39,6 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .hdr-logo svg{width:22px;height:22px}
 .hdr-logo.has-inst::after{content:'';position:absolute;top:2px;right:2px;width:8px;height:8px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
 
-/* Badge modèle centre */
 .hdr-center{
   background:var(--surface);border:1px solid var(--border);
   border-radius:999px;padding:8px 16px;
@@ -51,12 +49,8 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .hdr-center-text{font-size:13.5px;font-weight:600;color:var(--accent)}
 .hdr-center svg{width:13px;height:13px;stroke:var(--accent);fill:none;stroke-width:2.2;stroke-linecap:round}
 
-
-
-/* Corps home vide */
 .home-body{flex:1}
 
-/* ══ BARRE PARTAGÉE (home + chat) ══ */
 .bar-area{flex-shrink:0;padding:10px 14px max(28px,env(safe-area-inset-bottom,28px))}
 
 .perp-bar{
@@ -68,7 +62,6 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 }
 .perp-bar:focus-within{border-color:#3d3d3d}
 
-/* textarea ligne */
 .bar-row{display:flex;align-items:flex-start;padding:14px 16px 8px;gap:8px}
 .bar-ta{
   flex:1;background:transparent;border:none;outline:none;
@@ -77,7 +70,6 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 }
 .bar-ta::placeholder{color:var(--text-mid)}
 
-/* boutons ligne bas */
 .bar-foot{
   display:flex;align-items:center;justify-content:space-between;
   padding:0 10px 10px;
@@ -85,7 +77,6 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .bar-foot-left{display:flex;gap:2px}
 .bar-foot-right{display:flex;align-items:center;gap:6px}
 
-/* bouton rond gris */
 .bb{
   width:38px;height:38px;border-radius:50%;border:none;
   background:transparent;
@@ -100,7 +91,6 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .bb.mic-active::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px solid rgba(224,80,80,.4);animation:micRing 1s ease-in-out infinite}
 @keyframes micRing{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.18);opacity:.3}}
 
-/* bouton turquoise vocal */
 .bb-voice{
   width:42px;height:42px;border-radius:50%;border:none;
   background:var(--accent);flex-shrink:0;
@@ -115,7 +105,6 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 @keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(32,192,208,.5)}50%{box-shadow:0 0 0 12px rgba(32,192,208,0)}}
 .bb-voice svg{width:20px;height:20px;stroke:#0d0d0d;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
 
-/* bouton envoyer (remplace vocal quand texte) */
 .bb-send{
   width:42px;height:42px;border-radius:50%;border:none;
   background:var(--accent);flex-shrink:0;
@@ -130,12 +119,10 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .bb-send:active{transform:scale(.91)!important}
 .bb-send svg{width:18px;height:18px;stroke:#0d0d0d;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 
-/* wrapper pour superposer send/voice */
 .voice-wrap{position:relative;width:42px;height:42px;flex-shrink:0}
 .voice-wrap .bb-voice,.voice-wrap .bb-send{position:absolute;top:0;left:0}
 .voice-wrap .bb-send.show{position:relative}
 
-/* ══ VUE CHAT ══ */
 #view-chat{display:none;flex-direction:column;height:100%;animation:viewIn .38s cubic-bezier(.4,0,.2,1)}
 #view-chat.active{display:flex}
 
@@ -151,7 +138,7 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .chat-title-name{font-size:15px;font-weight:700;color:var(--text)}
 .chat-title-sub{font-size:11px;color:var(--text-mid);margin-top:1px}
 
-#messages{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 14px 8px;display:flex;flex-direction:column;gap:18px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+#messages{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 14px 8px;display:flex;flex-direction:column;gap:18px;-webkit-overflow-scrolling:touch}
 #messages::-webkit-scrollbar{display:none}
 .msg{display:flex;flex-direction:column;gap:4px}
 .msg.user{align-items:flex-end}
@@ -191,11 +178,9 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .chip-progress{display:inline-block;width:12px;height:12px;border:2px solid rgba(32,192,208,.25);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ══ TOAST ══ */
 #toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%) translateY(8px);background:rgba(26,26,26,.97);backdrop-filter:blur(16px);color:var(--text);padding:9px 18px;border-radius:20px;font-size:13px;font-weight:500;z-index:400;border:1px solid var(--border);opacity:0;transition:all .3s cubic-bezier(.34,1.3,.64,1);pointer-events:none;white-space:nowrap;max-width:calc(100vw - 40px)}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ══ SHEETS ══ */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);z-index:200;align-items:flex-end;justify-content:center}
 .overlay.visible{display:flex}
 .sheet{background:#1a1a1a;border:1px solid var(--border);border-radius:28px 28px 0 0;padding:8px 22px max(32px,env(safe-area-inset-bottom,32px));width:100%;max-width:480px;display:flex;flex-direction:column;gap:16px;animation:sheetUp .32s cubic-bezier(.34,1.4,.64,1)}
@@ -223,16 +208,13 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .btn-secondary:hover{background:#2a2a2a}
 #file-img-input,#file-doc-input{display:none}
 
-/* ══ ANIMATIONS FLUIDES ══ */
 @keyframes viewIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @keyframes msgSlideIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
 @keyframes msgSlideRight{from{opacity:0;transform:translateX(14px) scale(.97)}to{opacity:1;transform:none}}
 
-/* Messages animés */
 .msg{animation:msgSlideIn .3s cubic-bezier(.34,1.3,.64,1)}
 .msg.user{animation:msgSlideRight .3s cubic-bezier(.34,1.3,.64,1)}
 
-/* Barre : glow subtil au focus */
 .perp-bar{
   transition:border-color .25s ease, box-shadow .3s ease, border-radius .25s ease;
 }
@@ -241,59 +223,42 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
   box-shadow:0 0 0 1px rgba(32,192,208,.08), 0 8px 32px rgba(0,0,0,.4);
 }
 
-/* Boutons : spring bounce */
-.bb{transition:background .18s,color .18s,transform .2s cubic-bezier(.34,1.6,.64,1)}
-.bb:active{transform:scale(.86)!important}
-
-/* Header : entrée douce */
 .home-header{animation:fadeDown .4s cubic-bezier(.4,0,.2,1)}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 
-/* Barre home : monte depuis le bas */
 .bar-area{animation:barUp .45s cubic-bezier(.34,1.2,.64,1)}
 @keyframes barUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 
-/* Bubble Gemini : apparition mot par mot simulée via fade */
 .msg.gemini .bubble{animation:geminiIn .4s cubic-bezier(.4,0,.2,1)}
 @keyframes geminiIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
 
-/* Chips : spring pop */
 .pending-chip{animation:chipPop .28s cubic-bezier(.34,1.7,.64,1)}
 @keyframes chipPop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
 
-/* Orb : entrée douce */
 #orb-screen.active{animation:orbIn .3s ease}
 @keyframes orbIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
 
-/* Send button : spring */
 .bb-send{transition:opacity .22s ease,transform .32s cubic-bezier(.34,1.9,.64,1),filter .2s}
 .bb-send.show{transform:scale(1) rotate(0deg)!important}
 
-/* Voice btn hover : subtle lift */
 .bb-voice{transition:transform .22s cubic-bezier(.34,1.6,.64,1),box-shadow .3s,filter .2s}
 .bb-voice:hover{transform:scale(1.1)!important;filter:brightness(1.1)}
 
-/* Chat header : slide in */
 .chat-header{animation:fadeDown .35s cubic-bezier(.4,0,.2,1)}
 
-/* Hdr-logo : rotation au clic */
 .hdr-logo{transition:background .18s,transform .3s cubic-bezier(.34,1.6,.64,1)}
 .hdr-logo:active{transform:rotate(30deg) scale(.9)}
 
-/* Sheet overlay : fond animé */
 .overlay{transition:background .3s ease}
 .overlay.visible{animation:overlayIn .25s ease}
 @keyframes overlayIn{from{opacity:0}to{opacity:1}}
 
-/* Textarea : transition hauteur douce */
 .bar-ta{transition:height .15s ease}
 
-/* Thinking dots : scale plus prononcé */
 .thinking-dots span{width:6px;height:6px;animation:dotBounce 1.2s cubic-bezier(.34,1.7,.64,1) infinite}
 @keyframes dotBounce{0%,60%,100%{transform:translateY(0) scale(.7);opacity:.4}30%{transform:translateY(-6px) scale(1.15);opacity:1}}
 .thinking-dots span:nth-child(2){animation-delay:.15s}
 .thinking-dots span:nth-child(3){animation-delay:.3s}
-
 </style>
 </head>
 <body>
@@ -332,10 +297,10 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
         </div>
         <div class="bar-foot-right">
           <div class="voice-wrap">
-            <button class="bb-voice" id="home-voice-btn">
+            <button class="bb-voice" id="home-voice-btn" title="Dictée">
               <svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
             </button>
-            <button class="bb-send" id="home-send-btn">
+            <button class="bb-send" id="home-send-btn" title="Envoyer">
               <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
             </button>
           </div>
@@ -348,7 +313,7 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 <!-- ══ CHAT ══ -->
 <div id="view-chat">
   <div class="chat-header">
-    <button class="chat-back" id="chat-back-btn">
+    <button class="chat-back" id="chat-back-btn" title="Retour">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
     <div class="chat-title">
@@ -360,7 +325,8 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
     </button>
   </div>
 
-  <div id="messages"></div>
+  <div id="messages" aria-live="polite"></div>
+
   <div id="orb-screen">
     <div class="thinking-text">Gemini réfléchit</div>
     <div class="thinking-dots"><span></span><span></span><span></span></div>
@@ -383,10 +349,10 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
         </div>
         <div class="bar-foot-right">
           <div class="voice-wrap">
-            <button class="bb-voice" id="chat-voice-btn">
+            <button class="bb-voice" id="chat-voice-btn" title="Dictée">
               <svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
             </button>
-            <button class="bb-send" id="send-btn">
+            <button class="bb-send" id="send-btn" title="Envoyer">
               <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
             </button>
           </div>
@@ -399,7 +365,7 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 
 <input type="file" id="file-img-input" accept="image/jpeg,image/png,image/gif,image/webp"/>
 <input type="file" id="file-doc-input" accept="application/pdf,text/plain,text/markdown,text/html,text/csv"/>
-<div id="toast"></div>
+<div id="toast" role="status" aria-live="polite"></div>
 
 <!-- Sheet instructions -->
 <div class="overlay" id="inst-overlay">
@@ -427,7 +393,7 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
     <p class="sheet-sub">Clé API Google AI Studio.<br>Reste <strong style="color:var(--text)">uniquement en mémoire</strong>.</p>
     <div class="api-wrap">
       <input class="api-input" id="modal-input" type="password" placeholder="AIza…" autocomplete="off" spellcheck="false"/>
-      <button class="eye-btn" id="modal-toggle-vis">
+      <button class="eye-btn" id="modal-toggle-vis" aria-label="Montrer/masquer">
         <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
           <circle cx="12" cy="12" r="3"/>
@@ -475,204 +441,231 @@ const $instTextarea=document.getElementById('inst-textarea');
 const $instSave=document.getElementById('inst-save');
 const $instCancel=document.getElementById('inst-cancel');
 const $btnSettings=document.getElementById('btn-settings');
-const $btnMic=document.getElementById('btn-mic'); // may be null if removed
+const $btnMic = null; // standalone mic removed on purpose
 
 /* navigation */
-function showChat(){$viewHome.classList.add('hidden');$viewChat.classList.add('active');setTimeout(()=>$input.focus(),300)}
-function showHome(){$viewChat.classList.remove('active');$viewHome.classList.remove('hidden')}
-document.getElementById('chat-back-btn').addEventListener('click',showHome);
+function showChat(){ $viewHome.classList.add('hidden'); $viewChat.classList.add('active'); setTimeout(()=>{ $input.focus(); },300) }
+function showHome(){ $viewChat.classList.remove('active'); $viewHome.classList.remove('hidden') }
+document.getElementById('chat-back-btn').addEventListener('click', showHome);
 
 /* resize textarea */
-function resizeTA(ta){ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,130)+'px'}
+function resizeTA(ta){ try{ ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight,130)+'px' }catch(e){} }
 
 /* sync bouton envoyer vs vocal */
 function syncSend(ta,sendBtn,voiceBtn){
-  const has=ta.value.trim().length>0;
-  sendBtn.classList.toggle('show',has);
-  voiceBtn.style.opacity=has?'0':'1';
-  voiceBtn.style.pointerEvents=has?'none':'auto';
-  voiceBtn.style.position=has?'absolute':'relative';
+  const has = ta.value.trim().length > 0;
+  sendBtn.classList.toggle('show', has);
+  if (voiceBtn) {
+    voiceBtn.style.opacity = has ? '0' : '1';
+    voiceBtn.style.pointerEvents = has ? 'none' : 'auto';
+    voiceBtn.style.position = has ? 'absolute' : 'relative';
+  }
 }
 
 /* barre home */
-$homeInput.addEventListener('input',()=>{resizeTA($homeInput);syncSend($homeInput,$homeSendBtn,$homeVoice)});
-$homeInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendFromHome()}});
-$homeSendBtn.addEventListener('click',sendFromHome);
-$homeVoice.addEventListener('click',()=>showToast('Dictée activée dans le chat'));
-document.getElementById('home-btn-plus').addEventListener('click',()=>{if(!apiKey){openModal();return}$fileImgIn.click()});
-document.getElementById('home-btn-search').addEventListener('click',()=>showToast('Recherche web bientôt disponible'));
+if ($homeInput) {
+  $homeInput.addEventListener('input', ()=>{ resizeTA($homeInput); syncSend($homeInput, $homeSendBtn, $homeVoice); });
+  $homeInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendFromHome(); } });
+}
+$homeSendBtn?.addEventListener('click', sendFromHome);
+$homeVoice?.addEventListener('click', ()=> showToast('Dictée activée dans le chat'));
+document.getElementById('home-btn-plus').addEventListener('click', ()=>{ if(!apiKey){ openModal(); return } $fileImgIn.click() });
+document.getElementById('home-btn-search').addEventListener('click', ()=> showToast('Recherche web bientôt disponible'));
 
-/* PROTECTION : le bouton home-clear-btn n'existe pas dans le DOM — éviter l'erreur si absent */
+/* PROTECTION : le bouton home-clear-btn peut ne pas exister */
 const $homeClearBtn = document.getElementById('home-clear-btn');
 if ($homeClearBtn) {
-  $homeClearBtn.addEventListener('click',()=>{
-    if(!history.length&&!pendingFiles.length){showToast('Aucune conversation');return}
-    if(!confirm('Effacer toute la conversation ?'))return;
-    history=[];localStorage.removeItem(LS_KEY_HST);
-    pendingFiles=[];$pendingWrap.innerHTML='';$pendingWrap.classList.remove('has-files');
-    $messages.innerHTML='';showHome();showToast('🗑 Effacée');
+  $homeClearBtn.addEventListener('click', ()=>{
+    if(!history.length && !pendingFiles.length){ showToast('Aucune conversation'); return }
+    if(!confirm('Effacer toute la conversation ?')) return;
+    history = []; localStorage.removeItem(LS_KEY_HST);
+    pendingFiles = []; $pendingWrap.innerHTML = ''; $pendingWrap.classList.remove('has-files');
+    $messages.innerHTML = ''; showHome(); showToast('🗑 Effacée');
   });
 }
 
 function sendFromHome(){
-  const txt=$homeInput.value.trim();if(!txt)return;
-  if(!apiKey){openModal();return}
-  $homeInput.value='';$homeInput.style.height='auto';
-  syncSend($homeInput,$homeSendBtn,$homeVoice);
+  const txt = $homeInput.value.trim();
+  if (!txt) return;
+  if (!apiKey) { openModal(); return }
+  $homeInput.value = ''; $homeInput.style.height = 'auto';
+  syncSend($homeInput, $homeSendBtn, $homeVoice);
   showChat();
-  setTimeout(()=>{$input.value=txt;resizeTA($input);syncSend($input,$sendBtn,$chatVoice);sendMessage()},300);
+  setTimeout(()=>{ $input.value = txt; resizeTA($input); syncSend($input, $sendBtn, $chatVoice); sendMessage(); }, 300);
 }
 
 /* barre chat */
-$input.addEventListener('input',()=>{resizeTA($input);syncSend($input,$sendBtn,$chatVoice)});
-$input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}});
-$sendBtn.addEventListener('click',sendMessage);
-$chatVoice.addEventListener('click',toggleSpeech);
-// removed standalone btn-mic click hookup to avoid duplicate mic buttons
-$btnImg.addEventListener('click',()=>{if(!apiKey){openModal();return}$fileImgIn.click()});
-$btnDoc.addEventListener('click',()=>{if(!apiKey){openModal();return}$fileDocIn.click()});
-document.getElementById('clear-btn').addEventListener('click',()=>{
-  if(!confirm('Effacer ?'))return;
-  history=[];localStorage.removeItem(LS_KEY_HST);
-  pendingFiles=[];$pendingWrap.innerHTML='';$pendingWrap.classList.remove('has-files');
-  $messages.innerHTML='';showHome();
+$input.addEventListener('input', ()=>{ resizeTA($input); syncSend($input, $sendBtn, $chatVoice); });
+$input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+$sendBtn.addEventListener('click', sendMessage);
+$chatVoice.addEventListener('click', toggleSpeech);
+$btnImg.addEventListener('click', ()=>{ if(!apiKey){ openModal(); return } $fileImgIn.click() });
+$btnDoc.addEventListener('click', ()=>{ if(!apiKey){ openModal(); return } $fileDocIn.click() });
+document.getElementById('clear-btn').addEventListener('click', ()=>{
+  if(!confirm('Effacer ?')) return;
+  history = []; localStorage.removeItem(LS_KEY_HST);
+  pendingFiles = []; $pendingWrap.innerHTML = ''; $pendingWrap.classList.remove('has-files');
+  $messages.innerHTML = ''; showHome();
 });
 
 /* envoi */
 async function sendMessage(){
-  const text=$input.value.trim();
-  if(!text&&pendingFiles.length===0)return;
-  if(!apiKey){openModal();return}
-  if(pendingFiles.some(f=>f.uploading)){showToast('⏳ Upload en cours…');return}
-  const filesToSend=[...pendingFiles];
-  pendingFiles=[];$pendingWrap.innerHTML='';$pendingWrap.classList.remove('has-files');
-  $input.value='';$input.style.height='auto';
-  syncSend($input,$sendBtn,$chatVoice);
-  const parts=[];
-  for(const f of filesToSend){
-    if(f.type==='image'){parts.push({inline_data:{mime_type:f.mimeType,data:f.base64}});if(f.objectUrl)URL.revokeObjectURL(f.objectUrl)}
-    else if(f.type==='file'&&f.fileUri)parts.push({file_data:{mime_type:f.mimeType,file_uri:f.fileUri}});
+  const text = $input.value.trim();
+  if (!text && pendingFiles.length === 0) return;
+  if (!apiKey) { openModal(); return }
+  if (pendingFiles.some(f => f.uploading)) { showToast('⏳ Upload en cours…'); return }
+  const filesToSend = [...pendingFiles];
+  pendingFiles = []; $pendingWrap.innerHTML = ''; $pendingWrap.classList.remove('has-files');
+  $input.value = ''; $input.style.height = 'auto';
+  syncSend($input, $sendBtn, $chatVoice);
+  const parts = [];
+  for (const f of filesToSend) {
+    if (f.type === 'image') { parts.push({ inline_data: { mime_type: f.mimeType, data: f.base64 } }); if (f.objectUrl) URL.revokeObjectURL(f.objectUrl) }
+    else if (f.type === 'file' && f.fileUri) parts.push({ file_data: { mime_type: f.mimeType, file_uri: f.fileUri } });
   }
-  if(text)parts.push({text});
-  else if(filesToSend.some(f=>f.type==='image'))parts.push({text:'Décris et analyse cette image.'});
-  else parts.push({text:'Analyse et résume ce document.'});
-  appendMessage('user',text,filesToSend);
-  const apiContents=[...history,{role:'user',parts}];
-  const histParts=parts.filter(p=>p.text||p.file_data);
-  if(!histParts.length)histParts.push({text:text||'[fichier]'});
-  history.push({role:'user',parts:histParts});
+  if (text) parts.push({ text });
+  else if (filesToSend.some(f => f.type === 'image')) parts.push({ text: 'Décris et analyse cette image.' });
+  else parts.push({ text: 'Analyse et résume ce document.' });
+  appendMessage('user', text, filesToSend);
+  const apiContents = [...history, { role: 'user', parts }];
+  const histParts = parts.filter(p => p.text || p.file_data);
+  if (!histParts.length) histParts.push({ text: text || '[fichier]' });
+  history.push({ role: 'user', parts: histParts });
   showOrb(true);
-  try{
-    const answer=await callAPI(apiContents);
-    showOrb(false);appendMessage('gemini',answer);
-    history.push({role:'model',parts:[{text:answer}]});saveHistory();
-  }catch(err){showOrb(false);appendError(err.message);history.pop();}
-  finally{$input.focus();}
+  try {
+    const answer = await callAPI(apiContents);
+    showOrb(false); appendMessage('gemini', answer);
+    history.push({ role: 'model', parts: [{ text: answer }] }); saveHistory();
+  } catch (err) {
+    showOrb(false); appendError(err.message); history.pop();
+  } finally {
+    $input.focus();
+  }
 }
 
 async function callAPI(contents){
-  const body=Object.assign({contents,generationConfig:{temperature:1,maxOutputTokens:8192}},customInst?{systemInstruction:{parts:[{text:customInst}]}}:{});
-  const res=await fetch(`${GENERATE_URL}?key=${apiKey}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!res.ok){const err=await res.json().catch(()=>({}));if([400,401,403].includes(res.status)){apiKey='';setTimeout(openModal,400)}throw new Error(err?.error?.message||`HTTP ${res.status}`);}
-  const data=await res.json();const txt=data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if(!txt)throw new Error("Réponse vide.");return txt;
+  const body = Object.assign({ contents, generationConfig: { temperature: 1, maxOutputTokens: 8192 } }, customInst ? { systemInstruction: { parts: [{ text: customInst }] } } : {});
+  const res = await fetch(`${GENERATE_URL}?key=${apiKey}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  if (!res.ok) { const err = await res.json().catch(()=>({})); if([400,401,403].includes(res.status)){ apiKey=''; setTimeout(openModal,400) } throw new Error(err?.error?.message || `HTTP ${res.status}`); }
+  const data = await res.json();
+  const txt = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!txt) throw new Error("Réponse vide.");
+  return txt;
 }
 
-function appendMessage(role,text,files=[]){
-  const $msg=document.createElement('div');$msg.className=`msg ${role}`;
-  const $lbl=document.createElement('span');$lbl.className='msg-label';$lbl.textContent=role==='user'?'Vous':'Gemini';
-  const $bub=document.createElement('div');$bub.className='bubble';
-  for(const f of files){
-    if(f.type==='image'&&f.objectUrl){const img=document.createElement('img');img.className='preview';img.src=f.objectUrl;$bub.appendChild(img)}
-    else if(f.type==='file'){const b=document.createElement('div');b.className='file-badge';b.textContent='📄 '+f.name;$bub.appendChild(b)}
+function appendMessage(role, text, files = []){
+  const $msg = document.createElement('div'); $msg.className = `msg ${role}`;
+  const $lbl = document.createElement('span'); $lbl.className = 'msg-label'; $lbl.textContent = role === 'user' ? 'Vous' : 'Gemini';
+  const $bub = document.createElement('div'); $bub.className = 'bubble';
+  for (const f of files){
+    if (f.type === 'image' && f.objectUrl){ const img = document.createElement('img'); img.className = 'preview'; img.src = f.objectUrl; $bub.appendChild(img) }
+    else if (f.type === 'file'){ const b = document.createElement('div'); b.className = 'file-badge'; b.textContent = '📄 ' + f.name; $bub.appendChild(b) }
   }
-  if(text){const d=document.createElement('div');d.innerHTML=role==='gemini'?renderMD(text):escH(text).replace(/\n/g,'<br>');$bub.appendChild(d)}
-  $msg.append($lbl,$bub);$messages.appendChild($msg);
-  requestAnimationFrame(()=>$messages.scrollTop=$messages.scrollHeight);
+  if (text){
+    const d = document.createElement('div');
+    d.innerHTML = role === 'gemini' ? renderMD(text) : escH(text).replace(/\n/g,'<br>');
+    $bub.appendChild(d);
+  }
+  $msg.append($lbl, $bub);
+  $messages.appendChild($msg);
+  // no automatic scroll: messages start from top; user controls scrolling
 }
-function appendError(msg){const el=document.createElement('div');el.className='error-msg';el.textContent=`⚠️ ${msg}`;$messages.appendChild(el);$messages.scrollTop=$messages.scrollHeight}
-function showOrb(a){$messages.style.display=a?'none':'';$orbScreen.classList.toggle('active',a)}
-function renderMD(t){return t.replace(/```(\w*)\n?([\s\S]*?)```/g,(_,_l,c)=>`<pre><code>${escH(c.trim())}</code></pre>`).replace(/`([^`\n]+)`/g,(_,c)=>`<code>${escH(c)}</code>`).replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^[*\-] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*?<\/li>\n?)+/gs,m=>`<ul>${m}</ul>`).replace(/\n(?!<\/?(?:pre|ul|h[1-3]|li))/g,'<br>')}
-function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function saveHistory(){try{localStorage.setItem(LS_KEY_HST,JSON.stringify(history))}catch{showToast('⚠️ Stockage plein')}}
-function restoreHistory(){for(const e of history){const r=e.role==='model'?'gemini':'user';const tp=e.parts?.find(p=>typeof p.text==='string');appendMessage(r,tp?.text||'')}}
-function toBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=()=>rej(new Error('Erreur'));r.readAsDataURL(file)})}
 
-$fileImgIn.addEventListener('change',async e=>{
-  const file=e.target.files[0];if(!file)return;$fileImgIn.value='';
-  if(file.size>18*1024*1024){showToast('⚠️ Max 18 Mo');return}
-  try{const base64=await toBase64(file);const entry={type:'image',name:file.name,mimeType:file.type,base64,objectUrl:URL.createObjectURL(file)};pendingFiles.push(entry);renderChip(entry);showToast(`🖼 ${file.name}`)}
-  catch{showToast('⚠️ Erreur')}
-});
-$fileDocIn.addEventListener('change',async e=>{
-  const file=e.target.files[0];if(!file)return;$fileDocIn.value='';
-  if(file.size>50*1024*1024){showToast('⚠️ Max 50 Mo');return}
-  const entry={type:'file',name:file.name,mimeType:file.type,fileUri:null,uploading:true};
-  pendingFiles.push(entry);const chip=renderChip(entry);showToast(`📤 Upload…`,30000);
-  try{entry.fileUri=await uploadAPI(file);entry.uploading=false;const sp=chip.querySelector('.chip-progress');if(sp)sp.replaceWith(Object.assign(document.createElement('span'),{textContent:'✅'}));showToast(`✅ ${file.name}`)}
-  catch(err){pendingFiles=pendingFiles.filter(f=>f!==entry);chip.remove();if(!$pendingWrap.children.length)$pendingWrap.classList.remove('has-files');showToast(`⚠️ ${err.message}`)}
-});
-async function uploadAPI(file){
-  const i=await fetch(`${UPLOAD_URL}?uploadType=resumable&key=${apiKey}`,{method:'POST',headers:{'X-Goog-Upload-Protocol':'resumable','X-Goog-Upload-Command':'start','X-Goog-Upload-Header-Content-Length':String(file.size),'X-Goog-Upload-Header-Content-Type':file.type,'Content-Type':'application/json'},body:JSON.stringify({file:{display_name:file.name}})});
-  if(!i.ok){const e=await i.json().catch(()=>({}));throw new Error(e?.error?.message||`HTTP ${i.status}`)}
-  const url=i.headers.get('X-Goog-Upload-URL');if(!url)throw new Error('URL manquante');
-  const u=await fetch(url,{method:'POST',headers:{'Content-Length':String(file.size),'X-Goog-Upload-Offset':'0','X-Goog-Upload-Command':'upload, finalize'},body:file});
-  if(!u.ok){const e=await u.json().catch(()=>({}));throw new Error(e?.error?.message||`HTTP ${u.status}`)}
-  const d=await u.json();const uri=d?.file?.uri;if(!uri)throw new Error('URI manquante');return uri;
+function appendError(msg){
+  const el = document.createElement('div'); el.className = 'error-msg'; el.textContent = `⚠️ ${msg}`; $messages.appendChild(el);
+  // no automatic scroll here either
 }
+
+function showOrb(a){ $messages.style.display = a ? 'none' : ''; $orbScreen.classList.toggle('active', a) }
+
+function renderMD(t){ return t.replace(/```(\w*)\n?([\s\S]*?)```/g,(_,_l,c)=>`<pre><code>${escH(c.trim())}</code></pre>`).replace(/`([^`\n]+)`/g,(_,c)=>`<code>${escH(c)}</code>`).replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^[*\-] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*?<\/li>\n?)+/gs,m=>`<ul>${m}</ul>`).replace(/\n(?!<\/?(?:pre|ul|h[1-3]|li))/g,'<br>') }
+function escH(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+function saveHistory(){ try{ localStorage.setItem(LS_KEY_HST, JSON.stringify(history)) } catch { showToast('⚠️ Stockage plein') } }
+function restoreHistory(){ for (const e of history){ const r = e.role === 'model' ? 'gemini' : 'user'; const tp = e.parts?.find(p => typeof p.text === 'string'); appendMessage(r, tp?.text || '') } }
+function toBase64(file){ return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result.split(',')[1]); r.onerror = () => rej(new Error('Erreur')); r.readAsDataURL(file) }) }
+
+$fileImgIn.addEventListener('change', async e => {
+  const file = e.target.files[0]; if (!file) return; $fileImgIn.value = '';
+  if (file.size > 18*1024*1024) { showToast('⚠️ Max 18 Mo'); return }
+  try {
+    const base64 = await toBase64(file);
+    const entry = { type: 'image', name: file.name, mimeType: file.type, base64, objectUrl: URL.createObjectURL(file) };
+    pendingFiles.push(entry); renderChip(entry); showToast(`🖼 ${file.name}`);
+  } catch { showToast('⚠️ Erreur') }
+});
+
+$fileDocIn.addEventListener('change', async e => {
+  const file = e.target.files[0]; if (!file) return; $fileDocIn.value = '';
+  if (file.size > 50*1024*1024) { showToast('⚠️ Max 50 Mo'); return }
+  const entry = { type: 'file', name: file.name, mimeType: file.type, fileUri: null, uploading: true };
+  pendingFiles.push(entry); const chip = renderChip(entry); showToast('📤 Upload…', 30000);
+  try {
+    entry.fileUri = await uploadAPI(file); entry.uploading = false;
+    const sp = chip.querySelector('.chip-progress'); if (sp) sp.replaceWith(Object.assign(document.createElement('span'), { textContent: '✅' }));
+    showToast(`✅ ${file.name}`);
+  } catch (err) {
+    pendingFiles = pendingFiles.filter(f => f !== entry); chip.remove(); if (!$pendingWrap.children.length) $pendingWrap.classList.remove('has-files');
+    showToast(`⚠️ ${err.message}`);
+  }
+});
+
+async function uploadAPI(file){
+  const i = await fetch(`${UPLOAD_URL}?uploadType=resumable&key=${apiKey}`, { method: 'POST', headers: { 'X-Goog-Upload-Protocol': 'resumable', 'X-Goog-Upload-Command': 'start', 'X-Goog-Upload-Header-Content-Length': String(file.size), 'X-Goog-Upload-Header-Content-Type': file.type, 'Content-Type': 'application/json' }, body: JSON.stringify({ file: { display_name: file.name } }) });
+  if (!i.ok) { const e = await i.json().catch(()=>({})); throw new Error(e?.error?.message || `HTTP ${i.status}`) }
+  const url = i.headers.get('X-Goog-Upload-URL'); if (!url) throw new Error('URL manquante');
+  const u = await fetch(url, { method: 'POST', headers: { 'Content-Length': String(file.size), 'X-Goog-Upload-Offset': '0', 'X-Goog-Upload-Command': 'upload, finalize' }, body: file });
+  if (!u.ok) { const e = await u.json().catch(()=>({})); throw new Error(e?.error?.message || `HTTP ${u.status}`) }
+  const d = await u.json(); const uri = d?.file?.uri; if (!uri) throw new Error('URI manquante'); return uri;
+}
+
 function renderChip(entry){
   $pendingWrap.classList.add('has-files');
-  const chip=document.createElement('div');chip.className='pending-chip';
-  const label=entry.name.length>20?entry.name.slice(0,20)+'…':entry.name;
-  if(entry.type==='image'){const img=document.createElement('img');img.src=entry.objectUrl;const sp=document.createElement('span');sp.textContent=label;chip.append(img,sp,rmBtn(entry,chip))}
-  else{const ic=document.createElement('span');ic.textContent='📄';const sp=document.createElement('span');sp.textContent=label;const pr=document.createElement('span');pr.className='chip-progress';chip.append(ic,sp,pr,rmBtn(entry,chip))}
-  $pendingWrap.appendChild(chip);return chip;
+  const chip = document.createElement('div'); chip.className = 'pending-chip';
+  const label = entry.name.length > 20 ? entry.name.slice(0,20) + '…' : entry.name;
+  if (entry.type === 'image'){
+    const img = document.createElement('img'); img.src = entry.objectUrl; const sp = document.createElement('span'); sp.textContent = label; chip.append(img, sp, rmBtn(entry, chip));
+  } else {
+    const ic = document.createElement('span'); ic.textContent = '📄'; const sp = document.createElement('span'); sp.textContent = label; const pr = document.createElement('span'); pr.className = 'chip-progress'; chip.append(ic, sp, pr, rmBtn(entry, chip));
+  }
+  $pendingWrap.appendChild(chip); return chip;
 }
-function rmBtn(entry,chip){const b=document.createElement('button');b.className='chip-remove';b.textContent='✕';b.addEventListener('click',()=>{pendingFiles=pendingFiles.filter(f=>f!==entry);chip.remove();if(!$pendingWrap.children.length)$pendingWrap.classList.remove('has-files');if(entry.objectUrl)URL.revokeObjectURL(entry.objectUrl)});return b}
+function rmBtn(entry, chip){ const b = document.createElement('button'); b.className = 'chip-remove'; b.textContent = '✕'; b.addEventListener('click', ()=>{ pendingFiles = pendingFiles.filter(f => f !== entry); chip.remove(); if (!$pendingWrap.children.length) $pendingWrap.classList.remove('has-files'); if (entry.objectUrl) URL.revokeObjectURL(entry.objectUrl) }); return b }
 
 function initSpeech(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){showToast('⚠️ Dictée non supportée');return null}
-  const r=new SR();r.lang='fr-FR';r.continuous=false;r.interimResults=true;let base='';
-  r.onstart=()=>{isListening=true;$btnMic?.classList.add('mic-active');$chatVoice.classList.add('mic-active');base=$input.value;showToast('🎤 Dictée en cours…',60000)};
-  r.onresult=e=>{let interim='',fin='';for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)fin+=t;else interim=t}if(fin)base=(base+' '+fin).trimStart();$input.value=base+(interim?' '+interim:'');resizeTA($input);syncSend($input,$sendBtn,$chatVoice)};
-  r.onerror=e=>{const m={'not-allowed':'⚠️ Micro refusé','no-speech':'⚠️ Aucune parole','network':'⚠️ Réseau','aborted':''};const msg=m[e.error];if(msg===undefined)showToast(`⚠️ ${e.error}`);else if(msg)showToast(msg);stopSpeech()};
-  r.onend=()=>{stopSpeech();recognition=null};return r;
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { showToast('⚠️ Dictée non supportée'); return null; }
+  const r = new SR(); r.lang = 'fr-FR'; r.continuous = false; r.interimResults = true; let base = '';
+  r.onstart = ()=>{ isListening = true; $chatVoice.classList.add('mic-active'); base = $input.value; showToast('🎤 Dictée en cours…', 60000) };
+  r.onresult = e => { let interim = '', fin = ''; for (let i = e.resultIndex; i < e.results.length; i++) { const t = e.results[i][0].transcript; if (e.results[i].isFinal) fin += t; else interim = t } if (fin) base = (base + ' ' + fin).trimStart(); $input.value = base + (interim ? ' '+interim : ''); resizeTA($input); syncSend($input, $sendBtn, $chatVoice) };
+  r.onerror = e => { const m = {'not-allowed':'⚠️ Micro refusé','no-speech':'⚠️ Aucune parole','network':'⚠️ Réseau','aborted':''}; const msg = m[e.error]; if (msg === undefined) showToast(`⚠️ ${e.error}`); else if (msg) showToast(msg); stopSpeech() };
+  r.onend = ()=>{ stopSpeech(); recognition = null };
+  return r;
 }
-function toggleSpeech(){if(isListening){recognition?.stop();return}recognition=initSpeech();if(!recognition)return;try{recognition.start()}catch{showToast('⚠️ Impossible');recognition=null}}
-function stopSpeech(){isListening=false;$btnMic?.classList.remove('mic-active');$chatVoice.classList.remove('mic-active');$toast.classList.remove('show')}
+function toggleSpeech(){ if (isListening) { recognition?.stop(); return } recognition = initSpeech(); if (!recognition) return; try { recognition.start() } catch { showToast('⚠️ Impossible'); recognition = null } }
+function stopSpeech(){ isListening = false; $chatVoice.classList.remove('mic-active'); $toast.classList.remove('show') }
 
 let toastTimer;
-function showToast(msg,dur=3000){clearTimeout(toastTimer);$toast.textContent=msg;$toast.classList.add('show');toastTimer=setTimeout(()=>$toast.classList.remove('show'),dur)}
+function showToast(msg, dur = 3000){ clearTimeout(toastTimer); $toast.textContent = msg; $toast.classList.add('show'); toastTimer = setTimeout(()=> $toast.classList.remove('show'), dur) }
 
-function openModal(){$modalInput.value='';$modalInput.type='password';$eyeIcon.style.opacity='1';$modalOverlay.classList.add('visible');setTimeout(()=>$modalInput.focus(),150)}
-function saveKey(){
-  const v=$modalInput.value.trim();
-  if(!v){$modalInput.style.borderColor='rgba(224,80,80,.5)';$modalInput.animate([{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(0)'}],{duration:180,iterations:3});return}
-  apiKey=v;$modalInput.value='';$modalOverlay.classList.remove('visible');
-}
-$modalToggle.addEventListener('click',()=>{const h=$modalInput.type==='password';$modalInput.type=h?'text':'password';$eyeIcon.style.opacity=h?'.35':'1';$modalInput.focus()});
-$modalSave.addEventListener('click',saveKey);
-$modalInput.addEventListener('keydown',e=>{if(e.key==='Enter')saveKey()});
+function openModal(){ $modalInput.value = ''; $modalInput.type = 'password'; $eyeIcon.style.opacity = '1'; $modalOverlay.classList.add('visible'); setTimeout(()=> $modalInput.focus(), 150) }
+function saveKey(){ const v = $modalInput.value.trim(); if (!v) { $modalInput.style.borderColor = 'rgba(224,80,80,.5)'; $modalInput.animate([{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(0)'}],{duration:180,iterations:3}); return } apiKey = v; $modalInput.value = ''; $modalOverlay.classList.remove('visible') }
+$modalToggle.addEventListener('click', ()=>{ const h = $modalInput.type === 'password'; $modalInput.type = h ? 'text' : 'password'; $eyeIcon.style.opacity = h ? '.35' : '1'; $modalInput.focus() });
+$modalSave.addEventListener('click', saveKey);
+$modalInput.addEventListener('keydown', e => { if (e.key === 'Enter') saveKey() });
 
-function openInst(){$instTextarea.value=customInst;$instOverlay.classList.add('visible');setTimeout(()=>$instTextarea.focus(),100)}
-function closeInst(){$instOverlay.classList.remove('visible')}
-function saveInst(){
-  customInst=$instTextarea.value.trim();
-  if(customInst){localStorage.setItem(LS_KEY_INST,customInst);$btnSettings.classList.add('has-inst');showToast('✅ Instructions enregistrées')}
-  else{localStorage.removeItem(LS_KEY_INST);$btnSettings.classList.remove('has-inst');showToast('Instructions effacées')}
-  closeInst();
-}
-$btnSettings.addEventListener('click',openInst);
-$instSave.addEventListener('click',saveInst);
-$instCancel.addEventListener('click',closeInst);
-$instOverlay.addEventListener('click',e=>{if(e.target===$instOverlay)closeInst()});
-$instTextarea.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.ctrlKey)saveInst()});
-if(customInst)$btnSettings.classList.add('has-inst');
+function openInst(){ $instTextarea.value = customInst; $instOverlay.classList.add('visible'); setTimeout(()=> $instTextarea.focus(), 100) }
+function closeInst(){ $instOverlay.classList.remove('visible') }
+function saveInst(){ customInst = $instTextarea.value.trim(); if (customInst){ localStorage.setItem(LS_KEY_INST, customInst); $btnSettings.classList.add('has-inst'); showToast('✅ Instructions enregistrées') } else { localStorage.removeItem(LS_KEY_INST); $btnSettings.classList.remove('has-inst'); showToast('Instructions effacées') } closeInst() }
+$btnSettings.addEventListener('click', openInst);
+$instSave.addEventListener('click', saveInst);
+$instCancel.addEventListener('click', closeInst);
+$instOverlay.addEventListener('click', e => { if (e.target === $instOverlay) closeInst() });
+$instTextarea.addEventListener('keydown', e => { if (e.key === 'Enter' && e.ctrlKey) saveInst() });
+if (customInst) $btnSettings.classList.add('has-inst');
 
 (function init(){
   openModal();
-  if(history.length){showChat();restoreHistory()}
+  if (history.length){ showChat(); restoreHistory() }
 })();
 </script>
 </body>
