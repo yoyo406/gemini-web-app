@@ -198,11 +198,11 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .thinking-dots span:nth-child(3){animation-delay:.4s}
 @keyframes dotPulse{0%,80%,100%{transform:scale(.6);opacity:.3}40%{transform:scale(1.1);opacity:1}}
 
-#pending-files{display:none;flex-wrap:wrap;gap:7px;padding:6px 14px 0;flex-shrink:0}
-#pending-files.has-files{display:flex}
+#pending-files{display:none;flex-wrap:wrap;gap:7px;padding:10px 12px 8px;flex-shrink:0}
+#pending-files.has-files{display:flex;border-bottom:1px solid var(--border)}
 .pending-chip{display:flex;align-items:center;gap:6px;background:rgba(255,140,66,.1);border:1px solid rgba(255,140,66,.2);border-radius:16px;padding:5px 10px 5px 7px;font-size:12px;font-weight:500;color:var(--accent);animation:fadeUp .2s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.pending-chip img{width:26px;height:26px;border-radius:5px;object-fit:cover}
+.pending-chip img{width:32px;height:32px;border-radius:6px;object-fit:cover;flex-shrink:0}
 .chip-remove{background:none;border:none;cursor:pointer;color:var(--text-dim);font-size:13px;padding:0 2px}
 .chip-remove:hover{color:#e05050}
 .chip-progress{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,140,66,.25);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
@@ -512,10 +512,10 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
     <div class="thinking-dots"><span></span><span></span><span></span></div>
   </div>
   </div><!-- /chat-body -->
-  <div id="pending-files"></div>
 
   <div class="bar-area">
     <div class="perp-bar">
+      <div id="pending-files"></div>
       <div class="bar-row">
         <textarea id="user-input" class="bar-ta" rows="1" placeholder="Posez une question…"></textarea>
         <div id="reasoning-badge" title="Raisonnement actif"><svg viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44L2.5 12.5A2.5 2.5 0 0 1 5 10h7"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44L21.5 12.5A2.5 2.5 0 0 0 19 10h-7"/></svg>Pense</div>
@@ -796,13 +796,15 @@ async function sendMessage(){
   syncSend($input, $sendBtn, $chatVoice);
   const parts = [];
   for (const f of filesToSend) {
-    if (f.type === 'image') { parts.push({ inline_data: { mime_type: f.mimeType, data: f.base64 } }); if (f.objectUrl) URL.revokeObjectURL(f.objectUrl) }
+    if (f.type === 'image') { parts.push({ inline_data: { mime_type: f.mimeType, data: f.base64 } }) }
     else if (f.type === 'file' && f.fileUri) parts.push({ file_data: { mime_type: f.mimeType, file_uri: f.fileUri } });
   }
   if (text) parts.push({ text });
   else if (filesToSend.some(f => f.type === 'image')) parts.push({ text: 'Décris et analyse cette image.' });
   else parts.push({ text: 'Analyse et résume ce document.' });
   appendMessage('user', text, filesToSend);
+  // Révoquer les objectUrl après affichage
+  filesToSend.forEach(f => { if (f.objectUrl) { URL.revokeObjectURL(f.objectUrl); f.objectUrl = null; } });
   const apiContents = [...history, { role: 'user', parts }];
   const histParts = parts.filter(p => p.text || p.file_data);
   if (!histParts.length) histParts.push({ text: text || '[fichier]' });
@@ -840,7 +842,12 @@ function appendMessage(role, text, files = []){
   const $lbl = document.createElement('span'); $lbl.className = 'msg-label'; $lbl.textContent = role === 'user' ? 'Vous' : 'Gemini';
   const $bub = document.createElement('div'); $bub.className = 'bubble';
   for (const f of files){
-    if (f.type === 'image' && f.objectUrl){ const img = document.createElement('img'); img.className = 'preview'; img.src = f.objectUrl; $bub.appendChild(img) }
+    if (f.type === 'image'){
+      const img = document.createElement('img'); img.className = 'preview';
+      // Préférer objectUrl (léger), fallback sur base64 si révoqué
+      img.src = f.objectUrl || ('data:' + f.mimeType + ';base64,' + f.base64);
+      $bub.appendChild(img);
+    }
     else if (f.type === 'file'){ const b = document.createElement('div'); b.className = 'file-badge'; b.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg> '+f.name; $bub.appendChild(b) }
   }
   if (text){
@@ -905,7 +912,11 @@ function renderChip(entry){
   const chip = document.createElement('div'); chip.className = 'pending-chip';
   const label = entry.name.length > 20 ? entry.name.slice(0,20) + '…' : entry.name;
   if (entry.type === 'image'){
-    const img = document.createElement('img'); img.src = entry.objectUrl; const sp = document.createElement('span'); sp.textContent = label; chip.append(img, sp, rmBtn(entry, chip));
+    const img = document.createElement('img');
+    img.src = entry.objectUrl || ('data:'+entry.mimeType+';base64,'+entry.base64);
+    img.style.cssText = 'width:32px;height:32px;border-radius:6px;object-fit:cover;flex-shrink:0';
+    const sp = document.createElement('span'); sp.textContent = label;
+    chip.append(img, sp, rmBtn(entry, chip));
   } else {
     const ic = document.createElement('span'); ic.style.cssText='display:flex;align-items:center'; ic.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>'; const sp = document.createElement('span'); sp.textContent = label; const pr = document.createElement('span'); pr.className = 'chip-progress'; chip.append(ic, sp, pr, rmBtn(entry, chip));
   }
@@ -1024,14 +1035,15 @@ $plusBtns.forEach(btn => {
 
 // Actions du menu
 $ctxImage.addEventListener('click', ()=>{
+  if(!apiKey){ closeCtxMenu(); openModal(); return }
   closeCtxMenu();
-  if(!apiKey){ openModal(); return }
-  $fileImgIn.click();
+  // setTimeout 0 : laisse le navigateur finir l'event avant d'ouvrir le picker
+  setTimeout(()=> $fileImgIn.click(), 0);
 });
 $ctxDoc.addEventListener('click', ()=>{
+  if(!apiKey){ closeCtxMenu(); openModal(); return }
   closeCtxMenu();
-  if(!apiKey){ openModal(); return }
-  $fileDocIn.click();
+  setTimeout(()=> $fileDocIn.click(), 0);
 });
 $ctxReasoning.addEventListener('click', toggleReasoning);
 
